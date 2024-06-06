@@ -1,16 +1,36 @@
 import React, { useEffect } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, Easing } from 'react-native-reanimated';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import fonts from './styles/fonts';
+
+function HomeScreen() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+    </View>
+  );
+}
+function HomeScreen2() {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+    </View>
+  );
+}
+
+const Stack = createNativeStackNavigator();
+
 
 const App: React.FC = () => {
   return (
-    <View style={styles.container}>
-      <Text style={fonts.bmjua24}>안녕하세요</Text>     
-       <Text style={fonts.nanumgn24}>안녕하세요</Text>
-       <Text style={fonts.nanumgy24}>안녕하세요</Text>
-       <Text style={{fontSize:24}}>안녕하세요</Text>
-    </View>
+    <NavigationContainer>
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Hom2e" component={HomeScreen2} />
+    </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
