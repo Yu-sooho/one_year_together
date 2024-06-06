@@ -15,6 +15,9 @@
 		72D5CD023A05508C552D401D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 626C902D0AD61A89DAB37086 /* PrivacyInfo.xcprivacy */; };
 		7699B88040F8A987B510C191 /* libPods-one_year_together-one_year_togetherTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-one_year_together-one_year_togetherTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		E8C0C1A3B2B244D598153A2E /* BMJUA.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8785BCD7140F474299A0B2E5 /* BMJUA.ttf */; };
+		7662529F5FE646AC9EFFE9E4 /* NanumGaRamYeonGgoc.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 15A0656EDF0A438E9CFE7D22 /* NanumGaRamYeonGgoc.ttf */; };
+		061D0B402A7B479C842E970F /* NanumGgocNaeEum.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8F3F0541DFF14CC99351222B /* NanumGgocNaeEum.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,10 +46,13 @@
 		5709B34CF0A7D63546082F79 /* Pods-one_year_together.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-one_year_together.release.xcconfig"; path = "Target Support Files/Pods-one_year_together/Pods-one_year_together.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-one_year_together-one_year_togetherTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-one_year_together-one_year_togetherTests.debug.xcconfig"; path = "Target Support Files/Pods-one_year_together-one_year_togetherTests/Pods-one_year_together-one_year_togetherTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-one_year_together.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-one_year_together.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		626C902D0AD61A89DAB37086 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = one_year_together/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		626C902D0AD61A89DAB37086 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = one_year_together/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = one_year_together/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-one_year_together-one_year_togetherTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-one_year_together-one_year_togetherTests.release.xcconfig"; path = "Target Support Files/Pods-one_year_together-one_year_togetherTests/Pods-one_year_together-one_year_togetherTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		8785BCD7140F474299A0B2E5 /* BMJUA.ttf */ = {isa = PBXFileReference; name = "BMJUA.ttf"; path = "../assets/fonts/BMJUA.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		15A0656EDF0A438E9CFE7D22 /* NanumGaRamYeonGgoc.ttf */ = {isa = PBXFileReference; name = "NanumGaRamYeonGgoc.ttf"; path = "../assets/fonts/NanumGaRamYeonGgoc.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		8F3F0541DFF14CC99351222B /* NanumGgocNaeEum.ttf */ = {isa = PBXFileReference; name = "NanumGgocNaeEum.ttf"; path = "../assets/fonts/NanumGgocNaeEum.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +117,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		6321E0C464374F3ABDD58121 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8785BCD7140F474299A0B2E5 /* BMJUA.ttf */,
+				15A0656EDF0A438E9CFE7D22 /* NanumGaRamYeonGgoc.ttf */,
+				8F3F0541DFF14CC99351222B /* NanumGgocNaeEum.ttf */,
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +144,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
+				6321E0C464374F3ABDD58121 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -249,6 +267,9 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				72D5CD023A05508C552D401D /* PrivacyInfo.xcprivacy in Resources */,
+				E8C0C1A3B2B244D598153A2E /* BMJUA.ttf in Resources */,
+				7662529F5FE646AC9EFFE9E4 /* NanumGaRamYeonGgoc.ttf in Resources */,
+				061D0B402A7B479C842E970F /* NanumGgocNaeEum.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,6 +493,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3MXLBLCA3V;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = one_year_together/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -484,7 +506,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = one.year.together;
 				PRODUCT_NAME = one_year_together;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -499,6 +521,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3MXLBLCA3V;
 				INFOPLIST_FILE = one_year_together/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -510,7 +533,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = one.year.together;
 				PRODUCT_NAME = one_year_together;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

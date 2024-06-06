@@ -1,0 +1,17 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/BMJUA.ttf",
+      "sha1": "e9ae3ad795aea36d4b271599072fe6761edefd5a"
+    },
+    {
+      "path": "assets/fonts/NanumGaRamYeonGgoc.ttf",
+      "sha1": "96341f7b1b5688cf38b7ab854c7441a0c93949fd"
+    },
+    {
+      "path": "assets/fonts/NanumGgocNaeEum.ttf",
+      "sha1": "abd427c963fe3942fc3216c48671efe52fce4f45"
+    }
+  ]
+}
