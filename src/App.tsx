@@ -2,11 +2,14 @@ import React from 'react'
 import {StyleSheet, View, Text} from 'react-native'
 import {NavigationContainer} from '@react-navigation/native'
 import {LoginStackNavigator} from './navigations'
+import colors from './styles/colors'
 
 const App: React.FC = () => {
   return (
     <NavigationContainer>
-      <LoginStackNavigator />
+      <View style={styles.container}>
+        <LoginStackNavigator />
+      </View>
     </NavigationContainer>
   )
 }
@@ -14,8 +17,6 @@ const App: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 })
 

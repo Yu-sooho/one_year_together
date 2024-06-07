@@ -21,7 +21,7 @@ type Props = {
 const EventScreen: React.FC<Props> = ({navigation, route}) => {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Home Screen</Text>
+      <Text>EventScreen</Text>
       <Button
         title="Go to Event List"
         onPress={() => navigation.navigate('DdaySettingScreen')}
