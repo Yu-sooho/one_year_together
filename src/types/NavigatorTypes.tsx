@@ -1,8 +1,3 @@
-type LoginStackNavigatorParamList = {
-  LoginScreen: undefined
-  PhotoEventStackNavigator: undefined
-}
-
 type MainStackNavigatorParamList = {
   MainScreen: undefined
   EventScreen: undefined
@@ -12,6 +7,7 @@ type MainStackNavigatorParamList = {
 }
 
 type PhotoEventStackNavigatorParamList = {
+  LoginScreen: undefined
   MainStackNavigator: undefined
-  PhotoEventScreen: undefined
+  PhotoEventScreen: PhotoEventScreenProps
 }

@@ -13,18 +13,20 @@ const Stack = createStackNavigator<MainStackNavigatorParamList>()
 
 const MainStackNavigator = () => {
   return (
-    <Stack.Navigator
-      initialRouteName="MainScreen"
-      screenOptions={defaultScreenOptions}>
-      <Stack.Screen name="MainScreen" component={MainScreen} />
-      <Stack.Screen name="EventScreen" component={EventScreen} />
-      <Stack.Screen name="EditEventScreen" component={EditEventScreen} />
-      <Stack.Screen
-        name="LockEventListScreen"
-        component={LockEventListScreen}
-      />
-      <Stack.Screen name="DdaySettingScreen" component={DdaySettingScreen} />
-    </Stack.Navigator>
+    <>
+      <Stack.Navigator
+        initialRouteName="MainScreen"
+        screenOptions={defaultScreenOptions}>
+        <Stack.Screen name="MainScreen" component={MainScreen} />
+        <Stack.Screen name="EventScreen" component={EventScreen} />
+        <Stack.Screen name="EditEventScreen" component={EditEventScreen} />
+        <Stack.Screen
+          name="LockEventListScreen"
+          component={LockEventListScreen}
+        />
+        <Stack.Screen name="DdaySettingScreen" component={DdaySettingScreen} />
+      </Stack.Navigator>
+    </>
   )
 }
 

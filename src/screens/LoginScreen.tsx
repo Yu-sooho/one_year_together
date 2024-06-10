@@ -3,13 +3,14 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import React from 'react'
 import {View, Text, Button} from 'react-native'
 import defaultStyles from '../styles'
+import {useAuthStore, useEventStore} from '../stores'
 
 type LoginScreenNavigationProp = StackNavigationProp<
-  LoginStackNavigatorParamList,
+  PhotoEventStackNavigatorParamList,
   'LoginScreen'
 >
 type LoginScreenRouteProp = RouteProp<
-  LoginStackNavigatorParamList,
+  PhotoEventStackNavigatorParamList,
   'LoginScreen'
 >
 
@@ -18,7 +19,21 @@ type Props = {
   route: LoginScreenRouteProp
 }
 
-const LoginScreen: React.FC<Props> = ({navigation, route}) => {
+const LoginScreen: React.FC<Props> = () => {
+  const login = useAuthStore(state => state.login)
+  const isDuringEvent = useEventStore(state => state.isDuringEvent)
+  const closeEvent = useEventStore(state => state.closeEvent)
+  const openEvent = useEventStore(state => state.openEvent)
+
+  const onPress = () => {
+    login()
+    if (isDuringEvent) {
+      closeEvent()
+    } else {
+      openEvent({id: 1})
+    }
+  }
+
   return (
     <View
       style={[
@@ -26,10 +41,7 @@ const LoginScreen: React.FC<Props> = ({navigation, route}) => {
         defaultStyles.centerContainerStyle,
       ]}>
       <Text>LoginScreen</Text>
-      <Button
-        title="Go to Event List"
-        onPress={() => navigation.navigate('PhotoEventStackNavigator')}
-      />
+      <Button title="Go to Event List" onPress={() => onPress()} />
     </View>
   )
 }

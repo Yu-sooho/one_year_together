@@ -1,0 +1,3 @@
+type PhotoEventScreenProps = {
+  currentEvent: EventModel
+}

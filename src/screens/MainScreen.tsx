@@ -5,6 +5,7 @@ import {View, Text, Button} from 'react-native'
 import {CustomHeader} from '../components'
 import defaultStyles from '../styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
+import {useAuthStore} from '../stores'
 
 type MainScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -18,15 +19,13 @@ type Props = {
 }
 
 const MainScreen: React.FC<Props> = ({navigation, route}) => {
+  const logout = useAuthStore(state => state.logout)
+
   return (
     <SafeAreaView style={defaultStyles.containerStyle}>
-      <CustomHeader title="하하" />
       <View style={defaultStyles.containerStyle}>
         <Text>MainScreen</Text>
-        <Button
-          title="Go to Event List"
-          onPress={() => navigation.navigate('EditEventScreen')}
-        />
+        <Button title="Go to Event List" onPress={logout} />
       </View>
     </SafeAreaView>
   )
