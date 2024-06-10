@@ -3,24 +3,24 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import React from 'react'
 import {View, Text, Button} from 'react-native'
 
-type LockEventListScreenNavigationProp = StackNavigationProp<
+type LetterListScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
-  'LockEventListScreen'
+  'LetterListScreen'
 >
-type LockEventListScreenRouteProp = RouteProp<
+type LetterListScreenRouteProp = RouteProp<
   MainStackNavigatorParamList,
-  'LockEventListScreen'
+  'LetterListScreen'
 >
 
 type Props = {
-  navigation: LockEventListScreenNavigationProp
-  route: LockEventListScreenRouteProp
+  navigation: LetterListScreenNavigationProp
+  route: LetterListScreenRouteProp
 }
 
-const LockEventListScreen: React.FC<Props> = ({navigation, route}) => {
+const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>LockEventListScreen</Text>
+      <Text>LetterListScreen</Text>
       <Button
         title="Go to Event List"
         onPress={() => navigation.navigate('DdaySettingScreen')}
@@ -29,4 +29,4 @@ const LockEventListScreen: React.FC<Props> = ({navigation, route}) => {
   )
 }
 
-export default LockEventListScreen
+export default LetterListScreen

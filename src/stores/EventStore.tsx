@@ -1,7 +1,7 @@
 import {create} from 'zustand'
 
 interface EventState {
-  currentEvent: EventModel
+  currentEvent: EventModel | null
   isDuringEvent: boolean
 
   openEvent: (event: EventModel) => void

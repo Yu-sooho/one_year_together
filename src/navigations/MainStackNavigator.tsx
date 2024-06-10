@@ -5,7 +5,7 @@ import {
   EditEventScreen,
   EditLetterScreen,
   EventScreen,
-  LockEventListScreen,
+  LetterListScreen,
   MainScreen,
 } from '../screens'
 import {defaultScreenOptions} from '../styles/options'
@@ -20,12 +20,9 @@ const MainStackNavigator = () => {
         screenOptions={defaultScreenOptions}>
         <Stack.Screen name="MainScreen" component={MainScreen} />
         <Stack.Screen name="EventScreen" component={EventScreen} />
-        <Stack.Screen name="EditEventScreen" component={EditEventScreen} />
         <Stack.Screen name="EditLetterScreen" component={EditLetterScreen} />
-        <Stack.Screen
-          name="LockEventListScreen"
-          component={LockEventListScreen}
-        />
+        <Stack.Screen name="EditEventScreen" component={EditEventScreen} />
+        <Stack.Screen name="LetterListScreen" component={LetterListScreen} />
         <Stack.Screen name="DdaySettingScreen" component={DdaySettingScreen} />
       </Stack.Navigator>
     </>

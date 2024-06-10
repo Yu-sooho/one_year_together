@@ -3,7 +3,7 @@ type MainStackNavigatorParamList = {
   EventScreen: undefined
   EditEventScreen: undefined
   EditLetterScreen: undefined
-  LockEventListScreen: undefined
+  LetterListScreen: undefined
   DdaySettingScreen: undefined
 }
 
