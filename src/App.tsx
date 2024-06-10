@@ -1,14 +1,14 @@
 import React from 'react'
 import {StyleSheet, View, Text} from 'react-native'
 import {NavigationContainer} from '@react-navigation/native'
-import {PhotoEventStackNavigator} from './navigations'
+import {LetterStackNavigator} from './navigations'
 import colors from './styles/colors'
 
 const App: React.FC = () => {
   return (
     <NavigationContainer>
       <View style={styles.container}>
-        <PhotoEventStackNavigator />
+        <LetterStackNavigator />
       </View>
     </NavigationContainer>
   )

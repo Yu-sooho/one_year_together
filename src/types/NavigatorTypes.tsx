@@ -2,12 +2,13 @@ type MainStackNavigatorParamList = {
   MainScreen: undefined
   EventScreen: undefined
   EditEventScreen: undefined
+  EditLetterScreen: undefined
   LockEventListScreen: undefined
   DdaySettingScreen: undefined
 }
 
-type PhotoEventStackNavigatorParamList = {
+type LetterStackNavigatorParamList = {
   LoginScreen: undefined
   MainStackNavigator: undefined
-  PhotoEventScreen: PhotoEventScreenProps
+  LetterScreen: LetterScreenProps
 }

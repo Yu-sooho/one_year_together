@@ -4,21 +4,21 @@ import React, {useEffect} from 'react'
 import {View, Text, Button} from 'react-native'
 import {useEventStore} from '../stores'
 
-type PhotoEventScreenNavigationProp = StackNavigationProp<
-  PhotoEventStackNavigatorParamList,
-  'PhotoEventScreen'
+type LetterScreenNavigationProp = StackNavigationProp<
+  LetterStackNavigatorParamList,
+  'LetterScreen'
 >
-type PhotoEventScreenRouteProp = RouteProp<
-  PhotoEventStackNavigatorParamList,
-  'PhotoEventScreen'
+type LetterScreenRouteProp = RouteProp<
+  LetterStackNavigatorParamList,
+  'LetterScreen'
 >
 
 type Props = {
-  navigation: PhotoEventScreenNavigationProp
-  route: PhotoEventScreenRouteProp
+  navigation: LetterScreenNavigationProp
+  route: LetterScreenRouteProp
 }
 
-const PhotoEventScreen: React.FC<Props> = ({navigation, route}) => {
+const LetterScreen: React.FC<Props> = ({navigation, route}) => {
   const closeEvent = useEventStore(state => state.closeEvent)
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const PhotoEventScreen: React.FC<Props> = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>PhotoEventScreen</Text>
+      <Text>LetterScreen</Text>
       <Button
         title="Go to Event List"
         onPress={() => navigation.navigate('MainStackNavigator')}
@@ -38,4 +38,4 @@ const PhotoEventScreen: React.FC<Props> = ({navigation, route}) => {
   )
 }
 
-export default PhotoEventScreen
+export default LetterScreen

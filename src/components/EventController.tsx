@@ -6,14 +6,14 @@ import {useEventStore} from '../stores'
 
 const EventController = memo(() => {
   const navigation =
-    useNavigation<StackNavigationProp<PhotoEventStackNavigatorParamList>>()
+    useNavigation<StackNavigationProp<LetterStackNavigatorParamList>>()
 
   const isDuringEvent = useEventStore(state => state.isDuringEvent)
   const currentEvent = useEventStore(state => state.currentEvent)
 
   const navigatedEventScreen = useCallback(() => {
     if (isDuringEvent && currentEvent) {
-      navigation.navigate('PhotoEventScreen', {currentEvent})
+      navigation.navigate('LetterScreen', {currentEvent})
     }
   }, [currentEvent, isDuringEvent, navigation])
 

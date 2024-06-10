@@ -3,6 +3,7 @@ import {createStackNavigator} from '@react-navigation/stack'
 import {
   DdaySettingScreen,
   EditEventScreen,
+  EditLetterScreen,
   EventScreen,
   LockEventListScreen,
   MainScreen,
@@ -20,6 +21,7 @@ const MainStackNavigator = () => {
         <Stack.Screen name="MainScreen" component={MainScreen} />
         <Stack.Screen name="EventScreen" component={EventScreen} />
         <Stack.Screen name="EditEventScreen" component={EditEventScreen} />
+        <Stack.Screen name="EditLetterScreen" component={EditLetterScreen} />
         <Stack.Screen
           name="LockEventListScreen"
           component={LockEventListScreen}

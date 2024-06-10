@@ -6,11 +6,11 @@ import defaultStyles from '../styles'
 import {useAuthStore, useEventStore} from '../stores'
 
 type LoginScreenNavigationProp = StackNavigationProp<
-  PhotoEventStackNavigatorParamList,
+  LetterStackNavigatorParamList,
   'LoginScreen'
 >
 type LoginScreenRouteProp = RouteProp<
-  PhotoEventStackNavigatorParamList,
+  LetterStackNavigatorParamList,
   'LoginScreen'
 >
 

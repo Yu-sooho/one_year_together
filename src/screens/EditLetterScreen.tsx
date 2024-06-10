@@ -3,24 +3,24 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import React from 'react'
 import {View, Text, Button} from 'react-native'
 
-type EventScreenNavigationProp = StackNavigationProp<
+type EditLetterScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
-  'EventScreen'
+  'EditLetterScreen'
 >
-type EventScreenRouteProp = RouteProp<
+type EditLetterScreenRouteProp = RouteProp<
   MainStackNavigatorParamList,
-  'EventScreen'
+  'EditLetterScreen'
 >
 
 type Props = {
-  navigation: EventScreenNavigationProp
-  route: EventScreenRouteProp
+  navigation: EditLetterScreenNavigationProp
+  route: EditLetterScreenRouteProp
 }
 
-const EventScreen: React.FC<Props> = ({navigation, route}) => {
+const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>EventScreen</Text>
+      <Text>EditLetterScreen</Text>
       <Button
         title="Go to Event List"
         onPress={() => navigation.navigate('DdaySettingScreen')}
@@ -29,4 +29,4 @@ const EventScreen: React.FC<Props> = ({navigation, route}) => {
   )
 }
 
-export default EventScreen
+export default EditLetterScreen

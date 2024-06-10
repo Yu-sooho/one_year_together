@@ -1,3 +1,3 @@
-type PhotoEventScreenProps = {
+type LetterScreenProps = {
   currentEvent: EventModel
 }

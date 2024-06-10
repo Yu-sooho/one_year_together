@@ -6,15 +6,15 @@ import {
   StackNavigationOptions,
 } from '@react-navigation/stack'
 import MainStackNavigator from './MainStackNavigator'
-import {LoginScreen, PhotoEventScreen} from '../screens'
+import {LoginScreen, LetterScreen} from '../screens'
 import {defaultScreenOptions} from '../styles/options'
 import {useAuthStore} from '../stores'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {EventController} from '../components'
 
-const Stack = createStackNavigator<PhotoEventStackNavigatorParamList>()
+const Stack = createStackNavigator<LetterStackNavigatorParamList>()
 
-const PhotoEventStackNavigator = () => {
+const LetterStackNavigator = () => {
   const isLoggedIn = useAuthStore(state => state.isLoggedIn)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -51,8 +51,8 @@ const PhotoEventStackNavigator = () => {
           <Stack.Screen name="LoginScreen" component={LoginScreen} />
         )}
         <Stack.Screen
-          name="PhotoEventScreen"
-          component={PhotoEventScreen}
+          name="LetterScreen"
+          component={LetterScreen}
           options={photoEventScreenOptions}
         />
       </Stack.Navigator>
@@ -61,4 +61,4 @@ const PhotoEventStackNavigator = () => {
   )
 }
 
-export default PhotoEventStackNavigator
+export default LetterStackNavigator
