@@ -7,3 +7,11 @@ export interface CustomHeaderProps {
   buttonText?: string
   onPressButton?: () => {}
 }
+
+export interface CustomBottomButtonProps {
+  buttonText: string
+  textStyle?: StyleProp<TextStyle>
+  style?: StyleProp<TextStyle>
+  containerStyle?: StyleProp<ViewStyle>
+  onPressButton?: () => void
+}

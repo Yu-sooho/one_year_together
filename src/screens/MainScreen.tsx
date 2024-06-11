@@ -22,11 +22,8 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
   const logout = useAuthStore(state => state.logout)
 
   return (
-    <SafeAreaView style={defaultStyles.containerStyle}>
-      <View style={defaultStyles.containerStyle}>
-        <Text>MainScreen</Text>
-        <Button title="Go to Event List" onPress={logout} />
-      </View>
+    <SafeAreaView edges={['top']} style={defaultStyles.containerStyle}>
+      <View style={defaultStyles.containerStyle}></View>
       <CustomBottomTabBar />
     </SafeAreaView>
   )

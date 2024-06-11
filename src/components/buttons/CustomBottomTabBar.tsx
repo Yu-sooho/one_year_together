@@ -3,8 +3,12 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {normalize} from '../../utils'
 import {useNavigation} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
+import colors from '../../styles/colors'
+import {DEFAULT_BOTTOM_SIZE} from '../../styles/const'
 
 const CustomBottomTabBar = memo(() => {
+  const insets = useSafeAreaInsets()
   const navigation =
     useNavigation<StackNavigationProp<MainStackNavigatorParamList>>()
 
@@ -19,6 +23,27 @@ const CustomBottomTabBar = memo(() => {
   const navigatedDdaySettingScreen = useCallback(() => {
     navigation.navigate('DdaySettingScreen')
   }, [navigation])
+
+  const styles = StyleSheet.create({
+    containerStyle: {
+      width: '100%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: colors.c24242480,
+      paddingBottom: +DEFAULT_BOTTOM_SIZE,
+    },
+    buttonStyle: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: normalize(50),
+      marginBottom: insets.bottom,
+    },
+    centerButtonStyle: {
+      flex: 1.5,
+    },
+  })
 
   return (
     <View style={styles.containerStyle}>
@@ -41,24 +66,6 @@ const CustomBottomTabBar = memo(() => {
       </TouchableOpacity>
     </View>
   )
-})
-
-const styles = StyleSheet.create({
-  containerStyle: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  buttonStyle: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: normalize(50),
-  },
-  centerButtonStyle: {
-    flex: 1.5,
-  },
 })
 
 export default CustomBottomTabBar

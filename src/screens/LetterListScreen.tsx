@@ -1,10 +1,10 @@
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import React from 'react'
-import {View, Text, Button, TouchableOpacity} from 'react-native'
+import {View, Text} from 'react-native'
 import defaultStyles from '../styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {CustomHeader} from '../components'
+import {CustomBottomButton, CustomHeader} from '../components'
 
 type LetterListScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -28,12 +28,13 @@ const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
   return (
     <SafeAreaView style={defaultStyles.containerStyle}>
       <CustomHeader title="LetterListScreen" />
-      <View style={defaultStyles.centerContainerStyle}>
+      <View style={defaultStyles.containerStyle}>
         <Text>LetterListScreen</Text>
       </View>
-      <TouchableOpacity onPress={navigatedEditLetterScreen}>
-        <Text>123</Text>
-      </TouchableOpacity>
+      <CustomBottomButton
+        buttonText={'확인'}
+        onPressButton={navigatedEditLetterScreen}
+      />
     </SafeAreaView>
   )
 }

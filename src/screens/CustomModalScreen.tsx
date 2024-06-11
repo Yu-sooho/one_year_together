@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native'
-import {RouteProp, useNavigation} from '@react-navigation/native'
+import {RouteProp} from '@react-navigation/native'
 import {normalize} from '../utils'
 import colors from '../styles/colors'
 import {StackNavigationProp} from '@react-navigation/stack'
+import {DEFAULT_BOTTOM_SIZE} from '../styles/const'
 
 type CustomModalScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
   },
   content: {
     width: normalize(320),
-    paddingVertical: normalize(12),
+    paddingVertical: DEFAULT_BOTTOM_SIZE,
     backgroundColor: colors.cffffff,
     borderRadius: normalize(8),
   },

@@ -12,6 +12,7 @@ import {
   EventScreen,
   LetterListScreen,
   MainScreen,
+  PasswordScreen,
 } from '../screens'
 import {defaultScreenOptions} from '../styles/options'
 
@@ -39,6 +40,7 @@ const MainStackNavigator = () => {
         <Stack.Screen name="EditEventScreen" component={EditEventScreen} />
         <Stack.Screen name="LetterListScreen" component={LetterListScreen} />
         <Stack.Screen name="DdaySettingScreen" component={DdaySettingScreen} />
+        <Stack.Screen name="PasswordScreen" component={PasswordScreen} />
         <Stack.Group screenOptions={modalScreenOptions}>
           <Stack.Screen
             name="CustomModalScreen"

@@ -1,8 +1,9 @@
-import React, {useCallback} from 'react'
-import {StyleSheet, View, Text} from 'react-native'
+import React from 'react'
+import {StyleSheet, View} from 'react-native'
 import {NavigationContainer, NavigationState} from '@react-navigation/native'
 import {LetterStackNavigator} from './navigations'
 import {PermissionController} from './components'
+import {SafeAreaProvider} from 'react-native-safe-area-context'
 
 const App: React.FC = () => {
   const handleStateChange = (state: NavigationState | undefined) => {
@@ -15,7 +16,6 @@ const App: React.FC = () => {
   const getActiveRouteName = (state: NavigationState): string => {
     const route = state.routes[state.index]
     if (route.state) {
-      // Dive into nested navigators
       return getActiveRouteName(route.state as NavigationState)
     }
     return route.name
@@ -23,9 +23,11 @@ const App: React.FC = () => {
 
   return (
     <NavigationContainer onStateChange={handleStateChange}>
-      <View style={styles.container}>
-        <LetterStackNavigator />
-      </View>
+      <SafeAreaProvider>
+        <View style={styles.container}>
+          <LetterStackNavigator />
+        </View>
+      </SafeAreaProvider>
       <PermissionController />
     </NavigationContainer>
   )
