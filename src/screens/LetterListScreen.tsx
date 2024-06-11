@@ -1,7 +1,10 @@
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import React from 'react'
-import {View, Text, Button} from 'react-native'
+import {View, Text, Button, TouchableOpacity} from 'react-native'
+import defaultStyles from '../styles'
+import {SafeAreaView} from 'react-native-safe-area-context'
+import {CustomHeader} from '../components'
 
 type LetterListScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -18,14 +21,20 @@ type Props = {
 }
 
 const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
+  const navigatedEditLetterScreen = () => {
+    navigation.navigate('EditLetterScreen')
+  }
+
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>LetterListScreen</Text>
-      <Button
-        title="Go to Event List"
-        onPress={() => navigation.navigate('EditLetterScreen')}
-      />
-    </View>
+    <SafeAreaView style={defaultStyles.containerStyle}>
+      <CustomHeader title="LetterListScreen" />
+      <View style={defaultStyles.centerContainerStyle}>
+        <Text>LetterListScreen</Text>
+      </View>
+      <TouchableOpacity onPress={navigatedEditLetterScreen}>
+        <Text>123</Text>
+      </TouchableOpacity>
+    </SafeAreaView>
   )
 }
 

@@ -4,6 +4,9 @@ import React, {useCallback} from 'react'
 import {View, Text, Button} from 'react-native'
 import ImageCropPicker from 'react-native-image-crop-picker'
 import {usePermissionStore} from '../stores'
+import {CustomHeader} from '../components'
+import {SafeAreaView} from 'react-native-safe-area-context'
+import defaultStyles from '../styles'
 
 type EditLetterScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -30,15 +33,21 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     if (isHaveNoPermission?.length > 0) {
       openPermissionModal(navigation)
     } else {
-      ImageCropPicker.openPicker({})
+      ImageCropPicker.openPicker({
+        cropping: true,
+        multiple: false,
+      })
     }
   }, [])
 
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>EditLetterScreen</Text>
-      <Button title="Go to Event List" onPress={openPicker} />
-    </View>
+    <SafeAreaView style={defaultStyles.containerStyle}>
+      <CustomHeader title="EditLetterScreen" />
+      <View style={defaultStyles.centerContainerStyle}>
+        <Text>EditLetterScreen</Text>
+        <Button title="Go to Event List" onPress={openPicker} />
+      </View>
+    </SafeAreaView>
   )
 }
 

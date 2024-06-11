@@ -1,7 +1,7 @@
 import React, {ReactNode, memo, useCallback, useEffect} from 'react'
 import {Dimensions, StyleSheet, Text, View, ViewProps} from 'react-native'
 import FadeAnimatedView from './FadeAnimatedView'
-import colors from '../styles/colors'
+import colors from '../../styles/colors'
 
 interface CustomBackgroundOpacityProps extends ViewProps {
   children?: ReactNode

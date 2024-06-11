@@ -1,6 +1,6 @@
 import React, {memo, useCallback} from 'react'
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
-import {normalize} from '../utils'
+import {normalize} from '../../utils'
 import {useNavigation} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 

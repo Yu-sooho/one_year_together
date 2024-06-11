@@ -2,10 +2,10 @@ import React, {useCallback} from 'react'
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 import Icon from 'react-native-vector-icons/Feather'
-import {normalize} from '../utils'
-import colors from '../styles/colors'
-import fonts from '../styles/fonts'
-import {CustomHeaderProps} from '../types/ComponentTypes'
+import {normalize} from '../../utils'
+import colors from '../../styles/colors'
+import fonts from '../../styles/fonts'
+import {CustomHeaderProps} from '../../types/ComponentTypes'
 
 const CustomHeader: React.FC<CustomHeaderProps> = ({
   title,
