@@ -29,12 +29,27 @@ const LetterStackNavigator = () => {
 
   if (isLoading) return null
 
-  const photoEventScreenOptions: StackNavigationOptions = {
+  const fadeAndSlideScreenOptions: StackNavigationOptions = {
     transitionSpec: {
-      open: TransitionSpecs.FadeInFromBottomAndroidSpec,
-      close: TransitionSpecs.FadeOutToBottomAndroidSpec,
+      open: {animation: 'timing', config: {duration: 500}},
+      close: {animation: 'timing', config: {duration: 500}},
     },
-    cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+    cardStyleInterpolator: ({current, layouts}) => {
+      const {progress} = current
+      return {
+        cardStyle: {
+          opacity: progress,
+          transform: [
+            {
+              translateY: progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [10, 0],
+              }),
+            },
+          ],
+        },
+      }
+    },
   }
 
   return (
@@ -53,7 +68,7 @@ const LetterStackNavigator = () => {
         <Stack.Screen
           name="LetterScreen"
           component={LetterScreen}
-          options={photoEventScreenOptions}
+          options={fadeAndSlideScreenOptions}
         />
       </Stack.Navigator>
       <EventController />

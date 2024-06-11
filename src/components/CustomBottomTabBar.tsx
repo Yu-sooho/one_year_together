@@ -12,12 +12,12 @@ const CustomBottomTabBar = memo(() => {
     navigation.navigate('LetterListScreen')
   }, [navigation])
 
-  const navigatedDdaySettingScreen = useCallback(() => {
-    navigation.navigate('DdaySettingScreen')
-  }, [navigation])
-
   const navigatedEditEventScreen = useCallback(() => {
     navigation.navigate('EditEventScreen')
+  }, [navigation])
+
+  const navigatedDdaySettingScreen = useCallback(() => {
+    navigation.navigate('DdaySettingScreen')
   }, [navigation])
 
   return (

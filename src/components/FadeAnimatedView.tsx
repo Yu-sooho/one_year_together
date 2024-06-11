@@ -1,5 +1,5 @@
 import React, {ReactNode, useEffect} from 'react'
-import {StyleProp, StyleSheet, ViewProps, ViewStyle} from 'react-native'
+import {StyleProp, StyleSheet, View, ViewProps, ViewStyle} from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -27,9 +27,9 @@ const FadeAnimatedView: React.FC<AnimatedViewProps> = ({
   })
 
   return (
-    <Animated.View style={[styles.container]} {...props}>
+    <View style={[styles.container]} {...props}>
       <Animated.View style={animatedStyle}>{children}</Animated.View>
-    </Animated.View>
+    </View>
   )
 }
 

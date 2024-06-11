@@ -23,7 +23,7 @@ const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
       <Text>LetterListScreen</Text>
       <Button
         title="Go to Event List"
-        onPress={() => navigation.navigate('DdaySettingScreen')}
+        onPress={() => navigation.navigate('EditLetterScreen')}
       />
     </View>
   )

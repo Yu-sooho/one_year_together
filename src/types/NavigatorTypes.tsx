@@ -5,6 +5,7 @@ type MainStackNavigatorParamList = {
   EditLetterScreen: undefined
   LetterListScreen: undefined
   DdaySettingScreen: undefined
+  CustomModalScreen: CustomModalScreenProps
 }
 
 type LetterStackNavigatorParamList = {
