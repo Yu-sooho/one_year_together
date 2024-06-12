@@ -1,6 +1,7 @@
 import firebase from '@react-native-firebase/app'
 import database from '@react-native-firebase/database'
 import {memo, useEffect} from 'react'
+import {isDev} from '../../utils/networks'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAxbKvf7O4XUVaVawwSs6eu6DyMH7tYPZg',
@@ -15,6 +16,10 @@ const firebaseConfig = {
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig)
+}
+
+if (isDev) {
+  database().useEmulator('localhost', 9000)
 }
 
 const FirebaseController = memo(() => {
