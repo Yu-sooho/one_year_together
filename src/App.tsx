@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {StyleSheet, View} from 'react-native'
 import {NavigationContainer, NavigationState} from '@react-navigation/native'
 import {LetterStackNavigator} from './navigations'
-import {PermissionController} from './components'
+import {PermissionController, FirebaseController} from './components'
 import {SafeAreaProvider} from 'react-native-safe-area-context'
 
 const App: React.FC = () => {
@@ -29,6 +29,7 @@ const App: React.FC = () => {
         </View>
       </SafeAreaProvider>
       <PermissionController />
+      <FirebaseController />
     </NavigationContainer>
   )
 }

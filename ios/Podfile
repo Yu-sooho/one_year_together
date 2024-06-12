@@ -14,7 +14,6 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-
 def node_require(script)
   # Resolve script with node to allow for hoisting
   require Pod::Executable.execute_command('node', ['-p',
@@ -59,6 +58,15 @@ target 'one_year_together' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # Apply modular headers to specific dependencies
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseDatabase', :modular_headers => true
+  pod 'FirebaseAppCheckInterop', :modular_headers => true
+  pod 'leveldb-library', :modular_headers => true
+  
+  
   target 'one_year_togetherTests' do
     inherit! :complete
     # Pods for testing

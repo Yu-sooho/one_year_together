@@ -1,3 +1,7 @@
+gradle.startParameter.excludedTaskNames.addAll(
+        gradle.startParameter.taskNames.findAll { it.contains("testClasses") }
+)
+
 buildscript {
     ext {
         buildToolsVersion = "34.0.0"
@@ -14,9 +18,10 @@ buildscript {
         maven { url "https://www.jitpack.io" }
     }
     dependencies {
-        classpath("com.android.tools.build:gradle")
+        classpath("com.android.tools.build:gradle:8.4.2")
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        classpath("com.google.gms:google-services:4.4.2")
     }
 }
 
