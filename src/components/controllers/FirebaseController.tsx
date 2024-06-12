@@ -1,6 +1,6 @@
 import firebase from '@react-native-firebase/app'
 import database from '@react-native-firebase/database'
-import {memo} from 'react'
+import {memo, useEffect} from 'react'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAxbKvf7O4XUVaVawwSs6eu6DyMH7tYPZg',
@@ -18,6 +18,19 @@ if (!firebase.apps.length) {
 }
 
 const FirebaseController = memo(() => {
+  const readData = async () => {
+    try {
+      const snapshot = await database().ref('/test').once('value')
+      console.log('Data read: ', snapshot.val())
+    } catch (error) {
+      console.error('Error reading data: ', error)
+    }
+  }
+
+  useEffect(() => {
+    readData()
+  }, [])
+
   return null
 })
 

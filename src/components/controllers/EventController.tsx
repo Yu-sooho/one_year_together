@@ -20,10 +20,6 @@ const EventController = memo(() => {
     navigatedEventScreen()
   }, [navigatedEventScreen])
 
-  useEffect(() => {
-    console.log(isDuringEvent, 'FUFU2')
-  }, [isDuringEvent])
-
   return null
 })
 
