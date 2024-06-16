@@ -69,9 +69,10 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
   },
 
   addDataToRdb: async (ref, data) => {
+    const timestamp = database.ServerValue.TIMESTAMP
     if (!data) return false
     try {
-      data.createdAt = new Date()
+      data.createdAt = timestamp
       const newEventRef = database().ref(ref).push()
       await newEventRef.set(data)
       return true
@@ -82,8 +83,10 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
   },
 
   updateDataToRdb: async (ref, data, snapshot) => {
+    const timestamp = database.ServerValue.TIMESTAMP
     if (!data) return false
     try {
+      data.updatedAt = timestamp
       const updates: {[key: string]: any} = {}
       snapshot.forEach(childSnapshot => {
         updates[childSnapshot.key as string] = {...childSnapshot.val(), ...data}

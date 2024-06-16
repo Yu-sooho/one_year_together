@@ -3,7 +3,7 @@ import useFirebaseStore from './FirebaseStore'
 import {FirebaseDatabaseTypes} from '@react-native-firebase/database'
 
 interface LetterState {
-  letterList: any[]
+  letterList: LetterModel[]
 
   subscribeLetterList: () => void
   unsubscribeLetterList: () => void
@@ -40,7 +40,11 @@ const useLetterStore = create<LetterState>((set, get) => {
       return checkDuplicated
     },
     addLetter: async letter => {
-      const result = await firebaseStore.addDataToRdb('/letters', letter)
+      const letterItem = {
+        isUnLockedUserId: [],
+        ...letter,
+      }
+      const result = await firebaseStore.addDataToRdb('/letters', letterItem)
       return result
     },
     updateLetter: async (letter, snapshot) => {

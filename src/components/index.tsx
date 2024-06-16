@@ -6,5 +6,5 @@ export {
 } from './controllers'
 export {CustomBackgroundOpacity, FadeAnimatedView} from './containers'
 export {CustomBottomTabBar, CustomHeader, CustomBottomButton} from './buttons'
-export {EventListItem} from './items'
+export {EventListItem, LetterListItem} from './items'
 export {TextInputTitle, CustomTextInput} from './texts'

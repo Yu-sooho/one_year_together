@@ -14,4 +14,5 @@ interface LetterModel extends Id {
   password?: string
   hint?: string
   imageUrl?: string
+  isUnLockedUserId?: string[]
 }

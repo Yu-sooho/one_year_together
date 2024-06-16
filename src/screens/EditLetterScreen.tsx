@@ -58,6 +58,8 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
 
   const [title, setTitle] = useState('')
   const [text, setText] = useState('')
+  const [password, setPassword] = useState('')
+  const [hint, setHint] = useState('')
   const isEdit = route.params?.isEdit
 
   const [selectedUri, setSelectedUri] = useState<number | Source | undefined>(
@@ -105,6 +107,14 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     setText(value)
   }
 
+  const onChangePassword = (value: string) => {
+    setPassword(value)
+  }
+
+  const onChangeHint = (value: string) => {
+    setHint(value)
+  }
+
   const showError = (message: string) => {
     setIsLoading()
     showToast(message)
@@ -145,6 +155,8 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     const letter: LetterModel = {
       title: title,
       content: text,
+      hint: hint,
+      password: password,
       imageUrl: uploadLetterImageResult,
     }
     const uploadResult = await updateLetter(letter, snapshot)
@@ -160,6 +172,8 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     const letter: LetterModel = {
       title: title,
       content: text,
+      hint: hint,
+      password: password,
       imageUrl: uploadLetterImageResult,
     }
     const uploadResult = await addLetter(letter)
@@ -205,6 +219,22 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
             onChangeText={onChangeText}
             value={text}
           />
+          <TextInputWithTitle
+            title={'비밀번호'}
+            placeholder={'최대 10자'}
+            maxLength={10}
+            isWhite
+            onChangeText={onChangePassword}
+            value={password}
+          />
+          <TextInputWithTitle
+            title={'힌트'}
+            placeholder={'최대 30자'}
+            maxLength={30}
+            isWhite
+            onChangeText={onChangeHint}
+            value={hint}
+          />
           <View style={styles.imageButtonView}>
             <TextInputTitle
               title={'사진'}
@@ -218,7 +248,7 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
         </ScrollView>
         <CustomBottomButton
           onPressButton={uploadImage}
-          isDisabled={!selectedUri || !title || !text}
+          isDisabled={!selectedUri || !title || !text || !hint || !password}
           buttonText={'저장'}
           textStyle={styles.whiteText}
           style={defaultStyles.noBackgroundStyle}
