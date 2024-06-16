@@ -8,35 +8,66 @@ enum CUSTOM_FONT {
   NanumGgocNaeEum = 'NanumGgocNaeEum',
 }
 
+const styles = StyleSheet.create({
+  defaultBmjuaProperty: {
+    fontFamily: CUSTOM_FONT.BMJUA,
+    color: colors.c242424,
+    includeFontPadding: false,
+    fontWeight: '100',
+  },
+  defaultNanumgyProperty: {
+    fontFamily: CUSTOM_FONT.NanumGaRamYeonGgoc,
+    color: colors.c242424,
+    includeFontPadding: false,
+    fontWeight: '100',
+  },
+  defaultNanumgnProperty: {
+    fontFamily: CUSTOM_FONT.NanumGgocNaeEum,
+    color: colors.c242424,
+    includeFontPadding: false,
+    fontWeight: '100',
+  },
+})
+
 export default StyleSheet.create({
   bmjua14: {
-    fontFamily: CUSTOM_FONT.BMJUA,
+    ...styles.defaultBmjuaProperty,
     fontSize: normalize(14),
-    color: colors.c242424,
-    includeFontPadding: false,
+  },
+  bmjua16: {
+    ...styles.defaultBmjuaProperty,
+    fontSize: normalize(16),
+  },
+  bmjua18: {
+    ...styles.defaultBmjuaProperty,
+    fontSize: normalize(18),
   },
   bmjua20: {
-    fontFamily: CUSTOM_FONT.BMJUA,
+    ...styles.defaultBmjuaProperty,
     fontSize: normalize(20),
-    color: colors.c242424,
-    includeFontPadding: false,
   },
   bmjua24: {
-    fontFamily: CUSTOM_FONT.BMJUA,
+    ...styles.defaultBmjuaProperty,
     fontSize: normalize(24),
-    color: colors.c242424,
-    includeFontPadding: false,
+  },
+  nanumgy12: {
+    ...styles.defaultNanumgnProperty,
+    fontSize: normalize(12),
   },
   nanumgy24: {
-    fontFamily: CUSTOM_FONT.NanumGaRamYeonGgoc,
+    ...styles.defaultNanumgnProperty,
     fontSize: normalize(24),
-    color: colors.c242424,
-    includeFontPadding: false,
+  },
+  nanumgn12: {
+    ...styles.defaultNanumgnProperty,
+    fontSize: normalize(12),
+  },
+  nanumgn18: {
+    ...styles.defaultNanumgnProperty,
+    fontSize: normalize(18),
   },
   nanumgn24: {
-    fontFamily: CUSTOM_FONT.NanumGgocNaeEum,
+    ...styles.defaultNanumgnProperty,
     fontSize: normalize(24),
-    color: colors.c242424,
-    includeFontPadding: false,
   },
 })

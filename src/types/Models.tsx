@@ -1,17 +1,17 @@
-interface EventModel {
-  id: number
+interface Id {
+  id?: number
+  createdAt?: Date
+  deletedAt?: Date
 }
 
-interface UserModel {
-  id: number
-}
+interface EventModel extends Id {}
 
-interface LetterModel {
-  id: number
+interface UserModel extends Id {}
+
+interface LetterModel extends Id {
   title: string
   content: string
-  password: string
+  password?: string
   hint?: string
-  createdAt: Date
-  deletedAt: Date
+  imageUrl?: string
 }

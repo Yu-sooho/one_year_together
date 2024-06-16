@@ -1,5 +1,7 @@
 import {Dimensions, PixelRatio} from 'react-native'
 
+export * from './networks'
+
 const {width, height} = Dimensions.get('window')
 
 const BASE_WIDTH = 390
@@ -13,6 +15,11 @@ const scale = Math.min(scaleWidth, scaleHeight)
 export function normalize(size: number) {
   const newSize = size * scale
   return Math.round(PixelRatio.roundToNearestPixel(newSize))
+}
+
+export function getFileExtension(filePath: string): string {
+  const extension = filePath.split('.').pop()
+  return extension === filePath || !extension ? '' : extension.toLowerCase()
 }
 
 export const findKeyByValueForRecord = (

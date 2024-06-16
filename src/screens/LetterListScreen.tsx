@@ -6,6 +6,7 @@ import defaultStyles from '../styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {CustomBottomButton, CustomHeader} from '../components'
 import database from '@react-native-firebase/database'
+import {useFirebaseStore, useLetterStore} from '../stores'
 
 type MainStackNavigatorParamList = {
   LetterListScreen: undefined
@@ -38,40 +39,17 @@ const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
     navigation.navigate('EditLetterScreen')
   }
 
-  const [events, setEvents] = useState<Event[]>([])
   const [newEvent, setNewEvent] = useState('')
+  const subscribeLetterList = useLetterStore(state => state.subscribeLetterList)
+  const unsubscribeLetterList = useLetterStore(
+    state => state.unsubscribeLetterList,
+  )
+  const letterList = useLetterStore(state => state.letterList)
 
   useEffect(() => {
-    const onValueChange = database()
-      .ref('/events')
-      .on('value', snapshot => {
-        const eventList: Event[] = []
-        snapshot.forEach(childSnapshot => {
-          const event = {
-            key: childSnapshot.key,
-            title: childSnapshot.val().title,
-            createdAt: childSnapshot.val().createdAt,
-          }
-          eventList.push(event)
-          return undefined
-        })
-        console.log('Event List:', eventList) // 로그 추가
-        setEvents(eventList)
-      })
-
-    // Unsubscribe from events when no longer in use
-    return () => database().ref('/events').off('value', onValueChange)
+    subscribeLetterList()
+    return () => unsubscribeLetterList()
   }, [])
-
-  const addEvent = () => {
-    if (newEvent.trim() === '') return
-    const newEventRef = database().ref('/events').push()
-    newEventRef.set({
-      title: newEvent,
-      createdAt: database.ServerValue.TIMESTAMP,
-    })
-    setNewEvent('')
-  }
 
   return (
     <SafeAreaView style={defaultStyles.containerStyle}>
@@ -86,9 +64,8 @@ const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
         value={newEvent}
         onChangeText={setNewEvent}
       />
-      <Button title="Add Event" onPress={addEvent} />
       <FlatList
-        data={events}
+        data={letterList}
         renderItem={({item}) => (
           <View style={styles.eventItem}>
             <Text>{item.title}</Text>
@@ -135,4 +112,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default LetterListScreen
+export default React.memo(LetterListScreen)

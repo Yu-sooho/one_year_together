@@ -1,15 +1,18 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
+    "target": "esnext",
+    "module": "commonjs",
     "strict": true,
-    "target": "es2017"
+    "jsx": "react",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "compileOnSave": true,
-  "include": [
-    "src"
-  ]
+  "include": ["src"],
+  "exclude": ["lib"]
 }

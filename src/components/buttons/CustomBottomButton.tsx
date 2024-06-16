@@ -4,15 +4,33 @@ import {normalize} from '../../utils'
 import {CustomBottomButtonProps} from '../../types/ComponentTypes'
 import colors from '../../styles/colors'
 import {DEFAULT_BOTTOM_SIZE} from '../../styles/const'
+import fonts from '../../styles/fonts'
 
 const CustomBottomButton: React.FC<CustomBottomButtonProps> = memo(
-  ({buttonText, onPressButton, style, containerStyle, textStyle}) => {
+  ({
+    buttonText,
+    onPressButton,
+    style,
+    containerStyle,
+    isDisabled,
+    textStyle,
+    inActiveTextStyle,
+    inActiveViewStyle,
+  }) => {
     return (
       <View style={[styles.containerStyle, containerStyle]}>
         <TouchableOpacity
+          disabled={isDisabled}
           onPress={onPressButton}
-          style={[styles.buttonStyle, style]}>
-          <Text style={[styles.textStyle, textStyle]}>{buttonText}</Text>
+          style={[styles.buttonStyle, style, isDisabled && inActiveViewStyle]}>
+          <Text
+            style={[
+              styles.textStyle,
+              textStyle,
+              isDisabled && inActiveTextStyle,
+            ]}>
+            {buttonText}
+          </Text>
         </TouchableOpacity>
       </View>
     )
@@ -36,7 +54,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.c24242480,
     borderRadius: normalize(4),
   },
-  textStyle: {},
+  textStyle: {
+    ...fonts.bmjua18,
+  },
 })
 
 export default CustomBottomButton

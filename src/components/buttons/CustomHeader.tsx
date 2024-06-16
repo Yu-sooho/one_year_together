@@ -13,6 +13,7 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
   titleStyle,
   containerStyle,
   onPressButton,
+  iconColor,
 }) => {
   const navigation = useNavigation()
 
@@ -23,7 +24,11 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
   return (
     <View style={[styles.headerContainer, containerStyle]}>
       <TouchableOpacity onPress={onPressBack} style={styles.backButton}>
-        <Icon name="arrow-left" size={normalize(24)} color={colors.c242424} />
+        <Icon
+          name="arrow-left"
+          size={normalize(24)}
+          color={iconColor ? iconColor : colors.c242424}
+        />
       </TouchableOpacity>
       <Text style={[styles.headerTitle, titleStyle]}>{title}</Text>
       <TouchableOpacity onPress={onPressButton} style={styles.backButton}>

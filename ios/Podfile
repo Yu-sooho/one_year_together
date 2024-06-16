@@ -11,7 +11,7 @@ prepare_react_native_project!
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
+  # use_frameworks! :linkage => linkage.to_sym
 end
 
 def node_require(script)
@@ -22,6 +22,9 @@ def node_require(script)
      {paths: [process.argv[1]]},
     )", __dir__]).strip
 end
+
+use_frameworks! :linkage => :static
+$RNFirebaseAsStaticFramework = true
 
 node_require('react-native/scripts/react_native_pods.rb')
 node_require('react-native-permissions/scripts/setup.rb')
@@ -58,13 +61,15 @@ target 'one_year_together' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  # Apply modular headers to specific dependencies
-  pod 'FirebaseCoreInternal', :modular_headers => true
-  pod 'FirebaseCore', :modular_headers => true
-  pod 'GoogleUtilities', :modular_headers => true
-  pod 'FirebaseDatabase', :modular_headers => true
-  pod 'FirebaseAppCheckInterop', :modular_headers => true
-  pod 'leveldb-library', :modular_headers => true
+  pod 'FirebaseCore'
+  pod 'FirebaseCoreInternal'
+  pod 'GoogleUtilities'
+  pod 'FirebaseDatabase'
+  pod 'FirebaseAppCheckInterop'
+  pod 'leveldb-library'
+  pod 'FirebaseCoreExtension'
+  pod 'FirebaseAuthInterop'
+  pod 'RNFBStorage', :path => '../node_modules/@react-native-firebase/storage'
   
   
   target 'one_year_togetherTests' do
