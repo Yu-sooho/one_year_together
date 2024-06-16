@@ -26,6 +26,7 @@ import {getFileExtension, normalize} from '../utils'
 import FastImage, {Source} from 'react-native-fast-image'
 import colors from '../styles/colors'
 import Icon from 'react-native-vector-icons/Feather'
+import {FirebaseDatabaseTypes} from '@react-native-firebase/database'
 
 type EditLetterScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -51,11 +52,13 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
   const setIsLoading = useAppStateStore(state => state.setIsLoading)
 
   const addLetter = useLetterStore(state => state.addLetter)
+  const updateLetter = useLetterStore(state => state.updateLetter)
   const checkDuplicate = useLetterStore(state => state.checkDuplicated)
   const uploadLetterImage = useLetterStore(state => state.uploadLetterImage)
 
   const [title, setTitle] = useState('')
   const [text, setText] = useState('')
+  const isEdit = route.params?.isEdit
 
   const [selectedUri, setSelectedUri] = useState<number | Source | undefined>(
     undefined,
@@ -102,11 +105,21 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     setText(value)
   }
 
+  const showError = (message: string) => {
+    setIsLoading()
+    showToast(message)
+  }
+
+  const showSuccess = (message: string) => {
+    setIsLoading()
+    showToast(message)
+  }
+
   const uploadImage = async () => {
     setIsLoading()
     if (!imageFileName.current || !imageFileUri.current) return false
     const checkDuplicated = await checkDuplicate(title)
-    if (checkDuplicated) {
+    if (checkDuplicated && !isEdit) {
       showError('중복되는 제목입니다.')
       return
     }
@@ -118,17 +131,29 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
       showError('잘못된 이미지입니다.')
       return
     }
+    if (isEdit && checkDuplicated) {
+      changedLetter(uploadLetterImageResult, checkDuplicated)
+      return
+    }
     uploadLetter(uploadLetterImageResult)
   }
 
-  const showError = (message: string) => {
-    setIsLoading()
-    showToast(message)
-  }
-
-  const showSuccess = (message: string) => {
-    setIsLoading()
-    showToast(message)
+  const changedLetter = async (
+    uploadLetterImageResult: string,
+    snapshot: FirebaseDatabaseTypes.DataSnapshot,
+  ) => {
+    const letter: LetterModel = {
+      title: title,
+      content: text,
+      imageUrl: uploadLetterImageResult,
+    }
+    const uploadResult = await updateLetter(letter, snapshot)
+    if (!uploadResult) {
+      showError('서버에러 입니다.')
+      return
+    }
+    showSuccess('이벤트가 등록되었습니다')
+    navigation.goBack()
   }
 
   const uploadLetter = async (uploadLetterImageResult: string) => {

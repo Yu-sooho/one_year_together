@@ -11,3 +11,7 @@ type CustomModalScreenProps = {
   okText?: string
   cancelText?: string
 }
+
+type EditLetterScreenProps = {
+  isEdit?: boolean
+}

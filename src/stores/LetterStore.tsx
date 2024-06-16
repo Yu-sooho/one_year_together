@@ -1,5 +1,6 @@
 import {create} from 'zustand'
 import useFirebaseStore from './FirebaseStore'
+import {FirebaseDatabaseTypes} from '@react-native-firebase/database'
 
 interface LetterState {
   letterList: any[]
@@ -7,7 +8,13 @@ interface LetterState {
   subscribeLetterList: () => void
   unsubscribeLetterList: () => void
   addLetter: (letter: LetterModel) => Promise<boolean>
-  checkDuplicated: (title: string) => Promise<boolean>
+  updateLetter: (
+    letter: LetterModel,
+    snapshot: FirebaseDatabaseTypes.DataSnapshot,
+  ) => Promise<boolean>
+  checkDuplicated: (
+    title: string,
+  ) => Promise<false | FirebaseDatabaseTypes.DataSnapshot>
   uploadLetterImage: (fileName: string, uri: string) => Promise<string | false>
 }
 
@@ -34,6 +41,14 @@ const useLetterStore = create<LetterState>((set, get) => {
     },
     addLetter: async letter => {
       const result = await firebaseStore.addDataToRdb('/letters', letter)
+      return result
+    },
+    updateLetter: async (letter, snapshot) => {
+      const result = await firebaseStore.updateDataToRdb(
+        '/letters',
+        letter,
+        snapshot,
+      )
       return result
     },
     uploadLetterImage: async (fileName, uri) => {

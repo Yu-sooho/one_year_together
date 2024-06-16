@@ -2,7 +2,7 @@ type MainStackNavigatorParamList = {
   MainScreen: undefined
   EventScreen: undefined
   EditEventScreen: undefined
-  EditLetterScreen: undefined
+  EditLetterScreen: EditLetterScreenProps
   LetterListScreen: undefined
   DdaySettingScreen: undefined
   CustomModalScreen: CustomModalScreenProps

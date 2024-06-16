@@ -1,6 +1,6 @@
 import {create} from 'zustand'
 import firebase from '@react-native-firebase/app'
-import database from '@react-native-firebase/database'
+import database, {FirebaseDatabaseTypes} from '@react-native-firebase/database'
 import {DEV_PORT_NUMBER, FIREBASE_CONFIG, IS_DEV} from '../utils'
 import storage from '@react-native-firebase/storage'
 
@@ -17,12 +17,17 @@ interface FirebaseState {
   subscribeRdb: (ref: string, setData: (list: any[]) => void) => void
   unSubscribeRdb: (ref: string, dataSnapshot: any) => void
   addDataToRdb: (ref: string, data: any) => Promise<boolean>
+  updateDataToRdb: (
+    ref: string,
+    data: any,
+    snapshot: FirebaseDatabaseTypes.DataSnapshot,
+  ) => Promise<boolean>
   uploadImage: (ref: string, uri: string) => Promise<string | false>
   checkDuplicate: (
     ref: string,
     fieldName: string,
     fieldValue: any,
-  ) => Promise<boolean>
+  ) => Promise<false | FirebaseDatabaseTypes.DataSnapshot>
 }
 
 const useFirebaseStore = create<FirebaseState>((set, get) => ({
@@ -57,7 +62,7 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
       .once('value')
 
     if (snapshot.exists()) {
-      return true
+      return snapshot
     } else {
       return false
     }
@@ -69,6 +74,22 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
       data.createdAt = new Date()
       const newEventRef = database().ref(ref).push()
       await newEventRef.set(data)
+      return true
+    } catch (error) {
+      console.log(error)
+      return false
+    }
+  },
+
+  updateDataToRdb: async (ref, data, snapshot) => {
+    if (!data) return false
+    try {
+      const updates: {[key: string]: any} = {}
+      snapshot.forEach(childSnapshot => {
+        updates[childSnapshot.key as string] = {...childSnapshot.val(), ...data}
+        return true
+      })
+      await database().ref(ref).update(updates)
       return true
     } catch (error) {
       console.log(error)
