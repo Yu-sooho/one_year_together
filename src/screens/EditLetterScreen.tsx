@@ -12,7 +12,7 @@ import {
   Dimensions,
 } from 'react-native'
 import ImageCropPicker from 'react-native-image-crop-picker'
-import {useLetterStore, usePermissionStore} from '../stores'
+import {useAppStateStore, useLetterStore, usePermissionStore} from '../stores'
 import {
   CustomBackgroundOpacity,
   CustomBottomButton,
@@ -47,8 +47,13 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     state => state.openPermissionModal,
   )
 
+  const showToast = useAppStateStore(state => state.showToast)
+  const setIsLoading = useAppStateStore(state => state.setIsLoading)
+
   const addLetter = useLetterStore(state => state.addLetter)
+  const checkDuplicate = useLetterStore(state => state.checkDuplicated)
   const uploadLetterImage = useLetterStore(state => state.uploadLetterImage)
+
   const [title, setTitle] = useState('')
   const [text, setText] = useState('')
 
@@ -76,13 +81,6 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
         height: cropHeight,
       })
         .then(image => {
-          // if (!!image?.sourceURL) {
-          //   setSelectedUri({uri: image.sourceURL})
-          //   imageFileName.current = `${title}.${getFileExtension(
-          //     image.sourceURL,
-          //   )}`
-          //   imageFileUri.current = image.sourceURL
-          // } else
           if (!!image?.path) {
             setSelectedUri({uri: image.path})
             imageFileName.current = `${image.filename}.${getFileExtension(
@@ -104,19 +102,48 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     setText(value)
   }
 
-  const uploadLetter = async () => {
+  const uploadImage = async () => {
+    setIsLoading()
     if (!imageFileName.current || !imageFileUri.current) return false
+    const checkDuplicated = await checkDuplicate(title)
+    if (checkDuplicated) {
+      showError('중복되는 제목입니다.')
+      return
+    }
     const uploadLetterImageResult = await uploadLetterImage(
       imageFileName.current,
       imageFileUri.current,
     )
-    if (!uploadLetterImageResult) return false
+    if (!uploadLetterImageResult) {
+      showError('잘못된 이미지입니다.')
+      return
+    }
+    uploadLetter(uploadLetterImageResult)
+  }
+
+  const showError = (message: string) => {
+    // setIsLoading()
+    showToast(message)
+  }
+
+  const showSuccess = (message: string) => {
+    // setIsLoading()
+    showToast(message)
+  }
+
+  const uploadLetter = async (uploadLetterImageResult: string) => {
     const letter: LetterModel = {
       title: title,
       content: text,
       imageUrl: uploadLetterImageResult,
     }
     const uploadResult = await addLetter(letter)
+    if (!uploadResult) {
+      showError('서버에러 입니다.')
+      return
+    }
+    showSuccess('이벤트가 등록되었습니다')
+    navigation.goBack()
   }
 
   return (
@@ -165,7 +192,7 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
           </View>
         </ScrollView>
         <CustomBottomButton
-          onPressButton={uploadLetter}
+          onPressButton={uploadImage}
           isDisabled={!selectedUri || !title || !text}
           buttonText={'저장'}
           textStyle={styles.whiteText}

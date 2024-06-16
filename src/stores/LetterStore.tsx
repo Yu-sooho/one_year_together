@@ -7,6 +7,7 @@ interface LetterState {
   subscribeLetterList: () => void
   unsubscribeLetterList: () => void
   addLetter: (letter: LetterModel) => Promise<boolean>
+  checkDuplicated: (title: string) => Promise<boolean>
   uploadLetterImage: (fileName: string, uri: string) => Promise<string | false>
 }
 
@@ -23,17 +24,17 @@ const useLetterStore = create<LetterState>((set, get) => {
     unsubscribeLetterList: () => {
       firebaseStore.unSubscribeRdb('/letters', get().subscribeLetterList)
     },
-    addLetter: async letter => {
+    checkDuplicated: async title => {
       const checkDuplicated = await firebaseStore.checkDuplicate(
         'letters',
         'title',
-        letter.title,
+        title,
       )
-      if (!checkDuplicated) {
-        const result = await firebaseStore.addDataToRdb('/letters', letter)
-        return result
-      }
-      return false
+      return checkDuplicated
+    },
+    addLetter: async letter => {
+      const result = await firebaseStore.addDataToRdb('/letters', letter)
+      return result
     },
     uploadLetterImage: async (fileName, uri) => {
       const result = await firebaseStore.uploadImage(`letters/${fileName}`, uri)

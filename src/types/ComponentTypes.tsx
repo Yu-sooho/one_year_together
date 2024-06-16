@@ -3,10 +3,11 @@ import {
   StyleProp,
   TextInput,
   TextInputProps,
-  TextProps,
   TextStyle,
   ViewStyle,
 } from 'react-native'
+
+import {ToastConfig} from 'react-native-toast-message'
 
 export interface CustomHeaderProps {
   title: string
@@ -43,4 +44,8 @@ export interface TextInputTitleProps {
   title: string
   style?: StyleProp<TextStyle>
   containerStyle?: StyleProp<ViewStyle>
+}
+
+export interface ToastTypes {
+  type: 'success' | 'error' | 'tomatoToast'
 }
