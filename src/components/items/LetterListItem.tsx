@@ -1,11 +1,5 @@
 import React, {memo} from 'react'
-import {
-  ListRenderItem,
-  ListRenderItemInfo,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native'
+import {StyleSheet, Text, View} from 'react-native'
 import FastImage from 'react-native-fast-image'
 
 interface LetterListitemProps {

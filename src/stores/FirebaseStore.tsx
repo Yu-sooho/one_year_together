@@ -2,6 +2,7 @@ import {create} from 'zustand'
 import firebase from '@react-native-firebase/app'
 import database, {FirebaseDatabaseTypes} from '@react-native-firebase/database'
 import {DEV_PORT_NUMBER, FIREBASE_CONFIG, IS_DEV} from '../utils'
+import auth from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
 
 if (!firebase.apps.length) {
@@ -11,6 +12,7 @@ if (!firebase.apps.length) {
 if (IS_DEV) {
   database().useEmulator('localhost', DEV_PORT_NUMBER.RDB)
   storage().useEmulator('localhost', DEV_PORT_NUMBER.STORAGE)
+  auth().useEmulator(`http://localhost:${DEV_PORT_NUMBER.AUTH}`)
 }
 
 interface FirebaseState {
