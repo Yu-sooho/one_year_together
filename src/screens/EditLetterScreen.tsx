@@ -122,12 +122,12 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
   }
 
   const showError = (message: string) => {
-    // setIsLoading()
+    setIsLoading()
     showToast(message)
   }
 
   const showSuccess = (message: string) => {
-    // setIsLoading()
+    setIsLoading()
     showToast(message)
   }
 
