@@ -23,6 +23,11 @@ type Props = {
 const LetterScreen: React.FC<Props> = ({navigation, route}) => {
   const closeEvent = useEventStore(state => state.closeEvent)
 
+  const {currentLetter} = route.params
+  const {imageUrl, title, content} = currentLetter
+
+  console.log(currentLetter)
+
   useEffect(() => {
     return () => {
       closeEvent()
@@ -31,13 +36,10 @@ const LetterScreen: React.FC<Props> = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      <FastImage
-        style={styles.image}
-        source={{
-          uri: 'https://helpx.adobe.com/content/dam/help/en/photoshop/using/quick-actions/remove-background-before-qa1.png',
-        }}></FastImage>
+      <FastImage style={styles.image} source={{uri: imageUrl}}></FastImage>
       <CustomBackgroundOpacity>
-        <Text>LetterScreen</Text>
+        <Text>{title}</Text>
+        <Text>{content}</Text>
         <Button
           title="Go to Event List"
           onPress={() => navigation.navigate('MainStackNavigator')}

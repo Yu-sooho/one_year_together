@@ -12,7 +12,12 @@ import {
   Dimensions,
 } from 'react-native'
 import ImageCropPicker from 'react-native-image-crop-picker'
-import {useAppStateStore, useLetterStore, usePermissionStore} from '../stores'
+import {
+  useAppStateStore,
+  useAuthStore,
+  useLetterStore,
+  usePermissionStore,
+} from '../stores'
 import {
   CustomBackgroundOpacity,
   CustomBottomButton,
@@ -56,6 +61,7 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
   const updateLetter = useLetterStore(state => state.updateLetter)
   const checkDuplicate = useLetterStore(state => state.checkDuplicated)
   const uploadLetterImage = useLetterStore(state => state.uploadLetterImage)
+  const currentUser = useAuthStore(state => state.currentUser)
 
   const [title, setTitle] = useState('')
   const [text, setText] = useState('')
@@ -170,12 +176,16 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
   }
 
   const uploadLetter = async (uploadLetterImageResult: string) => {
+    const isUnLockedUserId = currentUser?.email
+      ? [currentUser?.email]
+      : undefined
     const letter: LetterModel = {
       title: title,
       content: text,
       hint: hint,
       password: password,
       imageUrl: uploadLetterImageResult,
+      isUnLockedUserId: isUnLockedUserId,
     }
     const uploadResult = await addLetter(letter)
     if (!uploadResult) {

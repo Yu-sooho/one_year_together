@@ -20,20 +20,6 @@ type Props = {
 }
 
 const PasswordScreen: React.FC<Props> = () => {
-  const login = useAuthStore(state => state.login)
-  const isDuringEvent = useEventStore(state => state.isDuringEvent)
-  const closeEvent = useEventStore(state => state.closeEvent)
-  const openEvent = useEventStore(state => state.openEvent)
-
-  const onPress = () => {
-    login()
-    if (isDuringEvent) {
-      closeEvent()
-    } else {
-      openEvent({id: 1})
-    }
-  }
-
   return (
     <View
       style={[
@@ -41,7 +27,6 @@ const PasswordScreen: React.FC<Props> = () => {
         defaultStyles.centerContainerStyle,
       ]}>
       <Text>PasswordScreen</Text>
-      <Button title="Go to Event List" onPress={() => onPress()} />
     </View>
   )
 }

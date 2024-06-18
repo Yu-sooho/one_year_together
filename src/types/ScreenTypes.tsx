@@ -1,5 +1,9 @@
 type LetterScreenProps = {
-  currentEvent: EventModel
+  currentLetter: LetterModel
+}
+
+type PasswordScreenProps = {
+  currentLetter: LetterModel
 }
 
 type CustomModalScreenProps = {

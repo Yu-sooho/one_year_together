@@ -1,4 +1,4 @@
-import {RouteProp} from '@react-navigation/native'
+import {CompositeNavigationProp, RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import React, {useEffect, useState} from 'react'
 import {
@@ -17,14 +17,9 @@ import database from '@react-native-firebase/database'
 import {useFirebaseStore, useLetterStore} from '../stores'
 import {normalize} from '../utils'
 
-type MainStackNavigatorParamList = {
-  LetterListScreen: undefined
-  EditLetterScreen: undefined
-}
-
-type LetterListScreenNavigationProp = StackNavigationProp<
-  MainStackNavigatorParamList,
-  'LetterListScreen'
+type LetterListScreenNavigationProp = CompositeNavigationProp<
+  StackNavigationProp<MainStackNavigatorParamList, 'LetterListScreen'>,
+  StackNavigationProp<LetterStackNavigatorParamList>
 >
 
 type LetterListScreenRouteProp = RouteProp<
@@ -39,7 +34,7 @@ type Props = {
 
 const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
   const navigatedEditLetterScreen = () => {
-    navigation.navigate('EditLetterScreen')
+    navigation.navigate('EditLetterScreen', {isEdit: false})
   }
 
   const subscribeLetterList = useLetterStore(state => state.subscribeLetterList)
@@ -53,13 +48,34 @@ const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
     return () => unsubscribeLetterList()
   }, [])
 
+  const navigatedLetterScreen = (
+    letter: LetterModel,
+    isLocked: IsLockedModel,
+  ) => {
+    console.log(isLocked, 'FUFU')
+    if (isLocked) {
+      navigation.navigate('PasswordScreen', {
+        currentLetter: letter,
+      })
+      return
+    }
+    navigation.navigate('LetterScreen', {
+      currentLetter: letter,
+    })
+  }
+
   const renderItem: ListRenderItem<LetterModel> = ({item, index}) => (
-    <LetterListItem item={item} index={index} />
+    <LetterListItem
+      item={item}
+      index={index}
+      onPressItem={navigatedLetterScreen}
+    />
   )
 
   const itemSeparatorComponent = () => (
     <View style={styles.itemSeparatorComponentStyle} />
   )
+
   return (
     <SafeAreaView style={defaultStyles.containerStyle}>
       <CustomHeader title="LetterListScreen" />

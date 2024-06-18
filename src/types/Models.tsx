@@ -16,3 +16,5 @@ interface LetterModel extends Id {
   imageUrl?: string
   isUnLockedUserId?: string[]
 }
+
+type IsLockedModel = string | undefined | boolean
