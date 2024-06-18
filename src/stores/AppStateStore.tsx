@@ -8,6 +8,9 @@ interface AppState {
   inset: EdgeInsets | null
   setInset: (inset: EdgeInsets) => void
 
+  isMounted: boolean
+  setIsMounted: (value: boolean) => void
+
   isLoading: boolean
   setIsLoading: (force?: boolean) => void
   showToast: (message: string, type?: ToastTypes['type']) => void
@@ -21,6 +24,12 @@ const useAppStateStore = create<AppState>((set, get) => ({
     })
   },
   isLoading: false,
+  isMounted: false,
+  setIsMounted: value => {
+    set({
+      isMounted: value,
+    })
+  },
   setIsLoading: force => {
     const loadingState = get().isLoading
     if (force) {

@@ -30,6 +30,8 @@ interface FirebaseState {
     fieldName: string,
     fieldValue: any,
   ) => Promise<false | FirebaseDatabaseTypes.DataSnapshot>
+
+  loginCheck: () => Promise<boolean>
 }
 
 const useFirebaseStore = create<FirebaseState>((set, get) => ({
@@ -113,6 +115,17 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
       console.log(ref)
       console.log(uri)
       console.error('Image upload failed:', error)
+      return false
+    }
+  },
+
+  loginCheck: async () => {
+    const currentUser = await auth().currentUser
+    if (currentUser) {
+      console.log('User is logged in:', currentUser)
+      return true
+    } else {
+      console.log('No user is logged in.')
       return false
     }
   },

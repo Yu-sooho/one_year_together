@@ -26,18 +26,6 @@ type Props = {
 
 const LoginScreen: React.FC<Props> = () => {
   const login = useAuthStore(state => state.login)
-  const isDuringEvent = useEventStore(state => state.isDuringEvent)
-  const closeEvent = useEventStore(state => state.closeEvent)
-  const openEvent = useEventStore(state => state.openEvent)
-
-  const onPress = () => {
-    login()
-    if (isDuringEvent) {
-      closeEvent()
-    } else {
-      openEvent({id: 1})
-    }
-  }
 
   const signInWithGoogle = async () => {
     try {
@@ -48,6 +36,7 @@ const LoginScreen: React.FC<Props> = () => {
       )
       await auth().signInWithCredential(googleCredential)
       console.log('User signed in with Google')
+      login()
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message === statusCodes.SIGN_IN_CANCELLED) {

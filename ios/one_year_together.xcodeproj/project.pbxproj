@@ -17,6 +17,8 @@
 		72D5CD023A05508C552D401D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 626C902D0AD61A89DAB37086 /* PrivacyInfo.xcprivacy */; };
 		7662529F5FE646AC9EFFE9E4 /* NanumGaRamYeonGgoc.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 15A0656EDF0A438E9CFE7D22 /* NanumGaRamYeonGgoc.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		B44BFF0C2C21C4EF003C4E59 /* splash.json in Resources */ = {isa = PBXBuildFile; fileRef = B44BFF0B2C21C4EF003C4E59 /* splash.json */; };
+		B4AB91832C21BB0700ABF780 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4AB91822C21BB0700ABF780 /* Dynamic.swift */; };
 		B4D63F2C2C192E7800B530BF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B4D63F2B2C192E7800B530BF /* GoogleService-Info.plist */; };
 		E8C0C1A3B2B244D598153A2E /* BMJUA.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8785BCD7140F474299A0B2E5 /* BMJUA.ttf */; };
 /* End PBXBuildFile section */
@@ -52,6 +54,9 @@
 		8F3F0541DFF14CC99351222B /* NanumGgocNaeEum.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = NanumGgocNaeEum.ttf; path = ../assets/fonts/NanumGgocNaeEum.ttf; sourceTree = "<group>"; };
 		9F4E4CAD736B4820B011DA06 /* Pods-one_year_together.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-one_year_together.release.xcconfig"; path = "Target Support Files/Pods-one_year_together/Pods-one_year_together.release.xcconfig"; sourceTree = "<group>"; };
 		B269089437B242A895A6326F /* Pods-one_year_together.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-one_year_together.debug.xcconfig"; path = "Target Support Files/Pods-one_year_together/Pods-one_year_together.debug.xcconfig"; sourceTree = "<group>"; };
+		B44BFF0B2C21C4EF003C4E59 /* splash.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = splash.json; sourceTree = "<group>"; };
+		B4AB91822C21BB0700ABF780 /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
+		B4AB91842C21BB4000ABF780 /* one_year_together-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "one_year_together-Bridging-Header.h"; sourceTree = "<group>"; };
 		B4D63F2B2C192E7800B530BF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F6C2810267C2B911AD70B5BC /* Pods-one_year_together-one_year_togetherTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-one_year_together-one_year_togetherTests.debug.xcconfig"; path = "Target Support Files/Pods-one_year_together-one_year_togetherTests/Pods-one_year_together-one_year_togetherTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -97,6 +102,8 @@
 		13B07FAE1A68108700A75B9A /* one_year_together */ = {
 			isa = PBXGroup;
 			children = (
+				B44BFF0B2C21C4EF003C4E59 /* splash.json */,
+				B4AB91822C21BB0700ABF780 /* Dynamic.swift */,
 				B4D63F2B2C192E7800B530BF /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -106,6 +113,7 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				626C902D0AD61A89DAB37086 /* PrivacyInfo.xcprivacy */,
+				B4AB91842C21BB4000ABF780 /* one_year_together-Bridging-Header.h */,
 			);
 			name = one_year_together;
 			sourceTree = "<group>";
@@ -273,6 +281,7 @@
 				E8C0C1A3B2B244D598153A2E /* BMJUA.ttf in Resources */,
 				7662529F5FE646AC9EFFE9E4 /* NanumGaRamYeonGgoc.ttf in Resources */,
 				061D0B402A7B479C842E970F /* NanumGgocNaeEum.ttf in Resources */,
+				B44BFF0C2C21C4EF003C4E59 /* splash.json in Resources */,
 				B4D63F2C2C192E7800B530BF /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -436,6 +445,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4AB91832C21BB0700ABF780 /* Dynamic.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -456,6 +466,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F6C2810267C2B911AD70B5BC /* Pods-one_year_together-one_year_togetherTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -483,6 +494,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8319E3FBDEBC3A0FE61C426F /* Pods-one_year_together-one_year_togetherTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = one_year_togetherTests/Info.plist;
