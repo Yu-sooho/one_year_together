@@ -2,6 +2,7 @@ import {StateCreator, create} from 'zustand'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {createJSONStorage, persist, PersistOptions} from 'zustand/middleware'
 import {FirebaseAuthTypes} from '@react-native-firebase/auth'
+import {User} from '@react-native-google-signin/google-signin'
 
 interface AuthState {
   isLoggedIn: boolean

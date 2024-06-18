@@ -6,6 +6,7 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import colors from '../../styles/colors'
 import {DEFAULT_BOTTOM_SIZE} from '../../styles/const'
+import {GoogleSignin} from '@react-native-google-signin/google-signin'
 
 const CustomBottomTabBar = memo(() => {
   const insets = useSafeAreaInsets()
@@ -13,15 +14,15 @@ const CustomBottomTabBar = memo(() => {
     useNavigation<StackNavigationProp<MainStackNavigatorParamList>>()
 
   const navigatedLetterListScreen = useCallback(() => {
-    navigation.navigate('LetterListScreen')
+    // navigation.navigate('LetterListScreen')
   }, [navigation])
 
   const navigatedEditEventScreen = useCallback(() => {
-    navigation.navigate('EditEventScreen')
+    // navigation.navigate('EditEventScreen')
   }, [navigation])
 
   const navigatedDdaySettingScreen = useCallback(() => {
-    navigation.navigate('DdaySettingScreen')
+    // navigation.navigate('DdaySettingScreen')
   }, [navigation])
 
   const styles = StyleSheet.create({

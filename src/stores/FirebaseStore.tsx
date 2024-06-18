@@ -2,8 +2,9 @@ import {create} from 'zustand'
 import firebase from '@react-native-firebase/app'
 import database, {FirebaseDatabaseTypes} from '@react-native-firebase/database'
 import {DEV_PORT_NUMBER, FIREBASE_CONFIG, IS_DEV} from '../utils'
-import auth from '@react-native-firebase/auth'
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
+import {User} from '@react-native-google-signin/google-signin'
 
 if (!firebase.apps.length) {
   firebase.initializeApp(FIREBASE_CONFIG)
@@ -31,7 +32,7 @@ interface FirebaseState {
     fieldValue: any,
   ) => Promise<false | FirebaseDatabaseTypes.DataSnapshot>
 
-  loginCheck: () => Promise<boolean>
+  loginCheck: () => Promise<false | FirebaseAuthTypes.User>
 }
 
 const useFirebaseStore = create<FirebaseState>((set, get) => ({
@@ -123,7 +124,7 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
     const currentUser = await auth().currentUser
     if (currentUser) {
       console.log('User is logged in:', currentUser)
-      return true
+      return currentUser
     } else {
       console.log('No user is logged in.')
       return false

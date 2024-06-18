@@ -27,6 +27,7 @@ import FastImage, {Source} from 'react-native-fast-image'
 import colors from '../styles/colors'
 import Icon from 'react-native-vector-icons/Feather'
 import {FirebaseDatabaseTypes} from '@react-native-firebase/database'
+import {GoogleSignin} from '@react-native-google-signin/google-signin'
 
 type EditLetterScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,

@@ -3,7 +3,7 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import React from 'react'
 import {View, Text, Button} from 'react-native'
 import defaultStyles from '../styles'
-import {useAuthStore, useEventStore} from '../stores'
+import {useAuthStore, useEventStore, useFirebaseStore} from '../stores'
 import auth from '@react-native-firebase/auth'
 import {
   GoogleSignin,
@@ -26,6 +26,8 @@ type Props = {
 
 const LoginScreen: React.FC<Props> = () => {
   const login = useAuthStore(state => state.login)
+  const setCurrentUser = useAuthStore(state => state.setCurrentUser)
+  const loginCheck = useFirebaseStore(state => state.loginCheck)
 
   const signInWithGoogle = async () => {
     try {
@@ -36,7 +38,11 @@ const LoginScreen: React.FC<Props> = () => {
       )
       await auth().signInWithCredential(googleCredential)
       console.log('User signed in with Google')
-      login()
+      const isLogin = await loginCheck()
+      if (!!isLogin) {
+        setCurrentUser(isLogin)
+        login()
+      }
     } catch (error: unknown) {
       if (error instanceof Error) {
         if (error.message === statusCodes.SIGN_IN_CANCELLED) {

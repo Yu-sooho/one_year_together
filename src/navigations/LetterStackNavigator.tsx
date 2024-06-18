@@ -23,11 +23,13 @@ const LetterStackNavigator = () => {
   const isMounted = useAppStateStore(state => state.isMounted)
   const setIsMounted = useAppStateStore(state => state.setIsMounted)
 
-  const [isLoading, setIsLoading] = useState(true)
+  const setCurrentUser = useAuthStore(state => state.setCurrentUser)
 
+  const [isLoading, setIsLoading] = useState(true)
   const isLoginCheck = async () => {
     const isLogin = await loginCheck()
     if (isLogin) {
+      setCurrentUser(isLogin)
       login()
     } else {
       logout()
