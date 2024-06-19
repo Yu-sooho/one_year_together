@@ -38,6 +38,7 @@ export interface CustomTextInputProps extends TextInputProps {
   activeBorderColor?: string
   inActiveBorderColor?: string
   lengthTextStyle?: StyleProp<TextStyle>
+  errorMessage?: string
 }
 
 export interface TextInputTitleProps {

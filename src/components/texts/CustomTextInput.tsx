@@ -14,6 +14,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = memo(
     isMaxLengthCount,
     ref,
     lengthTextStyle,
+    errorMessage,
     ...props
   }) => {
     const textInputRef = useRef<TextInput>(null)
@@ -60,6 +61,15 @@ const CustomTextInput: React.FC<CustomTextInputProps> = memo(
               ]}>{`${textValue.length} / ${props.maxLength}`}</Text>
           </View>
         )}
+        {errorMessage != null && (
+          <View style={[styles.container, styles.errorView]}>
+            <Text
+              style={[
+                styles.lengthText,
+                styles.errorText,
+              ]}>{`${errorMessage}`}</Text>
+          </View>
+        )}
       </View>
     )
   },
@@ -90,6 +100,11 @@ const styles = StyleSheet.create({
   lengthView: {
     alignItems: 'flex-end',
     paddingRight: normalize(20),
+    paddingTop: normalize(4),
+  },
+  errorView: {
+    alignItems: 'flex-start',
+    paddingLeft: normalize(20),
     paddingTop: normalize(4),
   },
   defaultTextStyle: {

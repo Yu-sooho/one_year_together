@@ -52,7 +52,6 @@ const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
     letter: LetterModel,
     isLocked: IsLockedModel,
   ) => {
-    console.log(isLocked, 'FUFU')
     if (isLocked) {
       navigation.navigate('PasswordScreen', {
         currentLetter: letter,
