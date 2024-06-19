@@ -1,20 +1,11 @@
 import {CompositeNavigationProp, RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import React, {useEffect, useState} from 'react'
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  Button,
-  TextInput,
-  ListRenderItem,
-} from 'react-native'
+import React, {useEffect} from 'react'
+import {View, FlatList, StyleSheet, ListRenderItem} from 'react-native'
 import defaultStyles from '../styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {CustomBottomButton, CustomHeader, LetterListItem} from '../components'
-import database from '@react-native-firebase/database'
-import {useFirebaseStore, useLetterStore} from '../stores'
+import {useAuthStore, useLetterStore} from '../stores'
 import {normalize} from '../utils'
 
 type LetterListScreenNavigationProp = CompositeNavigationProp<
@@ -37,6 +28,8 @@ const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
     navigation.navigate('EditLetterScreen', {isEdit: false})
   }
 
+  const currentUser = useAuthStore(state => state.currentUser)
+  const deleteLetter = useLetterStore(state => state.deleteLetter)
   const subscribeLetterList = useLetterStore(state => state.subscribeLetterList)
   const unsubscribeLetterList = useLetterStore(
     state => state.unsubscribeLetterList,
@@ -63,11 +56,23 @@ const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
     })
   }
 
+  const deletedLetter = (letter: LetterModel) => {
+    deleteLetter(letter)
+  }
+
+  const navigatedCustomModal = (letter: LetterModel) => {
+    if (letter.createdUser !== currentUser?.email) return
+    navigation.navigate('CustomModalScreen', {
+      okAction: () => deletedLetter(letter),
+    })
+  }
+
   const renderItem: ListRenderItem<LetterModel> = ({item, index}) => (
     <LetterListItem
       item={item}
       index={index}
       onPressItem={navigatedLetterScreen}
+      onLongPressItem={navigatedCustomModal}
     />
   )
 

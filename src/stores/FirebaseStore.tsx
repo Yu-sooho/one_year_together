@@ -20,6 +20,7 @@ interface FirebaseState {
   subscribeRdb: (ref: string, setData: (list: any[]) => void) => void
   unSubscribeRdb: (ref: string, dataSnapshot: any) => void
   addDataToRdb: (ref: string, data: any) => Promise<boolean>
+  deleteDataToRdb: (ref: string) => Promise<boolean>
   updateDataToRdb: (
     ref: string,
     data: any,
@@ -75,14 +76,27 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
 
   addDataToRdb: async (ref, data) => {
     const timestamp = database.ServerValue.TIMESTAMP
+    const email = await auth().currentUser?.email
     if (!data) return false
     try {
       data.createdAt = timestamp
+      data.createdUser = email
       const newEventRef = database().ref(ref).push()
       await newEventRef.set(data)
       return true
     } catch (error) {
       console.log(error)
+      return false
+    }
+  },
+
+  deleteDataToRdb: async ref => {
+    try {
+      await database().ref(ref).remove()
+      console.log(`Data at path ${ref} has been deleted.`)
+      return true
+    } catch (error) {
+      console.error(`Failed to delete data at path ${ref}: `, error)
       return false
     }
   },

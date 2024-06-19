@@ -11,12 +11,14 @@ interface LetterListitemProps {
   item: LetterModel
   index: number
   onPressItem: (item: LetterModel, isLocked: IsLockedModel) => void
+  onLongPressItem: (item: LetterModel) => void
 }
 
 const LetterListItem: React.FC<LetterListitemProps> = ({
   item,
   index,
   onPressItem,
+  onLongPressItem,
 }) => {
   const currentUser = useAuthStore(state => state.currentUser)
   const isLocked =
@@ -27,8 +29,15 @@ const LetterListItem: React.FC<LetterListitemProps> = ({
     onPressItem(item, isLocked)
   }
 
+  const onLongPress = () => {
+    onLongPressItem(item)
+  }
+
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
+    <TouchableOpacity
+      onPress={onPress}
+      onLongPress={onLongPress}
+      style={styles.container}>
       {isLocked ? (
         <View style={styles.image}>
           <Icon name="lock" size={normalize(24)} color={colors.c242424} />

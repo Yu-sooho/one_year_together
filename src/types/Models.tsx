@@ -1,7 +1,7 @@
 interface Id {
-  id?: number
   createdAt?: Date
   deletedAt?: Date
+  createdUser?: string
 }
 
 interface EventModel extends Id {}

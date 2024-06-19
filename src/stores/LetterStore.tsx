@@ -8,6 +8,7 @@ interface LetterState {
   subscribeLetterList: () => void
   unsubscribeLetterList: () => void
   addLetter: (letter: LetterModel) => Promise<boolean>
+  deleteLetter: (letter: LetterModel) => Promise<boolean>
   updateLetter: (
     letter: LetterModel,
     snapshot: FirebaseDatabaseTypes.DataSnapshot,
@@ -45,6 +46,19 @@ const useLetterStore = create<LetterState>((set, get) => {
         ...letter,
       }
       const result = await firebaseStore.addDataToRdb('/letters', letterItem)
+      return result
+    },
+    deleteLetter: async letter => {
+      const checkDuplicated = await get().checkDuplicated(letter.title)
+      if (!checkDuplicated) return false
+      let ref = ''
+      const reference = checkDuplicated.ref
+      checkDuplicated.forEach(childSnapshot => {
+        const childKey = childSnapshot.key
+        ref = `letters/${childKey}`
+        return true
+      })
+      const result = await firebaseStore.deleteDataToRdb(ref)
       return result
     },
     updateLetter: async (letter, snapshot) => {
