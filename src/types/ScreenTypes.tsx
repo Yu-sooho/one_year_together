@@ -19,3 +19,7 @@ type CustomModalScreenProps = {
 type EditLetterScreenProps = {
   isEdit?: boolean
 }
+
+type EditEventScreenProps = {
+  isEdit?: boolean
+}

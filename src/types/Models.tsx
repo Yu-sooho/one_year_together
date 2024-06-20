@@ -7,7 +7,7 @@ interface defaultData {
 interface EventModel extends defaultData {
   title: string
   content: string
-  targetAt: Date
+  targetAt: number
   imageUrl?: string
 }
 

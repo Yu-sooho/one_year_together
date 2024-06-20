@@ -1,3 +1,4 @@
+import moment from 'moment'
 import {Dimensions, PixelRatio} from 'react-native'
 
 export * from './networks'
@@ -20,6 +21,19 @@ export function normalize(size: number) {
 export function getFileExtension(filePath: string): string {
   const extension = filePath.split('.').pop()
   return extension === filePath || !extension ? '' : extension.toLowerCase()
+}
+
+export function daysUntil(date: Date) {
+  const now = moment()
+  const target = moment(date)
+  const differenceInDays = target.diff(now, 'days')
+  return differenceInDays
+}
+
+export function dateToTimestamp(date: Date) {
+  const momentDate = moment(date)
+  const timestamp = momentDate.valueOf()
+  return timestamp
 }
 
 export const findKeyByValueForRecord = (
