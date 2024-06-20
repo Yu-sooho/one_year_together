@@ -4,6 +4,8 @@ import {FirebaseDatabaseTypes} from '@react-native-firebase/database'
 
 interface LetterState {
   letterList: LetterModel[]
+  isDuringEvent: boolean
+  currentLetter: LetterModel | null
 
   subscribeLetterList: () => void
   unsubscribeLetterList: () => void
@@ -24,6 +26,8 @@ const useLetterStore = create<LetterState>((set, get) => {
 
   return {
     letterList: [],
+    isDuringEvent: false,
+    currentLetter: null,
     subscribeLetterList: () => {
       return firebaseStore.subscribeRdb('/letters', list => {
         set({letterList: list})
@@ -52,12 +56,13 @@ const useLetterStore = create<LetterState>((set, get) => {
       const checkDuplicated = await get().checkDuplicated(letter.title)
       if (!checkDuplicated) return false
       let ref = ''
-      const reference = checkDuplicated.ref
+
       checkDuplicated.forEach(childSnapshot => {
         const childKey = childSnapshot.key
         ref = `letters/${childKey}`
         return true
       })
+
       const result = await firebaseStore.deleteDataToRdb(ref)
       return result
     },

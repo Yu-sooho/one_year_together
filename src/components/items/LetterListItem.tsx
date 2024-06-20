@@ -5,7 +5,6 @@ import {useAuthStore} from '../../stores'
 import Icon from 'react-native-vector-icons/Feather'
 import colors from '../../styles/colors'
 import {normalize} from '../../utils'
-import {useNavigation} from '@react-navigation/native'
 
 interface LetterListitemProps {
   item: LetterModel

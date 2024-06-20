@@ -5,6 +5,7 @@ export {
   ToastController,
 } from './controllers'
 export {CustomBackgroundOpacity, FadeAnimatedView} from './containers'
-export {CustomBottomTabBar, CustomHeader, CustomBottomButton} from './buttons'
+export {CustomBottomTabBar, CustomBottomButton} from './buttons'
 export {EventListItem, LetterListItem} from './items'
-export {TextInputTitle, CustomTextInput} from './texts'
+export {TextInputTitle, CustomTextInput, TextInputWithTitle} from './texts'
+export {MainScreenHeader, CustomHeader} from './headers'

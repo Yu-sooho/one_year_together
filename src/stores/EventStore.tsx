@@ -1,23 +1,25 @@
 import {create} from 'zustand'
+import useFirebaseStore from './FirebaseStore'
 
 interface EventState {
-  currentEvent: EventModel | null
-  isDuringEvent: boolean
-
-  openEvent: (event: EventModel) => void
-  closeEvent: () => void
+  eventList: EventModel[]
+  subscribeEventList: () => void
+  unsubscribeEventList: () => void
 }
+const useEventStore = create<EventState>((set, get) => {
+  const firebaseStore = useFirebaseStore.getState()
 
-const useEventStore = create<EventState>((set, get) => ({
-  currentEvent: null,
-  isDuringEvent: false,
-
-  openEvent: (event: EventModel) => {
-    set({isDuringEvent: true, currentEvent: event})
-  },
-  closeEvent: () => {
-    set({isDuringEvent: false, currentEvent: null})
-  },
-}))
+  return {
+    eventList: [],
+    subscribeEventList: () => {
+      return firebaseStore.subscribeRdb('/events', list => {
+        set({eventList: list})
+      })
+    },
+    unsubscribeEventList: () => {
+      firebaseStore.unSubscribeRdb('/events', get().subscribeEventList)
+    },
+  }
+})
 
 export default useEventStore

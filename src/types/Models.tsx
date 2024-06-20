@@ -1,14 +1,19 @@
-interface Id {
+interface defaultData {
   createdAt?: Date
   deletedAt?: Date
   createdUser?: string
 }
 
-interface EventModel extends Id {}
+interface EventModel extends defaultData {
+  title: string
+  content: string
+  targetAt: Date
+  imageUrl?: string
+}
 
-interface UserModel extends Id {}
+interface UserModel extends defaultData {}
 
-interface LetterModel extends Id {
+interface LetterModel extends defaultData {
   title: string
   content: string
   password?: string

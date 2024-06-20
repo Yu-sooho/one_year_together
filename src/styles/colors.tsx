@@ -5,6 +5,7 @@ export default {
   c242424: '#242424',
   cffffff: '#ffffff',
   cf4f4f4: '#f4f4f4',
+  cf7f7f7: '#f7f7f7',
   transparent: 'transparent',
   //gpt
   c008000: '#008000', // Green

@@ -47,6 +47,10 @@ export interface TextInputTitleProps {
   containerStyle?: StyleProp<ViewStyle>
 }
 
+export interface MainScreenHeaderProps {
+  eventList: EventModel[]
+}
+
 export interface ToastTypes {
   type: 'success' | 'error' | 'tomatoToast'
 }

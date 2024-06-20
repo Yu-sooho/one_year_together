@@ -1,20 +1,20 @@
 import {memo, useCallback, useEffect} from 'react'
 import {useNavigation} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import {useEventStore} from '../../stores'
+import {useEventStore, useLetterStore} from '../../stores'
 
 const EventController = memo(() => {
   const navigation =
     useNavigation<StackNavigationProp<LetterStackNavigatorParamList>>()
 
-  const isDuringEvent = useEventStore(state => state.isDuringEvent)
-  const currentEvent = useEventStore(state => state.currentEvent)
+  const isDuringLetter = useLetterStore(state => state.isDuringEvent)
+  const currentLetter = useLetterStore(state => state.currentLetter)
 
   const navigatedEventScreen = useCallback(() => {
-    if (isDuringEvent && currentEvent) {
-      navigation.navigate('LetterScreen', {currentEvent})
+    if (isDuringLetter && currentLetter) {
+      navigation.navigate('LetterScreen', {currentLetter})
     }
-  }, [currentEvent, isDuringEvent, navigation])
+  }, [currentLetter, isDuringLetter, navigation])
 
   useEffect(() => {
     navigatedEventScreen()

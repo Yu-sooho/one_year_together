@@ -1,13 +1,10 @@
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import React, {memo, useCallback, useEffect, useRef, useState} from 'react'
+import React, {useRef, useState} from 'react'
 import {
   View,
-  Text,
-  Button,
   StyleSheet,
   ScrollView,
-  TextInputProps,
   TouchableOpacity,
   Dimensions,
 } from 'react-native'
@@ -22,7 +19,7 @@ import {
   CustomBackgroundOpacity,
   CustomBottomButton,
   CustomHeader,
-  CustomTextInput,
+  TextInputWithTitle,
   TextInputTitle,
 } from '../components'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -32,7 +29,6 @@ import FastImage, {Source} from 'react-native-fast-image'
 import colors from '../styles/colors'
 import Icon from 'react-native-vector-icons/Feather'
 import {FirebaseDatabaseTypes} from '@react-native-firebase/database'
-import {GoogleSignin} from '@react-native-google-signin/google-signin'
 
 type EditLetterScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -269,45 +265,6 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     </>
   )
 }
-
-interface TextInputWithTitleProps extends TextInputProps {
-  title: string
-  placeholder: string
-  isWhite?: boolean
-}
-
-const TextInputWithTitle = memo(
-  ({
-    title,
-    placeholder,
-    isWhite,
-    multiline,
-    ...props
-  }: TextInputWithTitleProps) => {
-    return (
-      <View style={styles.textInputWithTitleContainer}>
-        <TextInputTitle
-          title={title}
-          containerStyle={styles.titleContainer}
-          style={[isWhite && styles.whiteText]}
-        />
-        <CustomTextInput
-          {...props}
-          multiline={multiline}
-          value={props.value}
-          onChangeText={props.onChangeText}
-          placeholder={placeholder}
-          isMaxLengthCount
-          style={[isWhite && styles.whiteText]}
-          inActiveBorderColor={colors.cffffff80}
-          activeBorderColor={colors.cffffff}
-          placeholderTextColor={isWhite ? colors.cffffff80 : undefined}
-          lengthTextStyle={styles.whiteText}
-        />
-      </View>
-    )
-  },
-)
 
 const styles = StyleSheet.create({
   textInputWithTitleContainer: {
