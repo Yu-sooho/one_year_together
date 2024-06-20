@@ -101,7 +101,6 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
       content: content,
       targetAt: dateToTimestamp(date),
     }
-    console.log(event, date, 'FUFU')
     const uploadResult = await addEvent(event)
     if (!uploadResult) {
       showError('서버에러 입니다.')

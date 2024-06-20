@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import colors from '../../styles/colors'
-import {DEFAULT_BOTTOM_SIZE} from '../../styles/const'
+import {DEFAULT_BOTTOM_SIZE, DEFAULT_BOTTOM_TABBAR} from '../../styles/const'
 
 const CustomBottomTabBar = memo(() => {
   const insets = useSafeAreaInsets()
@@ -17,7 +17,7 @@ const CustomBottomTabBar = memo(() => {
   }, [navigation])
 
   const navigatedEditEventScreen = useCallback(() => {
-    navigation.navigate('EditEventScreen')
+    navigation.navigate('EditEventScreen', {})
   }, [navigation])
 
   const navigatedDdaySettingScreen = useCallback(() => {
@@ -37,7 +37,7 @@ const CustomBottomTabBar = memo(() => {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      height: normalize(50),
+      height: DEFAULT_BOTTOM_TABBAR,
       marginBottom: insets.bottom,
     },
     centerButtonStyle: {
