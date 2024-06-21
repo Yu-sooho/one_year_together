@@ -1,8 +1,7 @@
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import React, {useEffect} from 'react'
+import React from 'react'
 import {View, Text, Button, StyleSheet} from 'react-native'
-import {useEventStore} from '../stores'
 import FastImage from 'react-native-fast-image'
 import {CustomBackgroundOpacity} from '../components'
 
@@ -21,18 +20,8 @@ type Props = {
 }
 
 const LetterScreen: React.FC<Props> = ({navigation, route}) => {
-  const closeEvent = useEventStore(state => state.closeEvent)
-
   const {currentLetter} = route.params
   const {imageUrl, title, content} = currentLetter
-
-  console.log(currentLetter)
-
-  useEffect(() => {
-    return () => {
-      closeEvent()
-    }
-  }, [])
 
   return (
     <View style={styles.container}>

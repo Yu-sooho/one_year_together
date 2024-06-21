@@ -3,7 +3,7 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import React from 'react'
 import {View, Text, Button} from 'react-native'
 import defaultStyles from '../styles'
-import {useAuthStore, useEventStore, useFirebaseStore} from '../stores'
+import {useAuthStore, useFirebaseStore} from '../stores'
 import auth from '@react-native-firebase/auth'
 import {
   GoogleSignin,
@@ -37,7 +37,6 @@ const LoginScreen: React.FC<Props> = () => {
         userInfo.idToken,
       )
       await auth().signInWithCredential(googleCredential)
-      console.log('User signed in with Google')
       const isLogin = await loginCheck()
       if (!!isLogin) {
         setCurrentUser(isLogin)

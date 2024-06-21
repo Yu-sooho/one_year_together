@@ -3,9 +3,7 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import React, {useEffect} from 'react'
 import {
   View,
-  Text,
   StyleSheet,
-  FlatList,
   ListRenderItem,
   Dimensions,
   StatusBar,
@@ -16,15 +14,9 @@ import {
   MainScreenHeader,
 } from '../components'
 import defaultStyles from '../styles'
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
+import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {useEventStore} from '../stores'
-import {normalize} from '../utils'
-import {
-  DEFAULT_BOTTOM_SIZE,
-  DEFAULT_BOTTOM_TABBAR,
-  MAIN_HEADER_MAX_SIZE,
-  MAIN_HEADER_MIN_SIZE,
-} from '../styles/const'
+import {MAIN_HEADER_MAX_SIZE, MAIN_HEADER_MIN_SIZE} from '../styles/const'
 import Animated, {
   Extrapolate,
   interpolate,
@@ -111,7 +103,7 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
             {position: 'absolute', backgroundColor: colors.cffffe0},
             headerAnimatedStyle,
           ]}>
-          <MainScreenHeader eventList={[]} />
+          <MainScreenHeader scrollY={scrollY} eventList={[]} />
         </Animated.View>
       </View>
       <CustomBottomTabBar />

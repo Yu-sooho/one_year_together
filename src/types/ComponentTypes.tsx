@@ -6,6 +6,7 @@ import {
   TextStyle,
   ViewStyle,
 } from 'react-native'
+import {SharedValue} from 'react-native-reanimated'
 
 import {ToastConfig} from 'react-native-toast-message'
 
@@ -49,8 +50,15 @@ export interface TextInputTitleProps {
 
 export interface MainScreenHeaderProps {
   eventList: EventModel[]
+  scrollY: SharedValue<number>
 }
 
 export interface ToastTypes {
   type: 'success' | 'error' | 'tomatoToast'
+}
+
+export interface CustomRadioButtonProps {
+  onPress: () => void
+  value: boolean
+  text: string
 }
