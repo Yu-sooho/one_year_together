@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  CardStyleInterpolators,
   StackNavigationOptions,
   createStackNavigator,
 } from '@react-navigation/stack'

@@ -1,11 +1,10 @@
 import React, {memo, useEffect} from 'react'
-import {Dimensions, StyleSheet, Text, View} from 'react-native'
+import {Dimensions, StyleSheet, View} from 'react-native'
 import colors from '../../styles/colors'
 import Animated, {
   Easing,
   useAnimatedStyle,
   useSharedValue,
-  withRepeat,
   withTiming,
 } from 'react-native-reanimated'
 import FastImage from 'react-native-fast-image'

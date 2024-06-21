@@ -1,5 +1,5 @@
-import React, {ReactNode, memo, useCallback, useEffect} from 'react'
-import {Dimensions, StyleSheet, Text, View, ViewProps} from 'react-native'
+import React, {ReactNode} from 'react'
+import {Dimensions, StyleSheet, View, ViewProps} from 'react-native'
 import FadeAnimatedView from './FadeAnimatedView'
 import colors from '../../styles/colors'
 

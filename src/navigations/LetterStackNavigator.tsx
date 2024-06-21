@@ -9,7 +9,6 @@ import {defaultScreenOptions} from '../styles/options'
 import {useAppStateStore, useAuthStore, useFirebaseStore} from '../stores'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {EventController} from '../components'
-import {GoogleSignin} from '@react-native-google-signin/google-signin'
 import LottieSplashScreen from 'react-native-lottie-splash-screen'
 
 const Stack = createStackNavigator<LetterStackNavigatorParamList>()

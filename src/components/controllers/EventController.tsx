@@ -1,7 +1,7 @@
 import {memo, useCallback, useEffect} from 'react'
 import {useNavigation} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import {useEventStore, useLetterStore} from '../../stores'
+import {useLetterStore} from '../../stores'
 
 const EventController = memo(() => {
   const navigation =

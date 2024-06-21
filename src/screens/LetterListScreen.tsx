@@ -1,6 +1,6 @@
 import {CompositeNavigationProp, RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import React, {useEffect} from 'react'
+import React, {memo, useEffect} from 'react'
 import {View, FlatList, StyleSheet, ListRenderItem} from 'react-native'
 import defaultStyles from '../styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -23,7 +23,7 @@ type Props = {
   route: LetterListScreenRouteProp
 }
 
-const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
+const LetterListScreen: React.FC<Props> = memo(({navigation, route}) => {
   const navigatedEditLetterScreen = () => {
     navigation.navigate('EditLetterScreen', {isEdit: false})
   }
@@ -98,7 +98,7 @@ const LetterListScreen: React.FC<Props> = ({navigation, route}) => {
       />
     </SafeAreaView>
   )
-}
+})
 
 const styles = StyleSheet.create({
   itemSeparatorComponentStyle: {
@@ -112,4 +112,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default React.memo(LetterListScreen)
+export default LetterListScreen

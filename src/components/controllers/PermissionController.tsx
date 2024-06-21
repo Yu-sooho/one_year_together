@@ -4,6 +4,7 @@ import {usePermissionStore} from '../../stores'
 import {findKeyByValueForRecord} from '../../utils'
 import {useNavigation} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
+import {View} from 'react-native'
 
 const PermissionController = memo(() => {
   const navigation =
@@ -35,7 +36,7 @@ const PermissionController = memo(() => {
     requestPermission()
   }, [])
 
-  return null
+  return <View />
 })
 
 export default PermissionController
