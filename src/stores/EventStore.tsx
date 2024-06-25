@@ -17,7 +17,11 @@ interface EventState {
   checkDuplicated: (
     title: string,
   ) => Promise<false | FirebaseDatabaseTypes.DataSnapshot>
-  uploadEventImage: (fileName: string, uri: string) => Promise<string | false>
+  uploadEventImage: (
+    title: string,
+    fileName: string,
+    uri: string,
+  ) => Promise<string | false>
 }
 const useEventStore = create<EventState>((set, get) => {
   const firebaseStore = useFirebaseStore.getState()
@@ -77,8 +81,11 @@ const useEventStore = create<EventState>((set, get) => {
       )
       return result
     },
-    uploadEventImage: async (fileName, uri) => {
-      const result = await firebaseStore.uploadImage(`events/${fileName}`, uri)
+    uploadEventImage: async (title, fileName, uri) => {
+      const result = await firebaseStore.uploadImage(
+        `events/${title}/${fileName}`,
+        uri,
+      )
       return result
     },
   }

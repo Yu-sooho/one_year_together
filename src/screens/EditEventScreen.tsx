@@ -1,20 +1,32 @@
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import React, {useEffect, useState} from 'react'
-import {View, Text, ScrollView, StyleSheet, Dimensions} from 'react-native'
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  FlatList,
+  ListRenderItem,
+} from 'react-native'
 import DatePicker from 'react-native-date-picker'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import defaultStyles from '../styles'
 import {
   CustomBottomButton,
   CustomHeader,
+  EventImageListItem,
   TextInputTitle,
   TextInputWithTitle,
 } from '../components'
 import colors from '../styles/colors'
-import {dateToTimestamp, daysUntil, normalize} from '../utils'
-import {useAppStateStore, useEventStore} from '../stores'
+import {dateToTimestamp, daysUntil, getFileExtension, normalize} from '../utils'
+import {useAppStateStore, useEventStore, usePermissionStore} from '../stores'
+import Icon from 'react-native-vector-icons/Feather'
 import {FirebaseDatabaseTypes} from '@react-native-firebase/database'
+import ImageCropPicker, {ImageOrVideo} from 'react-native-image-crop-picker'
 
 type EditEventScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -34,6 +46,7 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [date, setDate] = useState(new Date())
+  const [imageList, setImageList] = useState<ImageOrVideo[] | null>(null)
 
   const showToast = useAppStateStore(state => state.showToast)
   const setIsLoading = useAppStateStore(state => state.setIsLoading)
@@ -86,6 +99,32 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
     navigation.goBack()
   }
 
+  const uploadImage = async (): Promise<string[]> => {
+    if (!imageList) return []
+
+    const uploadPromises = imageList.map(image =>
+      uploadEventImage(
+        title,
+        `${image.filename}.${getFileExtension(image.path)}`,
+        image.path,
+      ),
+    )
+
+    try {
+      const result: string[] = []
+      const uploadResult = await Promise.all(uploadPromises)
+      uploadResult.forEach(element => {
+        if (!!element) {
+          result.push(element)
+        }
+      })
+      return result
+    } catch (error) {
+      console.error('One or more image uploads failed:', error)
+      return []
+    }
+  }
+
   const uploadEvent = async () => {
     setIsLoading()
     const checkDuplicated = await checkDuplicate(title)
@@ -96,10 +135,12 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
       changedEvent(checkDuplicated)
       return
     }
+    const imageResult = await uploadImage()
     const event: EventModel = {
       title: title,
       content: content,
       targetAt: dateToTimestamp(date),
+      imageUrl: imageResult,
     }
     const uploadResult = await addEvent(event)
     if (!uploadResult) {
@@ -108,6 +149,57 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
     }
     showSuccess('이벤트가 등록되었습니다')
     navigation.goBack()
+  }
+
+  const checkPermission = usePermissionStore(state => state.checkPermission)
+  const openPermissionModal = usePermissionStore(
+    state => state.openPermissionModal,
+  )
+  const openPicker = async () => {
+    const {width, height} = Dimensions.get('window')
+    const aspectRatio = width / height
+
+    const cropWidth = 1000
+    const cropHeight = cropWidth / aspectRatio
+
+    const isHaveNoPermission = await checkPermission()
+    if (isHaveNoPermission?.length > 0) {
+      openPermissionModal(navigation)
+    } else {
+      ImageCropPicker.openPicker({
+        cropping: true,
+        multiple: true,
+        width: cropWidth,
+        height: cropHeight,
+        maxFiles: 20,
+      })
+        .then(image => {
+          setImageList(image)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }
+  }
+
+  const deletedImage = (item: ImageOrVideo) => {
+    if (!imageList) return
+    const index = imageList.findIndex(element => element === item)
+    if (index !== -1 && !!imageList) {
+      const newList = [...imageList]
+      newList.splice(index, 1)
+      setImageList(newList)
+    }
+  }
+
+  const renderItem: ListRenderItem<ImageOrVideo> = ({item, index}) => {
+    return (
+      <EventImageListItem
+        item={item}
+        index={index}
+        onPressItem={deletedImage}
+      />
+    )
   }
 
   return (
@@ -147,6 +239,23 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
           onDateChange={setDate}
           style={styles.datePickerStyle}
         />
+
+        <View style={styles.imageButtonView}>
+          <TextInputTitle
+            title={'사진'}
+            containerStyle={styles.titleContainer}
+          />
+          <TouchableOpacity onPress={openPicker} style={styles.imageButton}>
+            <Icon name="plus" size={normalize(20)} color={colors.c242424} />
+          </TouchableOpacity>
+        </View>
+        <FlatList
+          horizontal
+          data={imageList}
+          renderItem={renderItem}
+          ItemSeparatorComponent={ItemSeparatorComponent}
+          contentContainerStyle={styles.imageContentContainerStyle}
+        />
       </ScrollView>
       <CustomBottomButton
         isDisabled={!title || !content}
@@ -156,6 +265,8 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
     </SafeAreaView>
   )
 }
+
+const ItemSeparatorComponent = () => <View style={{width: normalize(10)}} />
 
 const styles = StyleSheet.create({
   dayCountView: {alignItems: 'center', marginBottom: normalize(12)},
@@ -168,6 +279,19 @@ const styles = StyleSheet.create({
   },
   datePickerStyle: {
     width: Dimensions.get('window').width,
+  },
+  imageButtonView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: normalize(20),
+  },
+  imageButton: {
+    paddingRight: normalize(20),
+    alignItems: 'flex-end',
+    paddingLeft: normalize(30),
+  },
+  imageContentContainerStyle: {
+    paddingHorizontal: normalize(20),
   },
 })
 

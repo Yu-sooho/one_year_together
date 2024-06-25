@@ -76,7 +76,12 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
     return () => unsubscribeEventList()
   }, [])
 
-  const onPressItem = () => {}
+  const onPressItem = (item: EventModel) => {
+    navigation.navigate('EventScreen', {
+      event: item,
+    })
+  }
+
   const onLongPressItem = () => {}
 
   const renderItem: ListRenderItem<EventModel> = ({item, index}) => {
@@ -90,8 +95,6 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
     )
   }
 
-  const onEndReached = () => {}
-
   const generateDates = (
     startDate: Date,
     daysInterval: number,
@@ -100,7 +103,6 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
     const dateList: EventModel[] = []
     let currentDate = moment(startDate)
 
-    // 10년 동안 날짜 생성
     const endDate = moment(startDate).add(years, 'years')
     while (currentDate.isSameOrBefore(endDate)) {
       dateList.push({
@@ -139,9 +141,9 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
         <Animated.FlatList
           data={list}
           onScroll={scrollHandler}
-          onEndReached={onEndReached}
           scrollEventThrottle={16}
           renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             minHeight: listHeight,
           }}

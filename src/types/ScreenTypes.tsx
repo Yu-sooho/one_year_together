@@ -20,6 +20,10 @@ type EditLetterScreenProps = {
   isEdit?: boolean
 }
 
+type EventScreenProps = {
+  event: EventModel
+}
+
 type EditEventScreenProps = {
   isEdit?: boolean
 }

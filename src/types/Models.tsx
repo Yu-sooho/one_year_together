@@ -8,7 +8,7 @@ interface EventModel extends defaultData {
   title: string
   content: string
   targetAt: number
-  imageUrl?: string
+  imageUrl?: string[]
 }
 
 interface UserModel extends defaultData {}

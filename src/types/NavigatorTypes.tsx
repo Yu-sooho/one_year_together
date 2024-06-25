@@ -1,6 +1,6 @@
 type MainStackNavigatorParamList = {
   MainScreen: undefined
-  EventScreen: undefined
+  EventScreen: EventScreenProps
   EditEventScreen: EditEventScreenProps
   EditLetterScreen: EditLetterScreenProps
   LetterListScreen: undefined

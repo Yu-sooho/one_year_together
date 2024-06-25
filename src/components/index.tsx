@@ -10,6 +10,6 @@ export {
   CustomBottomButton,
   CustomRadioButton,
 } from './buttons'
-export {EventListItem, LetterListItem} from './items'
+export {EventListItem, EventImageListItem, LetterListItem} from './items'
 export {TextInputTitle, CustomTextInput, TextInputWithTitle} from './texts'
 export {MainScreenHeader, CustomHeader} from './headers'

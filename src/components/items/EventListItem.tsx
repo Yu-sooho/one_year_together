@@ -1,5 +1,5 @@
 import React, {memo} from 'react'
-import {StyleSheet, Text, View} from 'react-native'
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {daysUntil, normalize} from '../../utils'
 import fonts from '../../styles/fonts'
 
@@ -14,11 +14,23 @@ const EventListItem: React.FC<EventListitemProps> = memo(
   ({item, index, onPressItem, onLongPressItem}) => {
     const {targetAt, title, content} = item
     const date = daysUntil(new Date(targetAt))
+
+    const onPress = () => {
+      onPressItem(item)
+    }
+
+    const onLongPress = () => {
+      onLongPressItem(item)
+    }
+
     return (
-      <View style={styles.container}>
+      <TouchableOpacity
+        onPress={onPress}
+        onLongPress={onLongPress}
+        style={styles.container}>
         <Text style={styles.titleText}>{title}</Text>
         <Text style={styles.dateText}>{date}</Text>
-      </View>
+      </TouchableOpacity>
     )
   },
 )
