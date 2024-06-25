@@ -1,6 +1,8 @@
 import {create} from 'zustand'
 import useFirebaseStore from './FirebaseStore'
 import {FirebaseDatabaseTypes} from '@react-native-firebase/database'
+import moment from 'moment'
+import {daysUntilYear} from '../utils'
 
 interface EventState {
   eventList: EventModel[]
@@ -24,7 +26,18 @@ const useEventStore = create<EventState>((set, get) => {
     eventList: [],
     subscribeEventList: () => {
       return firebaseStore.subscribeRdb('/events', list => {
-        set({eventList: list})
+        const tempList: EventModel[] = []
+        list.forEach(element => {
+          if (moment(element.targetAt) < moment()) {
+            tempList.push({
+              ...element,
+              targetAt: daysUntilYear(element.targetAt),
+            })
+          } else {
+            tempList.push(element)
+          }
+        })
+        set({eventList: tempList})
       })
     },
     unsubscribeEventList: () => {

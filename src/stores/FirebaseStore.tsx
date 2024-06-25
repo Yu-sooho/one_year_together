@@ -4,7 +4,6 @@ import database, {FirebaseDatabaseTypes} from '@react-native-firebase/database'
 import {DEV_PORT_NUMBER, FIREBASE_CONFIG, IS_DEV} from '../utils'
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth'
 import storage from '@react-native-firebase/storage'
-import {User} from '@react-native-google-signin/google-signin'
 
 if (!firebase.apps.length) {
   firebase.initializeApp(FIREBASE_CONFIG)

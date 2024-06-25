@@ -30,6 +30,18 @@ export function daysUntil(date: Date) {
   return differenceInDays
 }
 
+export function daysUntilYear(date: Date) {
+  const now = moment()
+  let target = moment(date)
+
+  if (target.isBefore(now, 'day')) {
+    const yearsDifference = now.diff(target, 'years')
+    target.add(yearsDifference + 1, 'year')
+  }
+
+  return target
+}
+
 export function dateToTimestamp(date: Date) {
   const momentDate = moment(date)
   const timestamp = momentDate.valueOf()

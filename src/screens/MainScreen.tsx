@@ -1,6 +1,6 @@
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   View,
   StyleSheet,
@@ -40,6 +40,7 @@ type Props = {
 const MainScreen: React.FC<Props> = ({navigation, route}) => {
   const inset = useSafeAreaInsets()
   const eventList = useEventStore(state => state.eventList)
+  const [list, setList] = useState<EventModel[]>([])
   const subscribeEventList = useEventStore(state => state.subscribeEventList)
   const unsubscribeEventList = useEventStore(
     state => state.unsubscribeEventList,
@@ -48,24 +49,6 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
     Dimensions.get('window').height +
     (StatusBar.currentHeight ? StatusBar.currentHeight : 0)
 
-  useEffect(() => {
-    subscribeEventList()
-    return () => unsubscribeEventList()
-  }, [])
-
-  const onPressItem = () => {}
-  const onLongPressItem = () => {}
-
-  const renderItem: ListRenderItem<EventModel> = ({item, index}) => {
-    return (
-      <EventListItem
-        item={item}
-        index={index}
-        onPressItem={onPressItem}
-        onLongPressItem={onLongPressItem}
-      />
-    )
-  }
   const scrollY = useSharedValue(0)
 
   const scrollHandler = useAnimatedScrollHandler(event => {
@@ -83,12 +66,40 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
       transform: [{translateY}],
     }
   })
+
+  useEffect(() => {
+    subscribeEventList()
+    return () => unsubscribeEventList()
+  }, [])
+
+  useEffect(() => {
+    setList(eventList)
+  }, [eventList])
+
+  const onPressItem = () => {}
+  const onLongPressItem = () => {}
+
+  const renderItem: ListRenderItem<EventModel> = ({item, index}) => {
+    return (
+      <EventListItem
+        item={item}
+        index={index}
+        onPressItem={onPressItem}
+        onLongPressItem={onLongPressItem}
+      />
+    )
+  }
+
+  const onEndReached = () => {}
+
   return (
     <View style={defaultStyles.containerStyle}>
       <View style={defaultStyles.containerStyle}>
         <Animated.FlatList
-          data={eventList}
+          data={list}
           onScroll={scrollHandler}
+          onEndReached={onEndReached}
+          scrollEventThrottle={16}
           renderItem={renderItem}
           contentContainerStyle={{
             minHeight: listHeight,
