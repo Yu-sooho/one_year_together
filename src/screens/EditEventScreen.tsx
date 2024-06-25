@@ -148,7 +148,11 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
           style={styles.datePickerStyle}
         />
       </ScrollView>
-      <CustomBottomButton buttonText="완료" onPressButton={uploadEvent} />
+      <CustomBottomButton
+        isDisabled={!title || !content}
+        buttonText="완료"
+        onPressButton={uploadEvent}
+      />
     </SafeAreaView>
   )
 }

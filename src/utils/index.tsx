@@ -48,6 +48,10 @@ export function dateToTimestamp(date: Date) {
   return timestamp
 }
 
+export const timestampToDate = (timestamp: number): Date => {
+  return moment(timestamp).toDate()
+}
+
 export const findKeyByValueForRecord = (
   record: Record<any, any>,
   value: string,

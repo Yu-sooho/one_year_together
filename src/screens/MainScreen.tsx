@@ -25,6 +25,8 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated'
 import colors from '../styles/colors'
+import moment, {Moment} from 'moment'
+import {dateToTimestamp} from '../utils'
 
 type MainScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -36,6 +38,8 @@ type Props = {
   navigation: MainScreenNavigationProp
   route: MainScreenRouteProp
 }
+
+const standardDate = new Date()
 
 const MainScreen: React.FC<Props> = ({navigation, route}) => {
   const inset = useSafeAreaInsets()
@@ -72,10 +76,6 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
     return () => unsubscribeEventList()
   }, [])
 
-  useEffect(() => {
-    setList(eventList)
-  }, [eventList])
-
   const onPressItem = () => {}
   const onLongPressItem = () => {}
 
@@ -91,6 +91,47 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
   }
 
   const onEndReached = () => {}
+
+  const generateDates = (
+    startDate: Date,
+    daysInterval: number,
+    years: number,
+  ): EventModel[] => {
+    const dateList: EventModel[] = []
+    let currentDate = moment(startDate)
+
+    // 10년 동안 날짜 생성
+    const endDate = moment(startDate).add(years, 'years')
+    while (currentDate.isSameOrBefore(endDate)) {
+      dateList.push({
+        title: '',
+        content: '',
+        targetAt: dateToTimestamp(currentDate.toDate()),
+      })
+      currentDate = currentDate.add(daysInterval, 'days')
+    }
+
+    return dateList
+  }
+
+  const mergeEventDates = (
+    baseDates: EventModel[],
+    eventDates: EventModel[],
+  ): EventModel[] => {
+    const allDates = [...baseDates, ...eventDates]
+    allDates.sort((a, b) => a.targetAt - b.targetAt)
+    return allDates
+  }
+
+  const initDefaultDate = () => {
+    const dateList = generateDates(standardDate, 100, 100)
+    const mergedDates = mergeEventDates(dateList, eventList)
+    setList(mergedDates)
+  }
+
+  useEffect(() => {
+    initDefaultDate()
+  }, [eventList])
 
   return (
     <View style={defaultStyles.containerStyle}>
