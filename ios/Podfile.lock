@@ -1345,6 +1345,8 @@ PODS:
     - TOCropViewController (~> 2.7.4)
   - RNPermissions (4.1.5):
     - React-Core
+  - RNReactNativeSharedGroupPreferences (1.1.24):
+    - React
   - RNReanimated (3.12.0):
     - DoubleConversion
     - glog
@@ -1497,6 +1499,7 @@ DEPENDENCIES:
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
+  - RNReactNativeSharedGroupPreferences (from `../node_modules/react-native-shared-group-preferences`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
@@ -1665,6 +1668,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-crop-picker"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
+  RNReactNativeSharedGroupPreferences:
+    :path: "../node_modules/react-native-shared-group-preferences"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -1762,6 +1767,7 @@ SPEC CHECKSUMS:
   RNGoogleSignin: 08dc4ba7eac2096c7fecfe109f0950fa4683c803
   RNImageCropPicker: 771e2ca319d2cf92e04ebf334ece892ee9a6728f
   RNPermissions: 21eb37e6d608f1c0e5337e149bc9a64d5efba8a6
+  RNReactNativeSharedGroupPreferences: 29092869fc2e40d5baca5e15d82fa5c24a668977
   RNReanimated: 967ae35616ef948658afa75d24595d4584051540
   RNScreens: fd2722bcc59f36a629205af8cc7b48e4bc0d09f5
   RNVectorIcons: 7ac7aaa83f8f3d4c7c0f7daea5a431e91a29b0cd

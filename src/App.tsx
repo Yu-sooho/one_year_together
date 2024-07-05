@@ -18,6 +18,25 @@ import fonts from './styles/fonts'
 import LoadingController from './components/controllers/LoadingController'
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth'
 import {GoogleSignin} from '@react-native-google-signin/google-signin'
+import SharedGroupPreferences from 'react-native-shared-group-preferences'
+
+const appGroupIdentifier = 'group.one_year_together'
+const targetDate = new Date('2024-12-31T00:00:00Z') // 예시 타겟 날짜
+
+async function saveTargetDate() {
+  try {
+    await SharedGroupPreferences.setItem(
+      'targetDate',
+      targetDate.toISOString(),
+      appGroupIdentifier,
+    )
+    console.log('Target date saved successfully')
+  } catch (error) {
+    console.error('Error saving target date', error)
+  }
+}
+
+saveTargetDate()
 
 const App: React.FC = () => {
   const handleStateChange = (state: NavigationState | undefined) => {
