@@ -27,7 +27,7 @@ export function daysUntil(date: Date) {
   const now = moment()
   const target = moment(date)
   const differenceInDays = target.diff(now, 'days')
-  return differenceInDays
+  return Math.abs(differenceInDays)
 }
 
 export function daysUntilYear(date: Date) {

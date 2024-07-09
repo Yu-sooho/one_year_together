@@ -25,8 +25,9 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated'
 import colors from '../styles/colors'
-import moment, {Moment} from 'moment'
+import moment from 'moment'
 import {dateToTimestamp} from '../utils'
+import {START_DATE} from '../resources'
 
 type MainScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -39,7 +40,7 @@ type Props = {
   route: MainScreenRouteProp
 }
 
-const standardDate = new Date()
+const standardDate = START_DATE
 
 const MainScreen: React.FC<Props> = ({navigation, route}) => {
   const inset = useSafeAreaInsets()
@@ -102,15 +103,17 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
   ): EventModel[] => {
     const dateList: EventModel[] = []
     let currentDate = moment(startDate)
-
     const endDate = moment(startDate).add(years, 'years')
+    let index = 0
+
     while (currentDate.isSameOrBefore(endDate)) {
       dateList.push({
-        title: '',
+        title: `${index}`,
         content: '',
         targetAt: dateToTimestamp(currentDate.toDate()),
       })
       currentDate = currentDate.add(daysInterval, 'days')
+      index++
     }
 
     return dateList
@@ -128,6 +131,7 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
   const initDefaultDate = () => {
     const dateList = generateDates(standardDate, 100, 100)
     const mergedDates = mergeEventDates(dateList, eventList)
+    console.log(dateList)
     setList(mergedDates)
   }
 
