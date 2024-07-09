@@ -22,7 +22,13 @@ import {
   TextInputWithTitle,
 } from '../components'
 import colors from '../styles/colors'
-import {dateToTimestamp, daysUntil, getFileExtension, normalize} from '../utils'
+import {
+  dateToTimestamp,
+  daysUntil,
+  getFileExtension,
+  normalize,
+  timestampToDate,
+} from '../utils'
 import {useAppStateStore, useEventStore, usePermissionStore} from '../stores'
 import Icon from 'react-native-vector-icons/Feather'
 import {FirebaseDatabaseTypes} from '@react-native-firebase/database'
@@ -56,6 +62,7 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
   const checkDuplicate = useEventStore(state => state.checkDuplicated)
   const uploadEventImage = useEventStore(state => state.uploadEventImage)
   const isEdit = route.params?.isEdit
+  const editEventItem = route.params?.event
 
   const onChangeTitle = (value: string) => {
     setTitle(value)
@@ -201,6 +208,21 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
       />
     )
   }
+
+  const editableSetting = () => {
+    setTitle(`${editEventItem?.title}`)
+    setContent(`${editEventItem?.content}`)
+    if (editEventItem?.targetAt) {
+      const targetAt = timestampToDate(editEventItem?.targetAt)
+      setDate(targetAt)
+    }
+  }
+
+  useEffect(() => {
+    if (isEdit && !!editEventItem) {
+      editableSetting()
+    }
+  }, [])
 
   return (
     <SafeAreaView style={defaultStyles.containerStyle}>

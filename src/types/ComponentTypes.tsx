@@ -62,3 +62,12 @@ export interface CustomRadioButtonProps {
   value: boolean
   text: string
 }
+
+export interface EventListitemProps {
+  item: EventModel
+  index: number
+  onPressItem: (item: EventModel) => void
+  onLongPressItem: (item: EventModel) => void
+  onPressDelete: (item: EventModel) => void
+  onPressEdit: (item: EventModel) => void
+}

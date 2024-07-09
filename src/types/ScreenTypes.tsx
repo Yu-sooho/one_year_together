@@ -26,4 +26,5 @@ type EventScreenProps = {
 
 type EditEventScreenProps = {
   isEdit?: boolean
+  event?: EventModel
 }

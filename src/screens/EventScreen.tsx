@@ -100,6 +100,8 @@ const EventScreen: React.FC<Props> = ({navigation, route}) => {
   )
 }
 
+const AnimationList = () => {}
+
 const styles = StyleSheet.create({
   listContainer: {
     width: Dimensions.get('window').width,
