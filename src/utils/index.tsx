@@ -42,6 +42,21 @@ export function daysUntilYear(date: Date) {
   return target
 }
 
+export const extractFileName = (url: string) => {
+  try {
+    const regex = /\/([^\/?]+(\.jpg|\.jpeg|\.png|\.gif))/i
+    const match = url.match(regex)
+    if (match) {
+      return match[1]
+    } else {
+      throw new Error('No matching file name found')
+    }
+  } catch (error) {
+    console.error('Invalid URL', error)
+    return undefined
+  }
+}
+
 export function dateToTimestamp(date: Date) {
   const momentDate = moment(date)
   const timestamp = momentDate.valueOf()

@@ -25,6 +25,7 @@ import colors from '../styles/colors'
 import {
   dateToTimestamp,
   daysUntil,
+  extractFileName,
   getFileExtension,
   normalize,
   timestampToDate,
@@ -53,6 +54,7 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
   const [content, setContent] = useState('')
   const [date, setDate] = useState(new Date())
   const [imageList, setImageList] = useState<ImageOrVideo[] | null>(null)
+  const [tempImages, setTempImages] = useState<string[] | null>(null)
 
   const showToast = useAppStateStore(state => state.showToast)
   const setIsLoading = useAppStateStore(state => state.setIsLoading)
@@ -91,12 +93,26 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
     showToast(message)
   }
 
-  const changedEvent = async (snapshot: FirebaseDatabaseTypes.DataSnapshot) => {
+  const changedEvent = async (
+    snapshot: FirebaseDatabaseTypes.DataSnapshot,
+    imageResult?: string[],
+  ) => {
     const event: EventModel = {
       title: title,
       content: content,
       targetAt: dateToTimestamp(date),
     }
+
+    if (imageResult) {
+      event.imageUrl = imageResult
+    } else if (imageList?.length !== editEventItem?.imageUrl?.length) {
+      let tempImageList: string[] = []
+      imageList?.forEach(element => {
+        tempImageList.push(element?.path)
+      })
+      event.imageUrl = tempImageList
+    }
+
     const uploadResult = await updateEvent(event, snapshot)
     if (!uploadResult) {
       showError('서버에러 입니다.')
@@ -139,6 +155,11 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
       showError('중복되는 제목입니다.')
       return
     } else if (isEdit && checkDuplicated) {
+      if (editEventItem?.imageUrl !== tempImages) {
+        const imageResult = await uploadImage()
+        changedEvent(checkDuplicated, imageResult)
+        return
+      }
       changedEvent(checkDuplicated)
       return
     }
@@ -215,6 +236,27 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
     if (editEventItem?.targetAt) {
       const targetAt = timestampToDate(editEventItem?.targetAt)
       setDate(targetAt)
+    }
+    if (editEventItem?.imageUrl) {
+      const tempImage: ImageOrVideo[] = []
+      editEventItem?.imageUrl.forEach(element => {
+        tempImage.push({
+          creationDate: `${Date.now()}`,
+          cropRect: null,
+          data: null,
+          duration: null,
+          exif: null,
+          filename: extractFileName(element),
+          height: 0,
+          mime: 'image/jpeg',
+          path: element,
+          size: 0,
+          sourceURL: element,
+          width: 0,
+        })
+      })
+      setTempImages(editEventItem?.imageUrl)
+      setImageList(tempImage)
     }
   }
 
