@@ -20,6 +20,10 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>AppGroups</key>
+	<array>
+	<string>group.one_year_together</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

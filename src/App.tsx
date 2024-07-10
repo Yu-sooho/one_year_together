@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {Platform, StyleSheet, View} from 'react-native'
+import {NativeModules, Platform, StyleSheet, View} from 'react-native'
 import {NavigationContainer, NavigationState} from '@react-navigation/native'
 import {LetterStackNavigator} from './navigations'
 import {
@@ -12,37 +12,38 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context'
 import {useAppStateStore, useAuthStore} from './stores'
-import {normalize} from './utils'
+import {daysUntil, normalize} from './utils'
 import colors from './styles/colors'
 import fonts from './styles/fonts'
 import LoadingController from './components/controllers/LoadingController'
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth'
 import {GoogleSignin} from '@react-native-google-signin/google-signin'
-import SharedPreferences from 'react-native-shared-preferences'
 import SharedGroupPreferences from 'react-native-shared-group-preferences'
+import {START_DATE} from './resources'
 
 const appGroupIdentifier = 'group.one_year_together'
-const targetDate = new Date('2024-12-31T00:00:00Z') // 예시 타겟 날짜
 
 async function saveTargetDate() {
   try {
-    if (Platform.OS === 'ios') {
-      await SharedGroupPreferences.setItem(
-        'targetDate',
-        targetDate.toISOString(),
-        appGroupIdentifier,
-      )
-      console.log('Target date saved successfully')
-    } else {
-      SharedPreferences.setItem('targetDate', targetDate.toISOString())
-    }
+    const dateStr = `${daysUntil(START_DATE)}`
+
+    await SharedGroupPreferences.setItem(
+      'daysSince',
+      dateStr,
+      appGroupIdentifier,
+    )
+    console.log('Target date saved successfully for iOS')
+
+    // 저장된 데이터 확인
+    const savedDate = await SharedGroupPreferences.getItem(
+      'daysSince',
+      appGroupIdentifier,
+    )
+    console.log('Saved date from SharedGroupPreferences:', savedDate)
   } catch (error) {
     console.error('Error saving target date', error)
   }
 }
-
-saveTargetDate()
-
 const App: React.FC = () => {
   const handleStateChange = (state: NavigationState | undefined) => {
     if (state) {
@@ -80,6 +81,10 @@ const App: React.FC = () => {
     }
     return route.name
   }
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') saveTargetDate()
+  }, [])
 
   return (
     <NavigationContainer onStateChange={handleStateChange}>

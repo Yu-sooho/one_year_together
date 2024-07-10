@@ -3,8 +3,13 @@ export {
   PermissionController,
   FirebaseController,
   ToastController,
+  WidgetTaskHandler,
 } from './controllers'
-export {CustomBackgroundOpacity, FadeAnimatedView} from './containers'
+export {
+  CustomBackgroundOpacity,
+  FadeAnimatedView,
+  AndroidWidget,
+} from './containers'
 export {
   CustomBottomTabBar,
   CustomBottomButton,

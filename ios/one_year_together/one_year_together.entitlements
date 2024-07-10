@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.one.year.together</string>
+		<string>group.one_year_together</string>
 	</array>
 </dict>
 </plist>
