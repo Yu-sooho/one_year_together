@@ -7,7 +7,7 @@ const nameToWidget = {
   Hello: AndroidWidget,
 }
 
-export async function WidgetTaskHandler(props: WidgetTaskHandlerProps) {
+const WidgetTaskHandler = (props: WidgetTaskHandlerProps) => {
   const widgetInfo = props.widgetInfo
   const Widget =
     nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget]
@@ -37,3 +37,5 @@ export async function WidgetTaskHandler(props: WidgetTaskHandlerProps) {
       break
   }
 }
+
+export default WidgetTaskHandler

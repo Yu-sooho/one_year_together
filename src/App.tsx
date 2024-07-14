@@ -20,30 +20,8 @@ import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth'
 import {GoogleSignin} from '@react-native-google-signin/google-signin'
 import SharedGroupPreferences from 'react-native-shared-group-preferences'
 import {START_DATE} from './resources'
+import {WidgetTaskHandlerIos} from './components/controllers'
 
-const appGroupIdentifier = 'group.one_year_together'
-
-async function saveTargetDate() {
-  try {
-    const dateStr = `${daysUntil(START_DATE)}`
-
-    await SharedGroupPreferences.setItem(
-      'daysSince',
-      dateStr,
-      appGroupIdentifier,
-    )
-    console.log('Target date saved successfully for iOS')
-
-    // 저장된 데이터 확인
-    const savedDate = await SharedGroupPreferences.getItem(
-      'daysSince',
-      appGroupIdentifier,
-    )
-    console.log('Saved date from SharedGroupPreferences:', savedDate)
-  } catch (error) {
-    console.error('Error saving target date', error)
-  }
-}
 const App: React.FC = () => {
   const handleStateChange = (state: NavigationState | undefined) => {
     if (state) {
@@ -81,11 +59,6 @@ const App: React.FC = () => {
     }
     return route.name
   }
-
-  useEffect(() => {
-    if (Platform.OS === 'ios') saveTargetDate()
-  }, [])
-
   return (
     <NavigationContainer onStateChange={handleStateChange}>
       <SafeAreaProvider>
@@ -94,6 +67,7 @@ const App: React.FC = () => {
         </View>
         <InsetController />
       </SafeAreaProvider>
+      <WidgetTaskHandlerIos />
       <PermissionController />
       <FirebaseController />
       <ToastController />

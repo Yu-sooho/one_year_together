@@ -6,3 +6,4 @@ export {
   START_EVENT,
   FIRST_MEET,
 } from './Events'
+export const APP_GROUP_IDENTIFIER = 'group.one_year_together'

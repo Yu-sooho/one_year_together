@@ -5,16 +5,33 @@ import Intents
 func retrieveDaysSince() -> String {
     let userDefaults = UserDefaults(suiteName: "group.one_year_together")
     
-    // App Group에서 불러온 데이터를 로그로 출력
-    if let daysSince = userDefaults?.string(forKey: "daysSince") {
-        print("Retrieved days since: \(daysSince)") // 불러온 숫자 출력
-        return "\(daysSince) days since target date"
+    if let startDate = userDefaults?.string(forKey: "startDate") {
+      if let jsTimestamp = Double(startDate) {
+          let jsTimeInterval = jsTimestamp / 1000
+
+          let currentDate = Date()
+
+          let jsDate = Date(timeIntervalSince1970: jsTimeInterval)
+
+          let timeDifference = currentDate.timeIntervalSince(jsDate)
+
+          let seconds = Int(timeDifference) % 60
+          let minutes = (Int(timeDifference) / 60) % 60
+          let hours = (Int(timeDifference) / 3600) % 24
+          let days = Int(timeDifference) / 86400
+
+        return "\(days)"
+      } else {
+          print("잘못된 타임스탬프 문자열입니다.")
+        return "Error TimeStamp"
+      }
+      
     } else {
-        print("Failed to retrieve days since from UserDefaults")
+      return "Error TimeStamp"
     }
     
-    return "0 days since target date" // 기본값 설정
 }
+
 
 struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
@@ -53,7 +70,7 @@ struct oyt_widgetEntryView : View {
     var body: some View {
         ZStack {
             Text(entry.daysSince)
-                .font(.largeTitle)
+            .font(.caption)
                 .padding()
         }
         .containerBackground(Color.red, for: .widget) // 배경색 설정
