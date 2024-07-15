@@ -18,6 +18,7 @@ const WidgetTaskHandler = (props: WidgetTaskHandlerProps) => {
       break
 
     case 'WIDGET_UPDATE':
+      props.renderWidget(<Widget />)
       // Not needed for now
       break
 

@@ -2,7 +2,14 @@ import React from 'react'
 import {Dimensions, StyleSheet, Text, View} from 'react-native'
 import {MainScreenHeaderProps} from '../../types/ComponentTypes'
 import colors from '../../styles/colors'
-import {MAIN_HEADER_MAX_SIZE, MAIN_HEADER_MIN_SIZE} from '../../styles/const'
+import {
+  MAIN_HEADER_MAX_SIZE,
+  MAIN_HEADER_MIN_SIZE,
+  MAIN_HEADER_TEXT_MAX_SIZE,
+  MAIN_HEADER_TEXT_MIN_SIZE,
+  MAIN_HEADER_TITLE_MAX_SIZE,
+  MAIN_HEADER_TITLE_MIN_SIZE,
+} from '../../styles/const'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import Animated, {
   Extrapolate,
@@ -13,19 +20,28 @@ import {normalize} from '../../utils'
 import {FIRST_MEET, MARRY_EVENT, START_EVENT} from '../../resources'
 import fonts from '../../styles/fonts'
 
-const HEADER_SIZE = normalize(80)
+const TOP_PADDING = normalize(12)
 
-const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
-  eventList,
-  scrollY,
-}) => {
+const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({scrollY}) => {
   const inset = useSafeAreaInsets()
+
+  const titlePaddingAnimatedStyle = useAnimatedStyle(() => {
+    const size = interpolate(
+      scrollY.value,
+      [0, MAIN_HEADER_MAX_SIZE - MAIN_HEADER_MIN_SIZE],
+      [TOP_PADDING, 0],
+      Extrapolate.CLAMP,
+    )
+    return {
+      paddingTop: size,
+    }
+  })
 
   const dateAnimatedStyle = useAnimatedStyle(() => {
     const size = interpolate(
       scrollY.value,
       [0, MAIN_HEADER_MAX_SIZE - MAIN_HEADER_MIN_SIZE],
-      [36, 20],
+      [MAIN_HEADER_TEXT_MAX_SIZE, MAIN_HEADER_TEXT_MIN_SIZE],
       Extrapolate.CLAMP,
     )
     return {
@@ -33,15 +49,27 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
     }
   })
 
-  const titleAnimatedStyle = useAnimatedStyle(() => {
+  const viewAnimatedStyle = useAnimatedStyle(() => {
     const translateY = interpolate(
       scrollY.value,
       [0, MAIN_HEADER_MAX_SIZE - MAIN_HEADER_MIN_SIZE],
-      [0, MAIN_HEADER_MAX_SIZE - MAIN_HEADER_MIN_SIZE - HEADER_SIZE],
+      [MAIN_HEADER_MIN_SIZE, MAIN_HEADER_MIN_SIZE / 2],
       Extrapolate.CLAMP,
     )
     return {
-      transform: [{translateY}],
+      height: translateY,
+    }
+  })
+
+  const flexibleView = useAnimatedStyle(() => {
+    const translateY = interpolate(
+      scrollY.value,
+      [0, MAIN_HEADER_MAX_SIZE - MAIN_HEADER_MIN_SIZE],
+      [1, 0],
+      Extrapolate.CLAMP,
+    )
+    return {
+      flex: translateY,
     }
   })
 
@@ -49,43 +77,68 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
     container: {
       height: MAIN_HEADER_MAX_SIZE + inset.top,
     },
-    content: {height: inset.top},
+    content: {height: inset.top, backgroundColor: colors.cffffff},
   })
 
-  return (
-    <View style={[styles.container, componentStyles.container]}>
-      <View style={componentStyles.content} />
-      <View style={styles.headerStyle}>
-        <View style={styles.firstDateView}>
-          <View>
-            <Text>{MARRY_EVENT.title}</Text>
-          </View>
-          <View>
-            <Text>{MARRY_EVENT.targetAt}</Text>
-          </View>
+  const AnimatedItem = ({
+    title,
+    targetAt,
+  }: {
+    title: string
+    targetAt: number
+  }) => {
+    return (
+      <View style={styles.dateContentStyle}>
+        <View style={{justifyContent: 'center'}}>
+          <Animated.View style={titlePaddingAnimatedStyle}>
+            <Animated.Text style={[fonts.bmjua16]}>{title}</Animated.Text>
+          </Animated.View>
+          <Animated.View style={flexibleView} />
         </View>
-        <View style={styles.secondDateView}>
-          <View style={styles.dateContentStyle}>
-            <Animated.View style={titleAnimatedStyle}>
-              <Text>{FIRST_MEET.title}</Text>
-            </Animated.View>
-            <View>
-              <Text>{FIRST_MEET.targetAt}</Text>
-            </View>
-          </View>
-          <View style={styles.dateContentStyle}>
-            <Animated.View style={titleAnimatedStyle}>
-              <Text>{START_EVENT.title}</Text>
-            </Animated.View>
-            <View>
-              <Animated.Text style={[fonts.bmjua16, dateAnimatedStyle]}>
-                {START_EVENT.targetAt}
-              </Animated.Text>
-            </View>
+        <View style={{justifyContent: 'center'}}>
+          <Animated.View style={flexibleView} />
+          <View>
+            <Animated.Text style={[fonts.bmjua16, dateAnimatedStyle]}>
+              {targetAt}
+            </Animated.Text>
           </View>
         </View>
       </View>
-    </View>
+    )
+  }
+
+  return (
+    <Animated.View style={[{position: 'absolute'}]}>
+      <View style={[styles.container, componentStyles.container]}>
+        <View style={componentStyles.content} />
+        <View style={styles.headerStyle}>
+          <Animated.View style={[styles.secondDateView, viewAnimatedStyle]}>
+            {/* MainHeader Two */}
+            <AnimatedItem
+              title={FIRST_MEET.title}
+              targetAt={FIRST_MEET.targetAt}
+            />
+            <AnimatedItem
+              title={START_EVENT.title}
+              targetAt={START_EVENT.targetAt}
+            />
+          </Animated.View>
+          {/* MainHeader Marry */}
+          <Animated.View style={[styles.firstDateView, viewAnimatedStyle]}>
+            <View>
+              <Animated.Text style={[fonts.bmjua16]}>
+                {MARRY_EVENT.title}
+              </Animated.Text>
+            </View>
+            <View>
+              <Animated.Text style={[fonts.bmjua16, dateAnimatedStyle]}>
+                {MARRY_EVENT.targetAt}
+              </Animated.Text>
+            </View>
+          </Animated.View>
+        </View>
+      </View>
+    </Animated.View>
   )
 }
 
@@ -95,25 +148,26 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   headerStyle: {
-    backgroundColor: colors.c24242480,
     zIndex: 10,
     height: MAIN_HEADER_MAX_SIZE,
   },
   dateContentStyle: {
     flex: 1,
     justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingHorizontal: normalize(12),
   },
   firstDateView: {
-    height: HEADER_SIZE,
+    backgroundColor: colors.cffffff,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
+    paddingHorizontal: normalize(12),
   },
   secondDateView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: MAIN_HEADER_MAX_SIZE - HEADER_SIZE,
-    paddingBottom: normalize(12),
+    backgroundColor: colors.cffffff,
   },
 })
 

@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  Platform,
 } from 'react-native'
 import ImageCropPicker from 'react-native-image-crop-picker'
 import {
@@ -91,9 +92,10 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
         .then(image => {
           if (!!image?.path) {
             setSelectedUri({uri: image.path})
-            imageFileName.current = `${image.filename}.${getFileExtension(
-              image.path,
-            )}`
+            const fileName = image.path.split('/').pop()
+            imageFileName.current = !!image?.filename
+              ? `${image.filename}.${getFileExtension(image.path)}`
+              : fileName
             imageFileUri.current = image.path
           }
         })

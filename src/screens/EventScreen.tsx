@@ -1,10 +1,9 @@
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 import {
   View,
   Text,
-  Button,
   FlatList,
   ListRenderItem,
   StyleSheet,

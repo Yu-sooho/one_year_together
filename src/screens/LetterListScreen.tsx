@@ -7,6 +7,8 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import {CustomBottomButton, CustomHeader, LetterListItem} from '../components'
 import {useAuthStore, useLetterStore} from '../stores'
 import {normalize} from '../utils'
+import Icon from 'react-native-vector-icons/Feather'
+import colors from '../styles/colors'
 
 type LetterListScreenNavigationProp = CompositeNavigationProp<
   StackNavigationProp<MainStackNavigatorParamList, 'LetterListScreen'>,
@@ -82,7 +84,13 @@ const LetterListScreen: React.FC<Props> = memo(({navigation, route}) => {
 
   return (
     <SafeAreaView style={defaultStyles.containerStyle}>
-      <CustomHeader title="LetterListScreen" />
+      <CustomHeader
+        title=""
+        onPressButton={navigatedEditLetterScreen}
+        rightContent={
+          <Icon name="plus" size={normalize(24)} color={colors.c242424} />
+        }
+      />
       <FlatList
         data={letterList}
         renderItem={renderItem}
@@ -91,10 +99,6 @@ const LetterListScreen: React.FC<Props> = memo(({navigation, route}) => {
         ItemSeparatorComponent={itemSeparatorComponent}
         style={styles.listStyle}
         contentContainerStyle={styles.contentContainerStyle}
-      />
-      <CustomBottomButton
-        buttonText={'확인'}
-        onPressButton={navigatedEditLetterScreen}
       />
     </SafeAreaView>
   )

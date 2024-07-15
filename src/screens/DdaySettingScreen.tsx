@@ -47,7 +47,7 @@ const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={defaultStyles.containerStyle}>
-      <CustomHeader title="DdaySettingScreen" />
+      <CustomHeader title="" />
       <CustomRadioButton
         onPress={onPressPush}
         text={'푸시 알림 허용'}
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: normalize(60),
     paddingHorizontal: normalize(20),
-    marginTop: normalize(120),
+    marginTop: normalize(24),
   },
   logoutText: {
     ...fonts.bmjua16,

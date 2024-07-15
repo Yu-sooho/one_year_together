@@ -5,6 +5,8 @@ import {StackNavigationProp} from '@react-navigation/stack'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import colors from '../../styles/colors'
 import {DEFAULT_BOTTOM_SIZE, DEFAULT_BOTTOM_TABBAR} from '../../styles/const'
+import Icon from 'react-native-vector-icons/Feather'
+import {normalize} from '../../utils'
 
 const CustomBottomTabBar = memo(() => {
   const insets = useSafeAreaInsets()
@@ -49,19 +51,19 @@ const CustomBottomTabBar = memo(() => {
       <TouchableOpacity
         onPress={navigatedLetterListScreen}
         style={styles.buttonStyle}>
-        <Text>Lock</Text>
+        <Icon name="mail" size={normalize(24)} color={colors.c242424} />
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={navigatedEditEventScreen}
         style={[styles.buttonStyle, styles.centerButtonStyle]}>
-        <Text>Add</Text>
+        <Icon name="plus" size={normalize(26)} color={colors.c242424} />
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={navigatedDdaySettingScreen}
         style={styles.buttonStyle}>
-        <Text>Setting</Text>
+        <Icon name="settings" size={normalize(24)} color={colors.c242424} />
       </TouchableOpacity>
     </View>
   )

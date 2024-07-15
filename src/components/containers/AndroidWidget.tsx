@@ -1,11 +1,19 @@
 import React from 'react'
-import {FlexWidget, TextWidget} from 'react-native-android-widget'
-import {daysUntil} from '../../utils'
+import {
+  FlexWidget,
+  ImageWidget,
+  OverlapWidget,
+  TextWidget,
+} from 'react-native-android-widget'
+import {daysUntil, normalize} from '../../utils'
 import {START_DATE} from '../../resources'
+import {Dimensions} from 'react-native'
 
 const AndroidWidget = () => {
+  const {width, height} = Dimensions.get('window')
   const dateStr = `${daysUntil(START_DATE)}`
-
+  const horizonPixel = width / 4
+  const VerticalPixel = height / 8
   return (
     <FlexWidget
       style={{
@@ -16,14 +24,24 @@ const AndroidWidget = () => {
         backgroundColor: '#ffffff',
         borderRadius: 16,
       }}>
-      <TextWidget
-        text={`${dateStr}FUFU`}
-        style={{
-          fontSize: 32,
-          fontFamily: 'Inter',
-          color: '#000000',
-        }}
-      />
+      <OverlapWidget>
+        <ImageWidget
+          image={
+            'https://manybackgrounds.com/images/hd/pretty-cherry-blossoms-picture-awak9y5hkcqb8b3o.jpg'
+          }
+          imageWidth={horizonPixel * 4}
+          imageHeight={VerticalPixel * 2 + normalize(39)}
+          style={{width: 'match_parent', height: 'match_parent'}}
+        />
+        <TextWidget
+          text={`${dateStr}FㅇㄹㄴUFU`}
+          style={{
+            fontSize: 32,
+            fontFamily: 'Inter',
+            color: '#000000',
+          }}
+        />
+      </OverlapWidget>
     </FlexWidget>
   )
 }

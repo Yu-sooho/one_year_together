@@ -65,18 +65,6 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
     scrollY.value = event.contentOffset.y
   })
 
-  const headerAnimatedStyle = useAnimatedStyle(() => {
-    const translateY = interpolate(
-      scrollY.value,
-      [0, MAIN_HEADER_MAX_SIZE - MAIN_HEADER_MIN_SIZE],
-      [0, -(MAIN_HEADER_MAX_SIZE - MAIN_HEADER_MIN_SIZE)],
-      Extrapolate.CLAMP,
-    )
-    return {
-      transform: [{translateY}],
-    }
-  })
-
   useEffect(() => {
     subscribeEventList()
     return () => unsubscribeEventList()
@@ -224,14 +212,7 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
             <View style={{height: MAIN_HEADER_MAX_SIZE + inset.top}} />
           }
         />
-        <Animated.View
-          pointerEvents={'none'}
-          style={[
-            {position: 'absolute', backgroundColor: colors.cffffe0},
-            headerAnimatedStyle,
-          ]}>
-          <MainScreenHeader scrollY={scrollY} eventList={[]} />
-        </Animated.View>
+        <MainScreenHeader scrollY={scrollY} />
       </View>
       <CustomBottomTabBar />
     </View>

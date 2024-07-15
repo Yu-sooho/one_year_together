@@ -8,15 +8,14 @@ import {
 } from 'react-native'
 import {SharedValue} from 'react-native-reanimated'
 
-import {ToastConfig} from 'react-native-toast-message'
-
 export interface CustomHeaderProps {
   title: string
   titleStyle?: StyleProp<TextStyle>
   containerStyle?: StyleProp<ViewStyle>
   buttonText?: string
   iconColor?: string
-  onPressButton?: () => {}
+  rightContent?: React.ReactNode
+  onPressButton?: () => void
 }
 
 export interface CustomBottomButtonProps {
@@ -49,7 +48,6 @@ export interface TextInputTitleProps {
 }
 
 export interface MainScreenHeaderProps {
-  eventList: EventModel[]
   scrollY: SharedValue<number>
 }
 

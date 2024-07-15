@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {NativeModules, Platform, StyleSheet, View} from 'react-native'
+import {StyleSheet, View} from 'react-native'
 import {NavigationContainer, NavigationState} from '@react-navigation/native'
 import {LetterStackNavigator} from './navigations'
 import {
@@ -12,14 +12,12 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context'
 import {useAppStateStore, useAuthStore} from './stores'
-import {daysUntil, normalize} from './utils'
+import {normalize} from './utils'
 import colors from './styles/colors'
 import fonts from './styles/fonts'
 import LoadingController from './components/controllers/LoadingController'
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth'
 import {GoogleSignin} from '@react-native-google-signin/google-signin'
-import SharedGroupPreferences from 'react-native-shared-group-preferences'
-import {START_DATE} from './resources'
 import {WidgetTaskHandlerIos} from './components/controllers'
 
 const App: React.FC = () => {
@@ -77,8 +75,8 @@ const App: React.FC = () => {
 }
 
 const InsetController = () => {
+  // const inset = useAppStateStore(state => state.inset)
   const useInset = useSafeAreaInsets()
-  const inset = useAppStateStore(state => state.inset)
   const setInset = useAppStateStore(state => state.setInset)
 
   useEffect(() => {
