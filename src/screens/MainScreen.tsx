@@ -16,12 +16,9 @@ import {
 import defaultStyles from '../styles'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {useEventStore} from '../stores'
-import {MAIN_HEADER_MAX_SIZE, MAIN_HEADER_MIN_SIZE} from '../styles/const'
+import {MAIN_HEADER_MAX_SIZE} from '../styles/const'
 import Animated, {
-  Extrapolate,
-  interpolate,
   useAnimatedScrollHandler,
-  useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated'
 import colors from '../styles/colors'
@@ -100,6 +97,7 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
       setDeletedDefaultEvent(item)
       deleteDateItem(item)
     } else {
+      deleteEvent(item)
     }
   }
 
@@ -196,6 +194,12 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
     initDefaultDate()
   }, [eventList])
 
+  const navigateEventScreen = (item: EventModel) => {
+    navigation.navigate('EventScreen', {
+      event: item,
+    })
+  }
+
   return (
     <View style={defaultStyles.containerStyle}>
       <View style={defaultStyles.containerStyle}>
@@ -212,7 +216,7 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
             <View style={{height: MAIN_HEADER_MAX_SIZE + inset.top}} />
           }
         />
-        <MainScreenHeader scrollY={scrollY} />
+        <MainScreenHeader scrollY={scrollY} onPressItem={navigateEventScreen} />
       </View>
       <CustomBottomTabBar />
     </View>

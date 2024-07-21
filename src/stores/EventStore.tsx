@@ -24,7 +24,7 @@ interface EventState {
     uri: string,
   ) => Promise<string | false>
   deletedDefaultEvent: EventModel[]
-  setDeletedDefaultEvent: (item: EventModel) => void
+  setDeletedDefaultEvent: (item: EventModel | null) => void
 }
 
 interface persistOption {
@@ -104,9 +104,14 @@ const useEventStore = create<EventState>()(
           return result
         },
         deletedDefaultEvent: [],
-        setDeletedDefaultEvent: (item: EventModel) => {
+        setDeletedDefaultEvent: (item: EventModel | null) => {
           const deletedDefaultEvent = get().deletedDefaultEvent
-          set({deletedDefaultEvent: [...deletedDefaultEvent, item]})
+          if (!item) {
+            set({deletedDefaultEvent: []})
+            console.log('FUFU')
+          } else {
+            set({deletedDefaultEvent: [...deletedDefaultEvent, item]})
+          }
         },
       }
     },

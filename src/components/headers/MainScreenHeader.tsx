@@ -1,5 +1,11 @@
 import React from 'react'
-import {Dimensions, StyleSheet, Text, View} from 'react-native'
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import {MainScreenHeaderProps} from '../../types/ComponentTypes'
 import colors from '../../styles/colors'
 import {
@@ -22,7 +28,10 @@ import fonts from '../../styles/fonts'
 
 const TOP_PADDING = normalize(12)
 
-const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({scrollY}) => {
+const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
+  scrollY,
+  onPressItem,
+}) => {
   const inset = useSafeAreaInsets()
 
   const titlePaddingAnimatedStyle = useAnimatedStyle(() => {
@@ -83,12 +92,14 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({scrollY}) => {
   const AnimatedItem = ({
     title,
     targetAt,
+    onPress,
   }: {
     title: string
     targetAt: number
+    onPress: () => void
   }) => {
     return (
-      <View style={styles.dateContentStyle}>
+      <TouchableOpacity onPress={onPress} style={styles.dateContentStyle}>
         <View style={{justifyContent: 'center'}}>
           <Animated.View style={titlePaddingAnimatedStyle}>
             <Animated.Text style={[fonts.bmjua16]}>{title}</Animated.Text>
@@ -103,7 +114,7 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({scrollY}) => {
             </Animated.Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 
@@ -113,29 +124,41 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({scrollY}) => {
         <View style={componentStyles.content} />
         <View style={styles.headerStyle}>
           <Animated.View style={[styles.secondDateView, viewAnimatedStyle]}>
-            {/* MainHeader Two */}
+            {/* MainHeader */}
             <AnimatedItem
               title={FIRST_MEET.title}
               targetAt={FIRST_MEET.targetAt}
+              onPress={() => {
+                onPressItem(FIRST_MEET)
+              }}
             />
             <AnimatedItem
               title={START_EVENT.title}
               targetAt={START_EVENT.targetAt}
+              onPress={() => {
+                onPressItem(START_EVENT)
+              }}
             />
           </Animated.View>
+
           {/* MainHeader Marry */}
-          <Animated.View style={[styles.firstDateView, viewAnimatedStyle]}>
-            <View>
-              <Animated.Text style={[fonts.bmjua16]}>
-                {MARRY_EVENT.title}
-              </Animated.Text>
-            </View>
-            <View>
-              <Animated.Text style={[fonts.bmjua16, dateAnimatedStyle]}>
-                {MARRY_EVENT.targetAt}
-              </Animated.Text>
-            </View>
-          </Animated.View>
+          <TouchableOpacity
+            onPress={() => {
+              onPressItem(MARRY_EVENT)
+            }}>
+            <Animated.View style={[styles.firstDateView, viewAnimatedStyle]}>
+              <View>
+                <Animated.Text style={[fonts.bmjua16]}>
+                  {MARRY_EVENT.title}
+                </Animated.Text>
+              </View>
+              <View>
+                <Animated.Text style={[fonts.bmjua16, dateAnimatedStyle]}>
+                  {MARRY_EVENT.targetAt}
+                </Animated.Text>
+              </View>
+            </Animated.View>
+          </TouchableOpacity>
         </View>
       </View>
     </Animated.View>

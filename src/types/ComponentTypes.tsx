@@ -49,6 +49,7 @@ export interface TextInputTitleProps {
 
 export interface MainScreenHeaderProps {
   scrollY: SharedValue<number>
+  onPressItem: (item: EventModel) => void
 }
 
 export interface ToastTypes {

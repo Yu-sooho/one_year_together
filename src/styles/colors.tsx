@@ -1,4 +1,5 @@
 export default {
+  transparent: 'transparent',
   c24242480: '#24242480',
   cffffff80: '#ffffff80',
   cff5733: '#ff5733',
@@ -6,7 +7,6 @@ export default {
   cffffff: '#ffffff',
   cf4f4f4: '#f4f4f4',
   cf7f7f7: '#f7f7f7',
-  transparent: 'transparent',
   //gpt
   c008000: '#008000', // Green
   cff69b4: '#FF69B4', // Hot Pink
@@ -19,4 +19,9 @@ export default {
   c87cefa: '#87CEFA', // Light Sky Blue
   cfa8072: '#FA8072', // Salmon
   cda70d6: '#DA70D6', // Orchid
+
+  c201343: '#201343',
+  c134b70: '#134b70',
+  c508c9b: '#508c9b',
+  ceeeeee: '#eeeeee',
 }

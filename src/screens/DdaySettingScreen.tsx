@@ -12,7 +12,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {CustomHeader, CustomRadioButton} from '../components'
 import defaultStyles from '../styles'
-import {useAuthStore} from '../stores'
+import {useAuthStore, useEventStore} from '../stores'
 import {normalize} from '../utils'
 import fonts from '../styles/fonts'
 
@@ -33,14 +33,22 @@ type Props = {
 const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
   const [isAgreePush, setIsAgree] = useState(false)
   const logout = useAuthStore(state => state.logout)
+  const setDeletedDefaultEvent = useEventStore(
+    state => state.setDeletedDefaultEvent,
+  )
 
   const onPressPush = () => {
     setIsAgree(!isAgreePush)
   }
 
+  const dataReset = () => {
+    logout()
+    setDeletedDefaultEvent(null)
+  }
+
   const onPressLogout = () => {
     navigation.navigate('CustomModalScreen', {
-      okAction: logout,
+      okAction: dataReset,
       title: '',
     })
   }

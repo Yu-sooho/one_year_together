@@ -4,7 +4,7 @@ import React, {memo, useEffect} from 'react'
 import {View, FlatList, StyleSheet, ListRenderItem} from 'react-native'
 import defaultStyles from '../styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import {CustomBottomButton, CustomHeader, LetterListItem} from '../components'
+import {CustomHeader, LetterListItem} from '../components'
 import {useAuthStore, useLetterStore} from '../stores'
 import {normalize} from '../utils'
 import Icon from 'react-native-vector-icons/Feather'
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
   },
   listStyle: {
     paddingTop: normalize(20),
+    paddingHorizontal: normalize(20),
   },
   contentContainerStyle: {
     paddingBottom: normalize(120),
