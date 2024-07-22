@@ -23,8 +23,16 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated'
 import {normalize} from '../../utils'
-import {FIRST_MEET, MARRY_EVENT, START_EVENT} from '../../resources'
+import {
+  FIRST_DATE,
+  FIRST_MEET,
+  MARRY_DATE,
+  MARRY_EVENT,
+  START_DATE,
+  START_EVENT,
+} from '../../resources'
 import fonts from '../../styles/fonts'
+import moment from 'moment'
 
 const TOP_PADDING = normalize(12)
 
@@ -43,6 +51,18 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
     )
     return {
       paddingTop: size,
+    }
+  })
+
+  const dateSizeAnimatedStyle = useAnimatedStyle(() => {
+    const size = interpolate(
+      scrollY.value,
+      [0, MAIN_HEADER_MAX_SIZE - MAIN_HEADER_MIN_SIZE],
+      [22, 0],
+      Extrapolate.CLAMP,
+    )
+    return {
+      height: size,
     }
   })
 
@@ -92,10 +112,12 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
   const AnimatedItem = ({
     title,
     targetAt,
+    targetDate,
     onPress,
   }: {
     title: string
     targetAt: number
+    targetDate: Date
     onPress: () => void
   }) => {
     return (
@@ -103,6 +125,11 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
         <View style={{justifyContent: 'center'}}>
           <Animated.View style={titlePaddingAnimatedStyle}>
             <Animated.Text style={[fonts.bmjua16]}>{title}</Animated.Text>
+          </Animated.View>
+          <Animated.View style={dateSizeAnimatedStyle}>
+            <Animated.Text style={styles.dateText}>
+              {moment(targetDate).format('YYYY.MM.DD')}
+            </Animated.Text>
           </Animated.View>
           <Animated.View style={flexibleView} />
         </View>
@@ -128,6 +155,7 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
             <AnimatedItem
               title={FIRST_MEET.title}
               targetAt={FIRST_MEET.targetAt}
+              targetDate={FIRST_DATE}
               onPress={() => {
                 onPressItem(FIRST_MEET)
               }}
@@ -135,6 +163,7 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
             <AnimatedItem
               title={START_EVENT.title}
               targetAt={START_EVENT.targetAt}
+              targetDate={START_DATE}
               onPress={() => {
                 onPressItem(START_EVENT)
               }}
@@ -147,10 +176,19 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
               onPressItem(MARRY_EVENT)
             }}>
             <Animated.View style={[styles.firstDateView, viewAnimatedStyle]}>
-              <View>
+              <View
+                style={{
+                  justifyContent: 'center',
+                  flex: 1,
+                }}>
                 <Animated.Text style={[fonts.bmjua16]}>
                   {MARRY_EVENT.title}
                 </Animated.Text>
+                <Animated.View style={dateSizeAnimatedStyle}>
+                  <Animated.Text style={styles.dateText}>
+                    {moment(MARRY_DATE).format('YYYY.MM.DD')}
+                  </Animated.Text>
+                </Animated.View>
               </View>
               <View>
                 <Animated.Text style={[fonts.bmjua16, dateAnimatedStyle]}>
@@ -191,6 +229,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: colors.cffffff,
+  },
+  dateText: {
+    ...fonts.bmjua14,
+    fontSize: normalize(12),
+    color: colors.cd4d4d4,
+    marginTop: normalize(4),
   },
 })
 

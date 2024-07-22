@@ -21,9 +21,8 @@ import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
 } from 'react-native-reanimated'
-import colors from '../styles/colors'
 import moment from 'moment'
-import {dateToTimestamp} from '../utils'
+import {dateToTimestamp, isSameDate} from '../utils'
 import {START_DATE} from '../resources'
 
 type MainScreenNavigationProp = StackNavigationProp<
@@ -68,6 +67,14 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
   }, [])
 
   const onPressItem = (item: EventModel) => {
+    const today = new Date()
+    const targetDate = new Date(item.targetAt)
+    if (isSameDate(today, targetDate)) {
+      navigation.navigate('EditEventScreen', {
+        event: item,
+      })
+      return
+    }
     navigation.navigate('EventScreen', {
       event: item,
     })
@@ -140,13 +147,28 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
       ),
     )
 
+    const today = moment().format('YYYY-MM-DD')
+
     while (currentDate.isSameOrBefore(endDate)) {
       const formattedCurrentDate = currentDate.format('YYYY-MM-DD')
 
       if (!deletedDatesSet.has(formattedCurrentDate)) {
+        const option = {
+          title: `${index * 100}일`,
+          content: `${currentDate.toDate()}`,
+          targetAt: dateToTimestamp(currentDate.toDate()),
+          isDefault: true,
+        }
+        if (index == 0) {
+          option.title = '고백한 날'
+        }
+        dateList.push(option)
+      }
+
+      if (formattedCurrentDate === today && !deletedDatesSet.has(today)) {
         dateList.push({
-          title: `${index}`,
-          content: '',
+          title: `오늘`,
+          content: `${currentDate.toDate()}`,
           targetAt: dateToTimestamp(currentDate.toDate()),
           isDefault: true,
         })
@@ -154,6 +176,20 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
 
       currentDate = currentDate.add(daysInterval, 'days')
       index++
+    }
+
+    if (
+      !deletedDatesSet.has(today) &&
+      !dateList.some(
+        event => moment(event.targetAt).format('YYYY-MM-DD') === today,
+      )
+    ) {
+      dateList.push({
+        title: `오늘`,
+        content: `${moment().toDate()}`,
+        targetAt: dateToTimestamp(moment().toDate()),
+        isDefault: true,
+      })
     }
 
     return dateList

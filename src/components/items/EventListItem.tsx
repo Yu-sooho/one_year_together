@@ -6,19 +6,19 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {daysUntil, normalize} from '../../utils'
+import {daysUntil, isSameDate, normalize} from '../../utils'
 import fonts from '../../styles/fonts'
 import Animated, {
   useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
-  withSpring,
   withTiming,
 } from 'react-native-reanimated'
 import {PanGestureHandler} from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather'
 import colors from '../../styles/colors'
 import {EventListitemProps} from '../../types/ComponentTypes'
+import moment from 'moment'
 
 const SCREEN_WIDTH = Dimensions.get('window').width
 const SWIPE_THRESHOLD = normalize(60)
@@ -27,6 +27,8 @@ const SWIPE_DEGREE = -normalize(60) * 2
 const EventListItem: React.FC<EventListitemProps> = memo(
   ({item, index, onPressItem, onLongPressItem, onPressDelete, onPressEdit}) => {
     const {targetAt, title, content} = item
+    const today = new Date()
+    const targetDate = new Date(targetAt)
     const date = daysUntil(new Date(targetAt))
 
     const onPress = () => {
@@ -115,8 +117,25 @@ const EventListItem: React.FC<EventListitemProps> = memo(
               onLongPress={onLongPress}
               activeOpacity={1}
               style={styles.container}>
-              <Text style={styles.titleText}>{title}</Text>
-              <Text style={styles.dateText}>{date}</Text>
+              <View>
+                <Text style={styles.titleText}>{title}</Text>
+                <Text style={styles.dateText}>
+                  {moment(targetAt).format('YYYY.MM.DD')}
+                </Text>
+              </View>
+              {!isSameDate(today, targetDate) ? (
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={styles.ddateText}>{date}</Text>
+                </View>
+              ) : (
+                <View style={{marginRight: normalize(14)}}>
+                  <Icon
+                    name="plus"
+                    size={normalize(18)}
+                    color={colors.c242424}
+                  />
+                </View>
+              )}
             </TouchableOpacity>
           </Animated.View>
         </PanGestureHandler>
@@ -144,6 +163,12 @@ const styles = StyleSheet.create({
     marginLeft: normalize(14),
   },
   dateText: {
+    ...fonts.bmjua14,
+    marginLeft: normalize(14),
+    marginTop: normalize(6),
+    color: colors.cd4d4d4,
+  },
+  ddateText: {
     ...fonts.bmjua16,
     marginRight: normalize(14),
   },
