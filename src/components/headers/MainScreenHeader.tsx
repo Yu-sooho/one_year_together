@@ -179,7 +179,7 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
               <View
                 style={{
                   justifyContent: 'center',
-                  flex: 1,
+                  height: '100%',
                 }}>
                 <Animated.Text style={[fonts.bmjua16]}>
                   {MARRY_EVENT.title}
@@ -233,8 +233,8 @@ const styles = StyleSheet.create({
   dateText: {
     ...fonts.bmjua14,
     fontSize: normalize(12),
-    color: colors.cd4d4d4,
     marginTop: normalize(4),
+    color: colors.cd4d4d4,
   },
 })
 
