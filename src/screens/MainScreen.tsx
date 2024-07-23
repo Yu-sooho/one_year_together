@@ -155,7 +155,7 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
       if (!deletedDatesSet.has(formattedCurrentDate)) {
         const option = {
           title: `${index * 100}일`,
-          content: `${currentDate.toDate()}`,
+          content: '',
           targetAt: dateToTimestamp(currentDate.toDate()),
           isDefault: true,
         }
@@ -168,7 +168,7 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
       if (formattedCurrentDate === today && !deletedDatesSet.has(today)) {
         dateList.push({
           title: `오늘`,
-          content: `${currentDate.toDate()}`,
+          content: '',
           targetAt: dateToTimestamp(currentDate.toDate()),
           isDefault: true,
         })

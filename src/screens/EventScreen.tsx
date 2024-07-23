@@ -8,13 +8,17 @@ import {
   ListRenderItem,
   StyleSheet,
   Dimensions,
+  ScrollView,
+  TouchableOpacity,
 } from 'react-native'
 import defaultStyles from '../styles'
 import FastImage from 'react-native-fast-image'
 import {CustomBackgroundOpacity, CustomHeader} from '../components'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import colors from '../styles/colors'
-import {daysUntil} from '../utils'
+import {daysUntil, normalize} from '../utils'
+import {images} from '../resources'
+import fonts from '../styles/fonts'
 
 type EventScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -36,15 +40,6 @@ const EventScreen: React.FC<Props> = ({navigation, route}) => {
   const scrollIndex = useRef(0)
   const animInterval = useRef<any>(null)
 
-  const renderItem: ListRenderItem<string> = ({item, index}) => {
-    return (
-      <View>
-        <FastImage style={styles.imageStyle} source={{uri: item}} />
-        <CustomBackgroundOpacity />
-      </View>
-    )
-  }
-
   const eventAnimatedInit = () => {
     if (!event || !event.imageUrl || event.imageUrl.length <= 0) return
     animInterval.current = setInterval(() => {
@@ -65,11 +60,28 @@ const EventScreen: React.FC<Props> = ({navigation, route}) => {
     return () => clearInterval(animInterval.current)
   }, [])
 
-  const date = daysUntil(new Date(event?.targetAt))
+  const date = event?.targetAt
+  const isHaveImage = event.imageUrl || event.localImageUrl
+
+  const onPressAdd = () => {
+    navigation.navigate('EditEventScreen', {isEdit: true, event: event})
+  }
+
+  const renderItem: ListRenderItem<string> = ({item, index}) => {
+    return (
+      <View>
+        <FastImage
+          style={styles.imageStyle}
+          source={event.localImageUrl ? parseInt(item) : {uri: item}}
+        />
+        <CustomBackgroundOpacity />
+      </View>
+    )
+  }
 
   return (
     <View style={defaultStyles.centerContainerStyle}>
-      {event.imageUrl && (
+      {isHaveImage && (
         <FlatList
           ref={flatListRef}
           pointerEvents="none"
@@ -77,23 +89,39 @@ const EventScreen: React.FC<Props> = ({navigation, route}) => {
           pagingEnabled
           style={styles.listContainer}
           renderItem={renderItem}
-          data={event.imageUrl}
+          data={isHaveImage}
           bounces={false}
         />
       )}
-      <SafeAreaView style={event.imageUrl ? styles.container : styles.noImage}>
+      <SafeAreaView style={isHaveImage ? styles.container : styles.noImage}>
         <CustomHeader
           title={event.title}
           containerStyle={
-            event.imageUrl && {backgroundColor: colors.transparent}
+            isHaveImage && {
+              backgroundColor: colors.transparent,
+            }
           }
-          iconColor={event.imageUrl && colors.cffffff}
-          titleStyle={event.imageUrl && {color: colors.cffffff}}
+          iconColor={isHaveImage && colors.cffffff}
+          titleStyle={isHaveImage && {color: colors.cffffff}}
         />
-        <View style={styles.content}>
-          <Text>{event.content}</Text>
-          <Text>{date}</Text>
-        </View>
+        {!event?.isDefault ? (
+          <>
+            <View style={styles.dateView}>
+              <Text style={styles.dateText}>{`${date}일째!`}</Text>
+            </View>
+            <ScrollView contentContainerStyle={{paddingTop: normalize(120)}}>
+              <View style={{alignItems: 'center'}}>
+                <Text style={styles.contentText}>{event.content}</Text>
+              </View>
+            </ScrollView>
+          </>
+        ) : (
+          <View style={styles.addContent}>
+            <TouchableOpacity onPress={onPressAdd} style={styles.addButton}>
+              <Text style={styles.addText}>오늘은 어떤 추억이야?</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </SafeAreaView>
     </View>
   )
@@ -120,7 +148,40 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
     position: 'absolute',
   },
-  content: {flex: 1, justifyContent: 'center', alignItems: 'center'},
+  dateView: {
+    height: normalize(40),
+    paddingHorizontal: normalize(20),
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  dateText: {
+    ...fonts.bmjua16,
+    color: colors.cffffff,
+  },
+  contentText: {
+    ...fonts.bmjua16,
+    color: colors.cffffff,
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addButton: {
+    width: '100%',
+    height: normalize(120),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: normalize(120),
+  },
+  addText: {
+    ...fonts.bmjua14,
+  },
 })
 
 export default EventScreen

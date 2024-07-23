@@ -8,3 +8,9 @@ export {
 } from './Events'
 
 export const APP_GROUP_IDENTIFIER = 'group.one_year_together'
+
+export const images = {
+  first_meet: require('./images/first_meet.jpg'),
+  marry_event: require('./images/marry_event.jpg'),
+  loading_image: require('./images/loading_image.jpg'),
+}

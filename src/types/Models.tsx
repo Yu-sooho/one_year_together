@@ -9,6 +9,7 @@ interface EventModel extends defaultData {
   content: string
   targetAt: number
   imageUrl?: string[]
+  localImageUrl?: string[]
   isDefault?: boolean
 }
 

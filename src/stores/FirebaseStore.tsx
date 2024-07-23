@@ -135,11 +135,16 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
 
   loginCheck: async () => {
     const currentUser = await auth().currentUser
-    if (currentUser) {
-      console.log('User is logged in:', currentUser)
-      return currentUser
-    } else {
-      console.log('No user is logged in.')
+    try {
+      if (currentUser) {
+        console.log('User is logged in:', currentUser)
+        return currentUser
+      } else {
+        console.log('No user is logged in.')
+        return false
+      }
+    } catch (error) {
+      console.log('logged in error.', error)
       return false
     }
   },
