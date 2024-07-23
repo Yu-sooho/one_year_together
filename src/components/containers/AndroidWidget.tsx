@@ -6,11 +6,16 @@ import {
   TextWidget,
 } from 'react-native-android-widget'
 import {daysUntil, normalize} from '../../utils'
-import {START_DATE} from '../../resources'
+import {images, START_DATE} from '../../resources'
 import {Dimensions} from 'react-native'
+import fonts from '../../styles/fonts'
 
-const AndroidWidget = () => {
-  const {width, height} = Dimensions.get('window')
+interface AndroidWidgetProps {
+  width: number
+  height: number
+}
+
+const AndroidWidget = ({width, height}: AndroidWidgetProps) => {
   const dateStr = `${daysUntil(START_DATE)}`
   const horizonPixel = width / 4
   const VerticalPixel = height / 8
@@ -26,21 +31,67 @@ const AndroidWidget = () => {
       }}>
       <OverlapWidget>
         <ImageWidget
-          image={
-            'https://manybackgrounds.com/images/hd/pretty-cherry-blossoms-picture-awak9y5hkcqb8b3o.jpg'
-          }
-          imageWidth={horizonPixel * 4}
-          imageHeight={VerticalPixel * 2 + normalize(39)}
+          image={images.default_letter}
+          imageWidth={width}
+          imageHeight={height}
           style={{width: 'match_parent', height: 'match_parent'}}
         />
-        <TextWidget
-          text={`${dateStr}FㅇㄹㄴUFU`}
+        <FlexWidget
           style={{
-            fontSize: 32,
-            fontFamily: 'Inter',
-            color: '#000000',
-          }}
-        />
+            width: 'match_parent',
+            height: 'match_parent',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          }}>
+          <FlexWidget
+            style={{
+              flex: 1,
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+              padding: 24,
+            }}>
+            <TextWidget
+              text={`사랑한지`}
+              style={{
+                ...fonts.bmjua14,
+                fontSize: 20,
+                color: '#ffffff',
+              }}
+            />
+          </FlexWidget>
+          <FlexWidget
+            style={{
+              width: 'match_parent',
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'flex-end',
+              padding: 24,
+            }}>
+            <FlexWidget
+              style={{
+                width: 'match_parent',
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+              }}>
+              <TextWidget
+                text={`${dateStr}`}
+                style={{
+                  ...fonts.bmjua14,
+                  fontSize: 40,
+                  color: '#ffffff',
+                }}
+              />
+              <TextWidget
+                text={`일째`}
+                style={{
+                  ...fonts.bmjua14,
+                  fontSize: 20,
+                  color: '#ffffff',
+                }}
+              />
+            </FlexWidget>
+          </FlexWidget>
+        </FlexWidget>
       </OverlapWidget>
     </FlexWidget>
   )

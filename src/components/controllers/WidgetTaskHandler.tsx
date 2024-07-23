@@ -4,26 +4,27 @@ import {AndroidWidget} from '../containers'
 
 const nameToWidget = {
   // Hello will be the **name** with which we will reference our widget.
-  Hello: AndroidWidget,
+  DefaultWidget: AndroidWidget,
 }
 
 const WidgetTaskHandler = (props: WidgetTaskHandlerProps) => {
   const widgetInfo = props.widgetInfo
   const Widget =
     nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget]
+  const {width, height} = widgetInfo
 
   switch (props.widgetAction) {
     case 'WIDGET_ADDED':
-      props.renderWidget(<Widget />)
+      props.renderWidget(<Widget width={width} height={height} />)
       break
 
     case 'WIDGET_UPDATE':
-      props.renderWidget(<Widget />)
+      props.renderWidget(<Widget width={width} height={height} />)
       // Not needed for now
       break
 
     case 'WIDGET_RESIZED':
-      // Not needed for now
+      props.renderWidget(<Widget width={width} height={height} />)
       break
 
     case 'WIDGET_DELETED':

@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">one_year_together</string>
-    <string name="widget_hello_description" translatable="false">This is my first widget</string>
+    <string name="widget_hello_description" translatable="false">D day Widget</string>
 </resources>
