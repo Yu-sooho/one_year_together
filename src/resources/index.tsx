@@ -13,4 +13,5 @@ export const images = {
   first_meet: require('./images/first_meet.jpg'),
   marry_event: require('./images/marry_event.jpg'),
   loading_image: require('./images/loading_image.jpg'),
+  default_header: require('./images/default_header.jpg'),
 }

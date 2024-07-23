@@ -9,12 +9,11 @@ import {
 import {MainScreenHeaderProps} from '../../types/ComponentTypes'
 import colors from '../../styles/colors'
 import {
+  MAIN_HEADER_HANDLE_SIZE,
   MAIN_HEADER_MAX_SIZE,
   MAIN_HEADER_MIN_SIZE,
   MAIN_HEADER_TEXT_MAX_SIZE,
   MAIN_HEADER_TEXT_MIN_SIZE,
-  MAIN_HEADER_TITLE_MAX_SIZE,
-  MAIN_HEADER_TITLE_MIN_SIZE,
 } from '../../styles/const'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import Animated, {
@@ -26,6 +25,7 @@ import {normalize} from '../../utils'
 import {
   FIRST_DATE,
   FIRST_MEET,
+  images,
   MARRY_DATE,
   MARRY_EVENT,
   START_DATE,
@@ -33,6 +33,7 @@ import {
 } from '../../resources'
 import fonts from '../../styles/fonts'
 import moment from 'moment'
+import FastImage from 'react-native-fast-image'
 
 const TOP_PADDING = normalize(12)
 
@@ -51,6 +52,22 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
     )
     return {
       paddingTop: size,
+    }
+  })
+
+  const imageTranslateAnimatedStyle = useAnimatedStyle(() => {
+    const translate = interpolate(
+      scrollY.value,
+      [0, MAIN_HEADER_MAX_SIZE - MAIN_HEADER_MIN_SIZE],
+      [0, -(MAIN_HEADER_MAX_SIZE - MAIN_HEADER_MIN_SIZE)],
+      Extrapolate.CLAMP,
+    )
+    return {
+      transform: [
+        {
+          translateY: translate,
+        },
+      ],
     }
   })
 
@@ -105,8 +122,13 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
   const componentStyles = StyleSheet.create({
     container: {
       height: MAIN_HEADER_MAX_SIZE + inset.top,
+      width: Dimensions.get('window').width,
     },
-    content: {height: inset.top, backgroundColor: colors.cffffff},
+    imageContainer: {
+      height: MAIN_HEADER_MAX_SIZE + inset.top + normalize(20),
+      width: Dimensions.get('window').width,
+    },
+    content: {height: inset.top},
   })
 
   const AnimatedItem = ({
@@ -124,7 +146,7 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
       <TouchableOpacity onPress={onPress} style={styles.dateContentStyle}>
         <View style={{justifyContent: 'center'}}>
           <Animated.View style={titlePaddingAnimatedStyle}>
-            <Animated.Text style={[fonts.bmjua16]}>{title}</Animated.Text>
+            <Animated.Text style={[styles.titleText]}>{title}</Animated.Text>
           </Animated.View>
           <Animated.View style={dateSizeAnimatedStyle}>
             <Animated.Text style={styles.dateText}>
@@ -136,7 +158,7 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
         <View style={{justifyContent: 'center'}}>
           <Animated.View style={flexibleView} />
           <View>
-            <Animated.Text style={[fonts.bmjua16, dateAnimatedStyle]}>
+            <Animated.Text style={[styles.titleText, dateAnimatedStyle]}>
               {targetAt}
             </Animated.Text>
           </View>
@@ -147,6 +169,27 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
 
   return (
     <Animated.View style={[{position: 'absolute'}]}>
+      <Animated.View
+        style={[
+          imageTranslateAnimatedStyle,
+          {
+            position: 'absolute',
+          },
+        ]}>
+        <FastImage
+          source={images.default_header}
+          style={[componentStyles.imageContainer]}
+        />
+        <View
+          style={[
+            componentStyles.imageContainer,
+            {
+              backgroundColor: colors.c24242480,
+              position: 'absolute',
+            },
+          ]}
+        />
+      </Animated.View>
       <View style={[styles.container, componentStyles.container]}>
         <View style={componentStyles.content} />
         <View style={styles.headerStyle}>
@@ -181,7 +224,7 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
                   justifyContent: 'center',
                   height: '100%',
                 }}>
-                <Animated.Text style={[fonts.bmjua16]}>
+                <Animated.Text style={[styles.titleText]}>
                   {MARRY_EVENT.title}
                 </Animated.Text>
                 <Animated.View style={dateSizeAnimatedStyle}>
@@ -191,7 +234,7 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
                 </Animated.View>
               </View>
               <View>
-                <Animated.Text style={[fonts.bmjua16, dateAnimatedStyle]}>
+                <Animated.Text style={[styles.titleText, dateAnimatedStyle]}>
                   {MARRY_EVENT.targetAt}
                 </Animated.Text>
               </View>
@@ -199,6 +242,11 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
           </TouchableOpacity>
         </View>
       </View>
+      <Animated.View
+        pointerEvents={'none'}
+        style={[imageTranslateAnimatedStyle, styles.handleView]}>
+        <View style={styles.handle} />
+      </Animated.View>
     </Animated.View>
   )
 }
@@ -219,7 +267,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: normalize(12),
   },
   firstDateView: {
-    backgroundColor: colors.cffffff,
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
@@ -228,13 +275,30 @@ const styles = StyleSheet.create({
   secondDateView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: colors.cffffff,
+  },
+  titleText: {
+    ...fonts.bmjua16,
+    color: colors.cffffff,
   },
   dateText: {
     ...fonts.bmjua14,
     fontSize: normalize(12),
     marginTop: normalize(4),
     color: colors.cd4d4d4,
+  },
+  handle: {
+    height: normalize(5),
+    width: normalize(20),
+    backgroundColor: colors.c24242480,
+    borderRadius: normalize(20),
+  },
+  handleView: {
+    height: MAIN_HEADER_HANDLE_SIZE,
+    borderTopLeftRadius: normalize(16),
+    borderTopRightRadius: normalize(16),
+    backgroundColor: colors.cffffff,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 })
 

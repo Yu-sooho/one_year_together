@@ -16,14 +16,15 @@ import {
 import defaultStyles from '../styles'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
 import {useEventStore} from '../stores'
-import {MAIN_HEADER_MAX_SIZE} from '../styles/const'
+import {MAIN_HEADER_HANDLE_SIZE, MAIN_HEADER_MAX_SIZE} from '../styles/const'
 import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
 } from 'react-native-reanimated'
 import moment from 'moment'
-import {dateToTimestamp, isSameDate} from '../utils'
+import {dateToTimestamp, isSameDate, normalize} from '../utils'
 import {START_DATE} from '../resources'
+import colors from '../styles/colors'
 
 type MainScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -239,6 +240,7 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
   return (
     <View style={defaultStyles.containerStyle}>
       <View style={defaultStyles.containerStyle}>
+        {/* <View style={{height: MAIN_HEADER_MAX_SIZE + inset.top}} /> */}
         <Animated.FlatList
           data={list}
           onScroll={scrollHandler}
@@ -248,13 +250,44 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
           contentContainerStyle={{
             minHeight: listHeight,
           }}
-          ListHeaderComponent={
-            <View style={{height: MAIN_HEADER_MAX_SIZE + inset.top}} />
-          }
+          bounces={false}
+          ListHeaderComponent={ListHeaderComponent}
+          ItemSeparatorComponent={ItemSeparatorComponent}
         />
         <MainScreenHeader scrollY={scrollY} onPressItem={navigateEventScreen} />
       </View>
       <CustomBottomTabBar />
+    </View>
+  )
+}
+
+const ListHeaderComponent = () => {
+  const inset = useSafeAreaInsets()
+  return (
+    <View
+      style={{
+        height: MAIN_HEADER_MAX_SIZE + MAIN_HEADER_HANDLE_SIZE + inset.top,
+      }}
+    />
+  )
+}
+
+const ItemSeparatorComponent = () => {
+  return (
+    <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: Dimensions.get('window').width,
+        paddingHorizontal: normalize(16),
+      }}>
+      <View
+        style={{
+          width: '100%',
+          height: normalize(0.5),
+          backgroundColor: colors.cf4f4f4,
+        }}
+      />
     </View>
   )
 }
