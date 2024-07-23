@@ -31,7 +31,7 @@ const CustomBottomTabBar = memo(() => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: colors.c24242480,
+      backgroundColor: colors.c242424,
       paddingBottom: +DEFAULT_BOTTOM_SIZE,
     },
     buttonStyle: {
@@ -51,19 +51,19 @@ const CustomBottomTabBar = memo(() => {
       <TouchableOpacity
         onPress={navigatedLetterListScreen}
         style={styles.buttonStyle}>
-        <Icon name="mail" size={normalize(24)} color={colors.c242424} />
+        <Icon name="mail" size={normalize(24)} color={colors.cffffff} />
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={navigatedEditEventScreen}
         style={[styles.buttonStyle, styles.centerButtonStyle]}>
-        <Icon name="plus" size={normalize(26)} color={colors.c242424} />
+        <Icon name="plus" size={normalize(26)} color={colors.cffffff} />
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={navigatedDdaySettingScreen}
         style={styles.buttonStyle}>
-        <Icon name="settings" size={normalize(24)} color={colors.c242424} />
+        <Icon name="settings" size={normalize(24)} color={colors.cffffff} />
       </TouchableOpacity>
     </View>
   )

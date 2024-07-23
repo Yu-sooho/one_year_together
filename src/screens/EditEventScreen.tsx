@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   FlatList,
   ListRenderItem,
+  StatusBar,
 } from 'react-native'
 import DatePicker from 'react-native-date-picker'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -268,7 +269,8 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={defaultStyles.containerStyle}>
-      <CustomHeader title="EditEventScreen" />
+      <StatusBar barStyle="dark-content" />
+      <CustomHeader title="" />
       <ScrollView
         showsVerticalScrollIndicator={false}
         bounces={false}

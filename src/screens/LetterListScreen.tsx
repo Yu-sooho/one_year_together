@@ -1,7 +1,13 @@
 import {CompositeNavigationProp, RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import React, {memo, useEffect} from 'react'
-import {View, FlatList, StyleSheet, ListRenderItem} from 'react-native'
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  ListRenderItem,
+  Dimensions,
+} from 'react-native'
 import defaultStyles from '../styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {CustomHeader, LetterListItem} from '../components'
@@ -9,6 +15,8 @@ import {useAuthStore, useLetterStore} from '../stores'
 import {normalize} from '../utils'
 import Icon from 'react-native-vector-icons/Feather'
 import colors from '../styles/colors'
+import FastImage from 'react-native-fast-image'
+import {images} from '../resources'
 
 type LetterListScreenNavigationProp = CompositeNavigationProp<
   StackNavigationProp<MainStackNavigatorParamList, 'LetterListScreen'>,
@@ -24,6 +32,8 @@ type Props = {
   navigation: LetterListScreenNavigationProp
   route: LetterListScreenRouteProp
 }
+
+const {width, height} = Dimensions.get('window')
 
 const LetterListScreen: React.FC<Props> = memo(({navigation, route}) => {
   const navigatedEditLetterScreen = () => {
@@ -83,28 +93,42 @@ const LetterListScreen: React.FC<Props> = memo(({navigation, route}) => {
   )
 
   return (
-    <SafeAreaView style={defaultStyles.containerStyle}>
-      <CustomHeader
-        title=""
-        onPressButton={navigatedEditLetterScreen}
-        rightContent={
-          <Icon name="plus" size={normalize(24)} color={colors.c242424} />
-        }
-      />
-      <FlatList
-        data={letterList}
-        renderItem={renderItem}
-        numColumns={3}
-        keyExtractor={(item, index) => `${item.title}${index}`}
-        ItemSeparatorComponent={itemSeparatorComponent}
-        style={styles.listStyle}
-        contentContainerStyle={styles.contentContainerStyle}
-      />
-    </SafeAreaView>
+    <FastImage style={styles.image} source={images.default_letter}>
+      <View style={styles.blackOpacity} />
+      <SafeAreaView style={[defaultStyles.containerStyle, styles.noBackground]}>
+        <CustomHeader
+          title=""
+          containerStyle={styles.noBackground}
+          onPressButton={navigatedEditLetterScreen}
+          iconColor={colors.cffffff}
+          rightContent={
+            <Icon name="plus" size={normalize(24)} color={colors.cffffff} />
+          }
+        />
+        <FlatList
+          data={letterList}
+          renderItem={renderItem}
+          numColumns={3}
+          keyExtractor={(item, index) => `${item.title}${index}`}
+          ItemSeparatorComponent={itemSeparatorComponent}
+          style={styles.listStyle}
+          contentContainerStyle={styles.contentContainerStyle}
+        />
+      </SafeAreaView>
+    </FastImage>
   )
 })
 
 const styles = StyleSheet.create({
+  noBackground: {
+    backgroundColor: colors.transparent,
+  },
+  blackOpacity: {
+    width,
+    height: height * 2,
+    backgroundColor: colors.c24242480,
+    position: 'absolute',
+  },
   itemSeparatorComponentStyle: {
     height: normalize(20),
   },
@@ -114,6 +138,9 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle: {
     paddingBottom: normalize(120),
+  },
+  image: {
+    flex: 1,
   },
 })
 

@@ -10,14 +10,14 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native'
 import defaultStyles from '../styles'
 import FastImage from 'react-native-fast-image'
 import {CustomBackgroundOpacity, CustomHeader} from '../components'
-import {SafeAreaView} from 'react-native-safe-area-context'
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import colors from '../styles/colors'
-import {daysUntil, normalize} from '../utils'
-import {images} from '../resources'
+import {normalize} from '../utils'
 import fonts from '../styles/fonts'
 
 type EventScreenNavigationProp = StackNavigationProp<
@@ -35,6 +35,62 @@ type Props = {
 }
 
 const EventScreen: React.FC<Props> = ({navigation, route}) => {
+  const inset = useSafeAreaInsets()
+
+  const styles = StyleSheet.create({
+    listContainer: {
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height + inset.top,
+    },
+    imageStyle: {
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height + inset.top,
+    },
+    noImage: {
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height + inset.top,
+      backgroundColor: colors.cffffff,
+    },
+    container: {
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height + inset.top,
+      position: 'absolute',
+    },
+    dateView: {
+      height: normalize(40),
+      paddingHorizontal: normalize(20),
+      justifyContent: 'center',
+      alignItems: 'flex-end',
+    },
+    dateText: {
+      ...fonts.bmjua16,
+      color: colors.cffffff,
+    },
+    contentText: {
+      ...fonts.bmjua16,
+      color: colors.cffffff,
+    },
+    content: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    addButton: {
+      width: '100%',
+      height: normalize(120),
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    addContent: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: normalize(120),
+    },
+    addText: {
+      ...fonts.bmjua14,
+    },
+  })
   const {event} = route?.params
   const flatListRef = useRef<FlatList<string>>(null)
   const scrollIndex = useRef(0)
@@ -81,6 +137,7 @@ const EventScreen: React.FC<Props> = ({navigation, route}) => {
 
   return (
     <View style={defaultStyles.centerContainerStyle}>
+      {!isHaveImage && <StatusBar barStyle="dark-content" />}
       {isHaveImage && (
         <FlatList
           ref={flatListRef}
@@ -128,60 +185,5 @@ const EventScreen: React.FC<Props> = ({navigation, route}) => {
 }
 
 const AnimationList = () => {}
-
-const styles = StyleSheet.create({
-  listContainer: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
-  imageStyle: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
-  noImage: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-    backgroundColor: colors.cffffff,
-  },
-  container: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-    position: 'absolute',
-  },
-  dateView: {
-    height: normalize(40),
-    paddingHorizontal: normalize(20),
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-  },
-  dateText: {
-    ...fonts.bmjua16,
-    color: colors.cffffff,
-  },
-  contentText: {
-    ...fonts.bmjua16,
-    color: colors.cffffff,
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addButton: {
-    width: '100%',
-    height: normalize(120),
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addContent: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: normalize(120),
-  },
-  addText: {
-    ...fonts.bmjua14,
-  },
-})
 
 export default EventScreen

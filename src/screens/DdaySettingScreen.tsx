@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  StatusBar,
 } from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {CustomHeader, CustomRadioButton} from '../components'
@@ -55,6 +56,7 @@ const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={defaultStyles.containerStyle}>
+      <StatusBar barStyle="dark-content" />
       <CustomHeader title="" />
       <CustomRadioButton
         onPress={onPressPush}

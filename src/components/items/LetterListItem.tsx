@@ -5,6 +5,7 @@ import {useAuthStore} from '../../stores'
 import Icon from 'react-native-vector-icons/Feather'
 import colors from '../../styles/colors'
 import {normalize} from '../../utils'
+import fonts from '../../styles/fonts'
 
 interface LetterListitemProps {
   item: LetterModel
@@ -39,12 +40,12 @@ const LetterListItem: React.FC<LetterListitemProps> = ({
       style={styles.container}>
       {isLocked ? (
         <View style={styles.image}>
-          <Icon name="lock" size={normalize(24)} color={colors.c242424} />
+          <Icon name="mail" size={normalize(24)} color={colors.c242424} />
         </View>
       ) : (
         <FastImage source={{uri: item?.imageUrl}} style={styles.image} />
       )}
-      <Text>{item?.title}</Text>
+      <Text style={styles.titleText}>{item?.title}</Text>
     </TouchableOpacity>
   )
 }
@@ -55,6 +56,7 @@ const styles = StyleSheet.create({
     maxWidth: '33.3%',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: normalize(10),
   },
   image: {
     width: 100,
@@ -62,6 +64,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.cf4f4f4,
+    borderRadius: normalize(10),
+  },
+  titleText: {
+    ...fonts.bmjua16,
+    color: colors.cffffff,
+    marginTop: normalize(10),
   },
 })
 

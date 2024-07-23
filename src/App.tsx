@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react'
-import {StyleSheet, View} from 'react-native'
+import {StatusBar, StyleSheet, View} from 'react-native'
 import {NavigationContainer, NavigationState} from '@react-navigation/native'
 import {LetterStackNavigator} from './navigations'
 import {
@@ -59,6 +59,7 @@ const App: React.FC = () => {
   }
   return (
     <NavigationContainer onStateChange={handleStateChange}>
+      <StatusBar translucent backgroundColor="transparent" />
       <SafeAreaProvider>
         <View style={styles.container}>
           <LetterStackNavigator />
