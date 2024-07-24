@@ -14,7 +14,7 @@
 
     android:description="@string/widget_hello_description"
 
-    android:resizeMode="horizontal|vertical"
+    android:resizeMode="horizontal"
 
     android:widgetCategory="home_screen">
 </appwidget-provider>

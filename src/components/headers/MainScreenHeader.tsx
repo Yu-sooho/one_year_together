@@ -34,6 +34,7 @@ import {
 import fonts from '../../styles/fonts'
 import moment from 'moment'
 import FastImage from 'react-native-fast-image'
+import {useAppStateStore} from '../../stores'
 
 const TOP_PADDING = normalize(12)
 
@@ -167,6 +168,8 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
     )
   }
 
+  const settingData = useAppStateStore(state => state.settingData)
+
   return (
     <Animated.View style={[{position: 'absolute'}]}>
       <Animated.View
@@ -177,7 +180,11 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
           },
         ]}>
         <FastImage
-          source={images.default_header}
+          source={
+            settingData?.homeImageUrl
+              ? {uri: settingData.homeImageUrl}
+              : images.default_header
+          }
           style={[componentStyles.imageContainer]}
         />
         <View

@@ -17,8 +17,10 @@ if (IS_DEV) {
 
 interface FirebaseState {
   subscribeRdb: (ref: string, setData: (list: any[]) => void) => void
+  subscribeRdbObj: (ref: string, setData: (data: any | null) => void) => void
   unSubscribeRdb: (ref: string, dataSnapshot: any) => void
   addDataToRdb: (ref: string, data: any) => Promise<boolean>
+  addDataToOriginRdb: (ref: string, data: any) => Promise<boolean>
   deleteDataToRdb: (ref: string) => Promise<boolean>
   updateDataToRdb: (
     ref: string,
@@ -55,6 +57,25 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
     return temp
   },
 
+  subscribeRdbObj: (ref, setData) => {
+    const temp = database()
+      .ref(ref)
+      .on('value', snapshot => {
+        const data = snapshot.val()
+        if (data) {
+          const result = {
+            key: snapshot.key,
+            ...data,
+          }
+          setData(result)
+        } else {
+          setData(null)
+        }
+      })
+    console.log('firebase subscribeRdb')
+    return temp
+  },
+
   unSubscribeRdb: (ref, dataSnapshot) => {
     database().ref(ref).off('value', dataSnapshot)
   },
@@ -69,6 +90,22 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
     if (snapshot.exists()) {
       return snapshot
     } else {
+      return false
+    }
+  },
+
+  addDataToOriginRdb: async (ref, data) => {
+    const timestamp = database.ServerValue.TIMESTAMP
+    const email = await auth().currentUser?.email
+    if (!data) return false
+    try {
+      data.createdAt = timestamp
+      data.createdUser = email
+      const newEventRef = database().ref(ref)
+      await newEventRef.set(data)
+      return true
+    } catch (error) {
+      console.log(error)
       return false
     }
   },

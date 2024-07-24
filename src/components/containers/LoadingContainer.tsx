@@ -35,7 +35,11 @@ const LoadingContainer = memo(() => {
   })
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {height: Dimensions.get('window').height + 500},
+      ]}>
       <Animated.View style={[styles.square, animatedStyle]}>
         <FastImage
           style={styles.image}
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
   container: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
-    justifyContent: 'center',
+    paddingTop: Dimensions.get('window').height / 2,
     alignItems: 'center',
     backgroundColor: colors.c24242480,
     position: 'absolute',
@@ -59,13 +63,11 @@ const styles = StyleSheet.create({
   square: {
     width: iconSize,
     height: iconSize,
-    backgroundColor: 'blue',
     borderRadius: iconSize,
   },
   image: {
     width: iconSize,
     height: iconSize,
-    backgroundColor: 'blue',
     borderRadius: iconSize,
     borderColor: colors.cffffff,
     borderWidth: normalize(2),

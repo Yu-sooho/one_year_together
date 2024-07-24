@@ -57,6 +57,15 @@ const App: React.FC = () => {
     }
     return route.name
   }
+
+  const subscribeSetting = useAppStateStore(state => state.subscribeSetting)
+  const unsubscribeSetting = useAppStateStore(state => state.unsubscribeSetting)
+
+  useEffect(() => {
+    subscribeSetting()
+    return () => unsubscribeSetting()
+  }, [])
+
   return (
     <NavigationContainer onStateChange={handleStateChange}>
       <StatusBar translucent backgroundColor="transparent" />

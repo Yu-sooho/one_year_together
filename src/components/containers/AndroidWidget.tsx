@@ -5,10 +5,10 @@ import {
   OverlapWidget,
   TextWidget,
 } from 'react-native-android-widget'
-import {daysUntil, normalize} from '../../utils'
+import {daysUntil} from '../../utils'
 import {images, START_DATE} from '../../resources'
-import {Dimensions} from 'react-native'
 import fonts from '../../styles/fonts'
+import {Dimensions} from 'react-native'
 
 interface AndroidWidgetProps {
   width: number
@@ -17,8 +17,16 @@ interface AndroidWidgetProps {
 
 const AndroidWidget = ({width, height}: AndroidWidgetProps) => {
   const dateStr = `${daysUntil(START_DATE)}`
-  const horizonPixel = width / 4
-  const VerticalPixel = height / 8
+  const image = () => {
+    if (width < Dimensions.get('window').width / 2)
+      return images.widget_image_por
+    if (width < Dimensions.get('window').width / 1.5) return images.wigdet_image
+    const temp = Math.floor(Math.random() * 10) + 1
+    if (temp > 5) {
+      return images.wigdet_image_wide1
+    }
+    return images.wigdet_image_wide2
+  }
   return (
     <FlexWidget
       style={{
@@ -31,7 +39,7 @@ const AndroidWidget = ({width, height}: AndroidWidgetProps) => {
       }}>
       <OverlapWidget>
         <ImageWidget
-          image={images.default_letter}
+          image={image()}
           imageWidth={width}
           imageHeight={height}
           style={{width: 'match_parent', height: 'match_parent'}}
@@ -42,22 +50,33 @@ const AndroidWidget = ({width, height}: AndroidWidgetProps) => {
             height: 'match_parent',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
           }}>
-          <FlexWidget
-            style={{
-              flex: 1,
-              justifyContent: 'flex-start',
-              alignItems: 'flex-start',
-              padding: 24,
-            }}>
-            <TextWidget
-              text={`사랑한지`}
+          {width > Dimensions.get('window').width / 2 ? (
+            <FlexWidget
               style={{
-                ...fonts.bmjua14,
-                fontSize: 20,
-                color: '#ffffff',
+                flex: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+                padding: 24,
+              }}>
+              <TextWidget
+                text={`사랑한지`}
+                style={{
+                  ...fonts.bmjua14,
+                  fontSize: 20,
+                  color: '#ffffff',
+                }}
+              />
+            </FlexWidget>
+          ) : (
+            <FlexWidget
+              style={{
+                flex: 1,
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+                padding: 24,
               }}
             />
-          </FlexWidget>
+          )}
           <FlexWidget
             style={{
               width: 'match_parent',
@@ -77,7 +96,8 @@ const AndroidWidget = ({width, height}: AndroidWidgetProps) => {
                 text={`${dateStr}`}
                 style={{
                   ...fonts.bmjua14,
-                  fontSize: 40,
+                  fontSize:
+                    width > Dimensions.get('window').width / 2 ? 40 : 22,
                   color: '#ffffff',
                 }}
               />

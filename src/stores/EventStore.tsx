@@ -108,7 +108,6 @@ const useEventStore = create<EventState>()(
           const deletedDefaultEvent = get().deletedDefaultEvent
           if (!item) {
             set({deletedDefaultEvent: []})
-            console.log('FUFU')
           } else {
             set({deletedDefaultEvent: [...deletedDefaultEvent, item]})
           }

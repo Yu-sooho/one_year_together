@@ -13,6 +13,12 @@ interface EventModel extends defaultData {
   isDefault?: boolean
 }
 
+interface SettingModel extends defaultData {
+  widgetImageUrl?: string | null
+  homeImageUrl?: string | null
+  isPushNotifee: boolean
+}
+
 interface UserModel extends defaultData {}
 
 interface LetterModel extends defaultData {

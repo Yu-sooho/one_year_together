@@ -69,6 +69,7 @@ const EventScreen: React.FC<Props> = ({navigation, route}) => {
     contentText: {
       ...fonts.bmjua16,
       color: colors.cffffff,
+      textAlign: 'center',
     },
     content: {
       flex: 1,
@@ -166,8 +167,12 @@ const EventScreen: React.FC<Props> = ({navigation, route}) => {
             <View style={styles.dateView}>
               <Text style={styles.dateText}>{`${date}일째!`}</Text>
             </View>
-            <ScrollView contentContainerStyle={{paddingTop: normalize(120)}}>
-              <View style={{alignItems: 'center'}}>
+            <ScrollView contentContainerStyle={{paddingTop: normalize(200)}}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  paddingHorizontal: normalize(20),
+                }}>
                 <Text style={styles.contentText}>{event.content}</Text>
               </View>
             </ScrollView>

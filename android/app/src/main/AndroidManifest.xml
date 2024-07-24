@@ -73,7 +73,7 @@
         <receiver
             android:name=".widget.DefaultWidget"
             android:exported="false"
-            android:label="DefaultWidget">
+            android:label="연신이꺼">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.one_year_together.WIDGET_CLICK" />

@@ -41,6 +41,7 @@ const LetterStackNavigator = () => {
   useEffect(() => {
     const rehydrate = async () => {
       await AsyncStorage.getItem('auth-storage')
+      await AsyncStorage.getItem('appState-storage')
       isLoginCheck()
     }
 

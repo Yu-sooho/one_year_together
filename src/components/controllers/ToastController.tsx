@@ -49,13 +49,14 @@ const styles = StyleSheet.create({
   toastStyle: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: normalize(20),
+    paddingHorizontal: normalize(22),
     paddingVertical: normalize(12),
-    backgroundColor: colors.cffffff,
+    backgroundColor: colors.c242424,
     borderRadius: normalize(8),
   },
   toastTextStyle: {
-    ...fonts.nanumgn24,
+    ...fonts.bmjua16,
+    color: colors.cffffff,
   },
 })
 

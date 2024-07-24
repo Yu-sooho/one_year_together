@@ -46,7 +46,7 @@ const useAuthStore = create<AuthState>(
       storage: createJSONStorage(() => AsyncStorage),
       partialize: state => ({isLoggedIn: state.isLoggedIn}),
       onRehydrateStorage: () => state => {
-        console.log('State rehydrated', state)
+        console.log('State rehydrated authState', state)
       },
     },
   ),
