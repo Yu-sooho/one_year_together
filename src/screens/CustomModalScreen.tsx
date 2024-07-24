@@ -12,6 +12,7 @@ import {normalize} from '../utils'
 import colors from '../styles/colors'
 import {StackNavigationProp} from '@react-navigation/stack'
 import {DEFAULT_BOTTOM_SIZE} from '../styles/const'
+import fonts from '../styles/fonts'
 
 type CustomModalScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -58,23 +59,35 @@ const CustomModalScreen: React.FC<Props> = ({navigation, route}) => {
       <View style={styles.content}>
         {!!title && (
           <View style={styles.header}>
-            <Text>{title}</Text>
+            <Text style={fonts.bmjua16}>{title}</Text>
           </View>
         )}
         {!!contents && (
           <View style={styles.detail}>
-            <Text>{contents}</Text>
+            <Text style={fonts.bmjua14}>{contents}</Text>
           </View>
         )}
         <View style={styles.bottomButtons}>
           {isShowCancel && (
             <TouchableOpacity onPress={navigatedBack} style={styles.button}>
-              <Text>{cancelText}</Text>
+              <Text style={fonts.bmjua14}>{cancelText}</Text>
             </TouchableOpacity>
           )}
+          <View
+            style={{
+              paddingBottom: normalize(14),
+            }}>
+            <View
+              style={{
+                height: normalize(20),
+                width: normalize(1),
+                backgroundColor: colors.cd4d4d4,
+              }}
+            />
+          </View>
           {isShowOk && (
             <TouchableOpacity onPress={onPressOk} style={styles.button}>
-              <Text>{okText}</Text>
+              <Text style={fonts.bmjua14}>{okText}</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -96,22 +109,20 @@ const styles = StyleSheet.create({
   },
   content: {
     width: normalize(320),
-    paddingVertical: DEFAULT_BOTTOM_SIZE,
+    paddingTop: DEFAULT_BOTTOM_SIZE,
     backgroundColor: colors.cffffff,
     borderRadius: normalize(8),
   },
   header: {
-    height: normalize(40),
     justifyContent: 'center',
     alignItems: 'center',
   },
   detail: {
     justifyContent: 'center',
-    minHeight: normalize(100),
+    minHeight: normalize(75),
     alignItems: 'center',
   },
   bottomButtons: {
-    height: normalize(40),
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
@@ -120,6 +131,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingBottom: normalize(20),
   },
 })
 

@@ -201,7 +201,7 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
       <SafeAreaView
         style={[defaultStyles.containerStyle, defaultStyles.noBackgroundStyle]}>
         <CustomHeader
-          title="EditLetterScreen"
+          title={isEdit ? '편지 수정하기' : '편지쓰기'}
           containerStyle={[defaultStyles.noBackgroundStyle]}
           titleStyle={styles.whiteText}
           iconColor={colors.cffffff}

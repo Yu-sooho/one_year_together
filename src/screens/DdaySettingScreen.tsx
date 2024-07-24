@@ -122,7 +122,8 @@ const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
   const onPressLogout = () => {
     navigation.navigate('CustomModalScreen', {
       okAction: dataReset,
-      title: '',
+      title: '로그아웃 할거야?',
+      contents: '하지마요 ㅜ',
     })
   }
 
@@ -135,7 +136,8 @@ const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
   const onPressInitHomeImage = () => {
     navigation.navigate('CustomModalScreen', {
       okAction: homeImageReset,
-      title: '',
+      title: '홈 이미지 삭제',
+      contents: '기본으로 돌아갈거야!',
     })
   }
 

@@ -45,6 +45,7 @@ export interface TextInputTitleProps {
   title: string
   style?: StyleProp<TextStyle>
   containerStyle?: StyleProp<ViewStyle>
+  isWhite?: boolean
 }
 
 export interface MainScreenHeaderProps {

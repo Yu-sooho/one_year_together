@@ -112,6 +112,8 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
   const onPressDeleteEvent = (item: EventModel) => {
     navigation.navigate('CustomModalScreen', {
       okAction: () => deletedEvent(item),
+      title: '편지 삭제',
+      contents: '지우면 다시 돌릴 수 없어!!',
     })
   }
 

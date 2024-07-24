@@ -35,6 +35,7 @@ import {useAppStateStore, useEventStore, usePermissionStore} from '../stores'
 import Icon from 'react-native-vector-icons/Feather'
 import {FirebaseDatabaseTypes} from '@react-native-firebase/database'
 import ImageCropPicker, {ImageOrVideo} from 'react-native-image-crop-picker'
+import fonts from '../styles/fonts'
 
 type EditEventScreenNavigationProp = StackNavigationProp<
   MainStackNavigatorParamList,
@@ -268,16 +269,22 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
   }, [])
 
   return (
-    <SafeAreaView style={defaultStyles.containerStyle}>
+    <SafeAreaView
+      style={[defaultStyles.containerStyle, {backgroundColor: colors.c242424}]}>
       <StatusBar barStyle="dark-content" />
-      <CustomHeader title="" />
+      <CustomHeader
+        title={isEdit ? '특별한 날이었지?' : '특별한 날이지!'}
+        titleStyle={{color: colors.cffffff}}
+        iconColor={colors.cffffff}
+        containerStyle={{backgroundColor: colors.c242424}}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         bounces={false}
         contentContainerStyle={defaultStyles.scrollContentContainerStyle}
         style={[defaultStyles.contentContainerStyle]}>
         <View style={styles.dayCountView}>
-          <Text>{`${dateFormat()}`}</Text>
+          <Text style={styles.ddayText}>{`${dateFormat()}`}</Text>
         </View>
         <TextInputWithTitle
           title={'제목'}
@@ -285,8 +292,9 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
           maxLength={20}
           onChangeText={onChangeTitle}
           value={title}
-          activeBorderColor={colors.c242424}
-          inActiveBorderColor={colors.cf4f4f4}
+          isWhite
+          activeBorderColor={colors.cffffff}
+          inActiveBorderColor={colors.cd4d4d4}
         />
         <TextInputWithTitle
           title={'내용'}
@@ -295,24 +303,31 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
           multiline
           onChangeText={onChangeContent}
           value={content}
-          activeBorderColor={colors.c242424}
-          inActiveBorderColor={colors.cf4f4f4}
+          isWhite
+          activeBorderColor={colors.cffffff}
+          inActiveBorderColor={colors.cd4d4d4}
         />
-        <TextInputTitle title={'날짜'} containerStyle={styles.titleContainer} />
+        <TextInputTitle
+          title={'날짜'}
+          isWhite
+          containerStyle={styles.titleContainer}
+        />
         <DatePicker
           mode={'date'}
           date={date}
           onDateChange={setDate}
+          theme={'dark'}
           style={styles.datePickerStyle}
         />
 
         <View style={styles.imageButtonView}>
           <TextInputTitle
             title={'사진'}
+            isWhite
             containerStyle={styles.titleContainer}
           />
           <TouchableOpacity onPress={openPicker} style={styles.imageButton}>
-            <Icon name="plus" size={normalize(20)} color={colors.c242424} />
+            <Icon name="plus" size={normalize(20)} color={colors.cffffff} />
           </TouchableOpacity>
         </View>
         <FlatList
@@ -326,6 +341,8 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
       <CustomBottomButton
         isDisabled={!title || !content}
         buttonText="완료"
+        textStyle={{color: colors.cffffff}}
+        containerStyle={{backgroundColor: colors.c242424}}
         onPressButton={uploadEvent}
       />
     </SafeAreaView>
@@ -339,6 +356,10 @@ const styles = StyleSheet.create({
   titleContainer: {
     paddingHorizontal: normalize(24),
     marginBottom: normalize(6),
+  },
+  ddayText: {
+    ...fonts.bmjua14,
+    color: colors.cffffff,
   },
   titleStyle: {
     color: colors.c242424,

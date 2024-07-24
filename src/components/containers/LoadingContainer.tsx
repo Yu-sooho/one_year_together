@@ -1,5 +1,5 @@
 import React, {memo, useEffect} from 'react'
-import {Dimensions, StyleSheet, View} from 'react-native'
+import {Dimensions, Image, StyleSheet, View} from 'react-native'
 import colors from '../../styles/colors'
 import Animated, {
   Easing,
@@ -41,7 +41,7 @@ const LoadingContainer = memo(() => {
         {height: Dimensions.get('window').height + 500},
       ]}>
       <Animated.View style={[styles.square, animatedStyle]}>
-        <FastImage
+        <Image
           style={styles.image}
           source={images.loading_image}
           resizeMode="cover"

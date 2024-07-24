@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Image,
 } from 'react-native'
 import defaultStyles from '../styles'
 import {useAuthStore, useFirebaseStore} from '../stores'
@@ -81,7 +82,7 @@ const LoginScreen: React.FC<Props> = () => {
         defaultStyles.containerStyle,
         defaultStyles.centerContainerStyle,
       ]}>
-      <FastImage
+      <Image
         style={{
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').height + inset.top,
@@ -107,7 +108,7 @@ const LoginScreen: React.FC<Props> = () => {
               ...fonts.nanumgy24,
               fontSize: normalize(22),
               textAlign: 'center',
-            }}>{`어서와!\n 기다리고 있었어!`}</Text>
+            }}>{`어서와!ㅎㅎ\n 1주년 축하해!!`}</Text>
         </Balloon>
       </View>
       <TouchableOpacity

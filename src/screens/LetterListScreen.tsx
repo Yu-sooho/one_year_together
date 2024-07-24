@@ -76,6 +76,8 @@ const LetterListScreen: React.FC<Props> = memo(({navigation, route}) => {
     if (letter.createdUser !== currentUser?.email) return
     navigation.navigate('CustomModalScreen', {
       okAction: () => deletedLetter(letter),
+      title: '편지 삭제',
+      contents: '지우면 다시 돌릴 수 없어!!',
     })
   }
 
