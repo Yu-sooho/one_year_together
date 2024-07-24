@@ -10,7 +10,8 @@
     "jsx": "react",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "rootDir": "src"
   },
   "compileOnSave": true,
   "include": ["src"],
