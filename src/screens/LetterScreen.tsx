@@ -57,6 +57,7 @@ const LetterScreen: React.FC<Props> = ({navigation, route}) => {
     contentText: {
       ...fonts.bmjua16,
       color: colors.cffffff,
+      textAlign: 'center',
     },
   })
   return (
@@ -72,7 +73,12 @@ const LetterScreen: React.FC<Props> = ({navigation, route}) => {
           iconColor={colors.cffffff}
           titleStyle={{color: colors.cffffff}}
         />
-        <ScrollView contentContainerStyle={{paddingTop: normalize(200)}}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingTop: normalize(120),
+            paddingBottom: normalize(250),
+          }}>
           <View
             style={{
               alignItems: 'center',

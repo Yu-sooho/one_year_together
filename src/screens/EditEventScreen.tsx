@@ -331,6 +331,8 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
           </TouchableOpacity>
         </View>
         <FlatList
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
           horizontal
           data={imageList}
           renderItem={renderItem}

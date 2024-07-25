@@ -141,6 +141,8 @@ const EventScreen: React.FC<Props> = ({navigation, route}) => {
       {!isHaveImage && <StatusBar barStyle="dark-content" />}
       {isHaveImage && (
         <FlatList
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
           ref={flatListRef}
           pointerEvents="none"
           horizontal
@@ -167,7 +169,9 @@ const EventScreen: React.FC<Props> = ({navigation, route}) => {
             <View style={styles.dateView}>
               <Text style={styles.dateText}>{`${date}일째!`}</Text>
             </View>
-            <ScrollView contentContainerStyle={{paddingTop: normalize(200)}}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{paddingTop: normalize(200)}}>
               <View
                 style={{
                   alignItems: 'center',

@@ -108,6 +108,7 @@ const LetterListScreen: React.FC<Props> = memo(({navigation, route}) => {
           }
         />
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={letterList}
           renderItem={renderItem}
           numColumns={3}
