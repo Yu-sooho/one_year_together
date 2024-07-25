@@ -96,7 +96,7 @@ const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
     const result: ImageOrVideo | false = await openPicker()
     if (!result) {
       setIsLoading()
-      showToast('설정할 수 없는 이미지야 ㅠ')
+      // showToast('설정할 수 없는 이미지야 ㅠ')
       return
     }
     const imageUrl = await setHomeImageUrl({homeImagePath: result.path})

@@ -51,11 +51,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: normalize(50),
-    backgroundColor: colors.c24242480,
+    backgroundColor: colors.c242424,
     borderRadius: normalize(4),
   },
   textStyle: {
     ...fonts.bmjua18,
+    color: colors.cffffff,
   },
 })
 

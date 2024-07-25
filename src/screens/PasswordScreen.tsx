@@ -5,6 +5,8 @@ import {View, Text, StyleSheet, SafeAreaView} from 'react-native'
 import defaultStyles from '../styles'
 import {useAppStateStore, useAuthStore, useLetterStore} from '../stores'
 import {CustomBottomButton, CustomHeader, CustomTextInput} from '../components'
+import fonts from '../styles/fonts'
+import {normalize} from '../utils'
 
 type PasswordScreenNavigationProp = CompositeNavigationProp<
   StackNavigationProp<MainStackNavigatorParamList, 'LetterListScreen'>,
@@ -72,21 +74,27 @@ const PasswordScreen: React.FC<Props> = ({navigation, route}) => {
         })
         return
       }
-      showToast('실패했습니다.')
+      showToast('서버에러 인가봐 ㅜ')
       return
     }
     setIsError(true)
-    setErrorMessage('잘못된 패스워드 입니다.')
+    setErrorMessage('   ')
+    showToast('', 'error')
   }
 
   return (
     <SafeAreaView style={[defaultStyles.containerStyle]}>
-      <CustomHeader title={'PasswordScreen'} />
+      <CustomHeader title={''} />
       <View style={styles.container}>
-        <Text>{hint}</Text>
+        <Text
+          style={{
+            ...fonts.bmjua16,
+            paddingHorizontal: normalize(20),
+            marginBottom: normalize(20),
+          }}>{`힌트: ${hint}`}</Text>
         <CustomTextInput
           isError={isError}
-          placeholder={'입력'}
+          placeholder={'여기에 비밀번호를 치면되요!'}
           style={styles.textInputStyle}
           onChangeText={onChangeText}
           value={text}

@@ -23,4 +23,5 @@ export const images = {
 
   google_login_button: require('./images/google_login_button.png'),
   login_image: require('./images/login_image.jpg'),
+  error_image: require('./images/error_image.png'),
 }
