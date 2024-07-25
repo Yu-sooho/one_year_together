@@ -29,9 +29,9 @@ const useAuthStore = create<AuthState>(
       login: () => set({isLoggedIn: true}),
       logout: async () => {
         try {
+          set({isLoggedIn: false})
           await GoogleSignin.signOut()
           await auth().signOut()
-          set({isLoggedIn: false})
           return true
         } catch (error) {
           console.log(`[AuthStore] logout error: ${error}`)
