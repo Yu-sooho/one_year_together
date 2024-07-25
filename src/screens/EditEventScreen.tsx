@@ -273,7 +273,7 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
       style={[defaultStyles.containerStyle, {backgroundColor: colors.c242424}]}>
       <StatusBar barStyle="dark-content" />
       <CustomHeader
-        title={isEdit ? '특별한 날이었지?' : '특별한 날이지!'}
+        title={isEdit ? '특별한 날이었지?' : '특별한 날이야?'}
         titleStyle={{color: colors.cffffff}}
         iconColor={colors.cffffff}
         containerStyle={{backgroundColor: colors.c242424}}

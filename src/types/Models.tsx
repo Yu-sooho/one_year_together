@@ -26,7 +26,8 @@ interface LetterModel extends defaultData {
   content: string
   password?: string
   hint?: string
-  imageUrl?: string
+  // imageUrl?: string
+  imageUrl?: string[]
   isUnLockedUserId?: string[]
 }
 

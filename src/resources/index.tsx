@@ -18,7 +18,7 @@ export const images = {
   start_event: require('./images/start_event.jpg'),
   wigdet_image: require('./images/wigdet_image.jpg'),
   widget_image_por: require('./images/widget_image_por.jpg'),
-  wigdet_image_wide1: require('./images/wigdet_image_wide1.jpeg'),
+  wigdet_image_wide1: require('./images/wigdet_image_wide1.jpg'),
   wigdet_image_wide2: require('./images/wigdet_image_wide2.jpg'),
 
   google_login_button: require('./images/google_login_button.png'),

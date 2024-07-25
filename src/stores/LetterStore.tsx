@@ -18,7 +18,13 @@ interface LetterState {
   checkDuplicated: (
     title: string,
   ) => Promise<false | FirebaseDatabaseTypes.DataSnapshot>
-  uploadLetterImage: (fileName: string, uri: string) => Promise<string | false>
+  // uploadLetterImage: (fileName: string, uri: string) => Promise<string | false>
+
+  uploadLetterImage: (
+    title: string,
+    fileName: string,
+    uri: string,
+  ) => Promise<string | false>
 }
 
 const useLetterStore = create<LetterState>((set, get) => {
@@ -74,10 +80,19 @@ const useLetterStore = create<LetterState>((set, get) => {
       )
       return result
     },
-    uploadLetterImage: async (fileName, uri) => {
-      const result = await firebaseStore.uploadImage(`letters/${fileName}`, uri)
+
+    uploadLetterImage: async (title, fileName, uri) => {
+      const result = await firebaseStore.uploadImage(
+        `letters/${title}/${fileName}`,
+        uri,
+      )
       return result
     },
+
+    // uploadLetterImage: async (fileName, uri) => {
+    //   const result = await firebaseStore.uploadImage(`letters/${fileName}`, uri)
+    //   return result
+    // },
   }
 })
 

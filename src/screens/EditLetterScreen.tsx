@@ -8,8 +8,10 @@ import {
   TouchableOpacity,
   Dimensions,
   Platform,
+  FlatList,
+  ListRenderItem,
 } from 'react-native'
-import ImageCropPicker from 'react-native-image-crop-picker'
+import ImageCropPicker, {ImageOrVideo} from 'react-native-image-crop-picker'
 import {
   useAppStateStore,
   useAuthStore,
@@ -22,6 +24,7 @@ import {
   CustomHeader,
   TextInputWithTitle,
   TextInputTitle,
+  EventImageListItem,
 } from '../components'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import defaultStyles from '../styles'
@@ -65,12 +68,9 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
   const [password, setPassword] = useState('')
   const [hint, setHint] = useState('')
   const isEdit = route.params?.isEdit
-
-  const [selectedUri, setSelectedUri] = useState<number | Source | undefined>(
-    undefined,
-  )
-  const imageFileName = useRef<string | null | undefined>(null)
-  const imageFileUri = useRef<string | null | undefined>(null)
+  const editLetterItem = route.params?.letter
+  const [imageList, setImageList] = useState<ImageOrVideo[] | null>(null)
+  const [tempImages, setTempImages] = useState<string[] | null>(null)
 
   const openPicker = async () => {
     const {width, height} = Dimensions.get('window')
@@ -85,23 +85,27 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     } else {
       ImageCropPicker.openPicker({
         cropping: true,
-        multiple: false,
+        multiple: true,
+        maxFiles: 20,
         width: cropWidth,
         height: cropHeight,
       })
         .then(image => {
-          if (!!image?.path) {
-            setSelectedUri({uri: image.path})
-            const fileName = image.path.split('/').pop()
-            imageFileName.current = !!image?.filename
-              ? `${image.filename}.${getFileExtension(image.path)}`
-              : fileName
-            imageFileUri.current = image.path
-          }
+          setImageList(image)
         })
         .catch(error => {
           console.log(error)
         })
+    }
+  }
+
+  const deletedImage = (item: ImageOrVideo) => {
+    if (!imageList) return
+    const index = imageList.findIndex(element => element === item)
+    if (index !== -1 && !!imageList) {
+      const newList = [...imageList]
+      newList.splice(index, 1)
+      setImageList(newList)
     }
   }
 
@@ -130,41 +134,99 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     showToast(message)
   }
 
-  const uploadImage = async () => {
-    setIsLoading()
-    if (!imageFileName.current || !imageFileUri.current) return false
-    const checkDuplicated = await checkDuplicate(title)
-    if (checkDuplicated && !isEdit) {
-      showError('중복되는 제목입니다.')
-      return
-    }
-    const uploadLetterImageResult = await uploadLetterImage(
-      imageFileName.current,
-      imageFileUri.current,
+  const uploadImage = async (): Promise<string[]> => {
+    if (!imageList) return []
+
+    const uploadPromises = imageList.map(image =>
+      uploadLetterImage(
+        title,
+        `${image.filename}.${getFileExtension(image.path)}`,
+        image.path,
+      ),
     )
-    if (!uploadLetterImageResult) {
-      showError('잘못된 이미지입니다.')
-      return
+
+    try {
+      const result: string[] = []
+      const uploadResult = await Promise.all(uploadPromises)
+      uploadResult.forEach(element => {
+        if (!!element) {
+          result.push(element)
+        }
+      })
+      return result
+    } catch (error) {
+      console.error('One or more image uploads failed:', error)
+      return []
     }
-    if (isEdit && checkDuplicated) {
-      changedLetter(uploadLetterImageResult, checkDuplicated)
-      return
-    }
-    uploadLetter(uploadLetterImageResult)
   }
 
+  // const uploadImage = async () => {
+  //   setIsLoading()
+  //   if (!imageFileName.current || !imageFileUri.current) return false
+  //   const checkDuplicated = await checkDuplicate(title)
+  //   if (checkDuplicated && !isEdit) {
+  //     showError('중복되는 제목입니다.')
+  //     return
+  //   }
+  //   const uploadLetterImageResult = await uploadLetterImage(
+  //     imageFileName.current,
+  //     imageFileUri.current,
+  //   )
+  //   if (!uploadLetterImageResult) {
+  //     showError('잘못된 이미지입니다.')
+  //     return
+  //   }
+  //   if (isEdit && checkDuplicated) {
+  //     changedLetter(uploadLetterImageResult, checkDuplicated)
+  //     return
+  //   }
+  //   uploadLetter(uploadLetterImageResult)
+  // }
+
+  // const changedLetter = async (
+  //   uploadLetterImageResult: string,
+  //   snapshot: FirebaseDatabaseTypes.DataSnapshot,
+  // ) => {
+  //   const imageResult = await uploadImage()
+  //   const letter: LetterModel = {
+  //     title: title,
+  //     content: text,
+  //     hint: hint,
+  //     password: password,
+  //     imageUrl: imageResult,
+  //   }
+  //   const uploadResult = await updateLetter(letter, snapshot)
+  //   if (!uploadResult) {
+  //     showError('서버에러 입니다.')
+  //     return
+  //   }
+  //   showSuccess('이벤트가 등록되었습니다')
+  //   navigation.goBack()
+  // }
+
   const changedLetter = async (
-    uploadLetterImageResult: string,
     snapshot: FirebaseDatabaseTypes.DataSnapshot,
+    imageResult?: string[],
   ) => {
-    const letter: LetterModel = {
+    const event: LetterModel = {
       title: title,
       content: text,
       hint: hint,
       password: password,
-      imageUrl: uploadLetterImageResult,
+      imageUrl: imageResult,
     }
-    const uploadResult = await updateLetter(letter, snapshot)
+
+    if (imageResult) {
+      event.imageUrl = imageResult
+    } else if (imageList?.length !== editLetterItem?.imageUrl?.length) {
+      let tempImageList: string[] = []
+      imageList?.forEach(element => {
+        tempImageList.push(element?.path)
+      })
+      event.imageUrl = tempImageList
+    }
+
+    const uploadResult = await updateLetter(event, snapshot)
     if (!uploadResult) {
       showError('서버에러 입니다.')
       return
@@ -173,16 +235,33 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     navigation.goBack()
   }
 
-  const uploadLetter = async (uploadLetterImageResult: string) => {
+  const uploadLetter = async () => {
+    setIsLoading()
     const isUnLockedUserId = currentUser?.email
       ? [currentUser?.email]
       : undefined
+
+    const checkDuplicated = await checkDuplicate(title)
+    if (checkDuplicated && !isEdit) {
+      showError('중복되는 제목입니다.')
+      return
+    } else if (isEdit && checkDuplicated) {
+      if (editLetterItem?.imageUrl !== tempImages) {
+        const imageResult = await uploadImage()
+        changedLetter(checkDuplicated, imageResult)
+        return
+      }
+      changedLetter(checkDuplicated)
+      return
+    }
+
+    const imageResult = await uploadImage()
     const letter: LetterModel = {
       title: title,
       content: text,
       hint: hint,
       password: password,
-      imageUrl: uploadLetterImageResult,
+      imageUrl: imageResult,
       isUnLockedUserId: isUnLockedUserId,
     }
     const uploadResult = await addLetter(letter)
@@ -190,16 +269,27 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
       showError('서버에러 입니다.')
       return
     }
-    showSuccess('이벤트가 등록되었습니다')
+    showSuccess('고마워 편지 써줘서 ㅎㅎ')
     navigation.goBack()
+  }
+
+  const renderItem: ListRenderItem<ImageOrVideo> = ({item, index}) => {
+    return (
+      <EventImageListItem
+        item={item}
+        index={index}
+        onPressItem={deletedImage}
+      />
+    )
   }
 
   return (
     <>
-      <FastImage style={styles.image} source={selectedUri} />
-      <CustomBackgroundOpacity isNoOpacity={selectedUri ? false : true} />
       <SafeAreaView
-        style={[defaultStyles.containerStyle, defaultStyles.noBackgroundStyle]}>
+        style={[
+          defaultStyles.containerStyle,
+          {backgroundColor: colors.c242424},
+        ]}>
         <CustomHeader
           title={isEdit ? '편지 수정하기' : '편지쓰기'}
           containerStyle={[defaultStyles.noBackgroundStyle]}
@@ -254,10 +344,20 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
               <Icon name="plus" size={normalize(20)} color={colors.cffffff} />
             </TouchableOpacity>
           </View>
+
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            horizontal
+            data={imageList}
+            renderItem={renderItem}
+            ItemSeparatorComponent={ItemSeparatorComponent}
+            contentContainerStyle={styles.imageContentContainerStyle}
+          />
         </ScrollView>
         <CustomBottomButton
-          onPressButton={uploadImage}
-          isDisabled={!selectedUri || !title || !text || !hint || !password}
+          onPressButton={uploadLetter}
+          isDisabled={!title || !text || !hint || !password || !imageList}
           buttonText={'저장'}
           textStyle={styles.whiteText}
           style={defaultStyles.noBackgroundStyle}
@@ -267,6 +367,7 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     </>
   )
 }
+const ItemSeparatorComponent = () => <View style={{width: normalize(10)}} />
 
 const styles = StyleSheet.create({
   textInputWithTitleContainer: {
@@ -305,6 +406,9 @@ const styles = StyleSheet.create({
     borderColor: colors.cf4f4f4,
     marginHorizontal: normalize(20),
     marginVertical: normalize(20),
+  },
+  imageContentContainerStyle: {
+    paddingHorizontal: normalize(20),
   },
 })
 

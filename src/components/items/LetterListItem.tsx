@@ -43,7 +43,10 @@ const LetterListItem: React.FC<LetterListitemProps> = ({
           <Icon name="mail" size={normalize(24)} color={colors.c242424} />
         </View>
       ) : (
-        <FastImage source={{uri: item?.imageUrl}} style={styles.image} />
+        <FastImage
+          source={{uri: item?.imageUrl ? item.imageUrl[0] : ''}}
+          style={styles.image}
+        />
       )}
       <Text style={styles.titleText}>{item?.title}</Text>
     </TouchableOpacity>

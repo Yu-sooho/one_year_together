@@ -1,6 +1,6 @@
 import {RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import React from 'react'
+import React, {useEffect, useRef} from 'react'
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
+  FlatList,
+  ListRenderItem,
 } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import {CustomBackgroundOpacity, CustomHeader} from '../components'
@@ -59,11 +61,67 @@ const LetterScreen: React.FC<Props> = ({navigation, route}) => {
       color: colors.cffffff,
       textAlign: 'center',
     },
+    listContainer: {
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height + inset.top,
+    },
   })
+  const flatListRef = useRef<FlatList<string>>(null)
+  const scrollIndex = useRef(0)
+  const animInterval = useRef<any>(null)
+
+  const eventAnimatedInit = () => {
+    if (
+      !currentLetter ||
+      !currentLetter.imageUrl ||
+      currentLetter.imageUrl.length <= 0
+    )
+      return
+    animInterval.current = setInterval(() => {
+      if (flatListRef.current) {
+        scrollIndex.current =
+          (scrollIndex.current + 1) %
+          (currentLetter.imageUrl ? currentLetter.imageUrl.length : 0)
+        flatListRef.current.scrollToIndex({
+          animated: false,
+          index: scrollIndex.current,
+        })
+      }
+    }, 4000)
+  }
+
+  useEffect(() => {
+    eventAnimatedInit()
+    return () => clearInterval(animInterval.current)
+  }, [])
+
+  const renderItem: ListRenderItem<string> = ({item, index}) => {
+    return (
+      <View>
+        <FastImage style={styles.image} source={{uri: item}} />
+        <CustomBackgroundOpacity />
+      </View>
+    )
+  }
+
+  const isHaveImage = currentLetter.imageUrl
+
   return (
     <View style={styles.container}>
-      <FastImage style={styles.image} source={{uri: imageUrl}} />
-      <CustomBackgroundOpacity />
+      {isHaveImage && (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          ref={flatListRef}
+          pointerEvents="none"
+          horizontal
+          pagingEnabled
+          style={styles.listContainer}
+          renderItem={renderItem}
+          data={isHaveImage}
+          bounces={false}
+        />
+      )}
       <SafeAreaView style={styles.contentContainer}>
         <CustomHeader
           title={title}
