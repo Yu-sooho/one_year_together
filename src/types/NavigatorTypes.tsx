@@ -13,4 +13,5 @@ type LetterStackNavigatorParamList = {
   LoginScreen: undefined
   MainStackNavigator: undefined
   LetterScreen: LetterScreenProps
+  CustomModalScreen: CustomModalScreenProps
 }

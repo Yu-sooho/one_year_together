@@ -2,11 +2,7 @@ import React, {useEffect} from 'react'
 import {StatusBar, StyleSheet, View} from 'react-native'
 import {NavigationContainer, NavigationState} from '@react-navigation/native'
 import {LetterStackNavigator} from './navigations'
-import {
-  PermissionController,
-  FirebaseController,
-  ToastController,
-} from './components'
+import {FirebaseController, ToastController} from './components'
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -76,7 +72,6 @@ const App: React.FC = () => {
         <InsetController />
       </SafeAreaProvider>
       <WidgetTaskHandlerIos />
-      <PermissionController />
       <FirebaseController />
       <ToastController />
       <LoadingController />

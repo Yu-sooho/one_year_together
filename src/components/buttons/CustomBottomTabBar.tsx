@@ -32,7 +32,6 @@ const CustomBottomTabBar = memo(() => {
       justifyContent: 'space-between',
       alignItems: 'center',
       backgroundColor: colors.c242424,
-      paddingBottom: +DEFAULT_BOTTOM_SIZE,
     },
     buttonStyle: {
       flex: 1,

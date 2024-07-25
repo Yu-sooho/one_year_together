@@ -11,9 +11,12 @@ import {create} from 'zustand'
 import {findKeyByValueForRecord} from '../utils'
 import {StackNavigationProp} from '@react-navigation/stack'
 
+const version = Number(Platform.Version)
 const ANDROID_PERMISSION: Array<AndroidPermission> = [
   PERMISSIONS.ANDROID.CAMERA,
-  PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
+  version >= 33
+    ? PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
+    : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
 ]
 const IOS_PERMISSION: Array<IOSPermission> = [
   PERMISSIONS.IOS.CAMERA,

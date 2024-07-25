@@ -14,6 +14,7 @@ import {
   PasswordScreen,
 } from '../screens'
 import {defaultScreenOptions} from '../styles/options'
+import {PermissionController} from '../components'
 
 const Stack = createStackNavigator<MainStackNavigatorParamList>()
 
@@ -47,6 +48,7 @@ const MainStackNavigator = () => {
           />
         </Stack.Group>
       </Stack.Navigator>
+      <PermissionController />
     </>
   )
 }

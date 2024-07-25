@@ -10,7 +10,7 @@ import {
   Image,
 } from 'react-native'
 import defaultStyles from '../styles'
-import {useAuthStore, useFirebaseStore} from '../stores'
+import {useAppStateStore, useAuthStore, useFirebaseStore} from '../stores'
 import auth from '@react-native-firebase/auth'
 import {
   GoogleSignin,
@@ -44,10 +44,12 @@ const LoginScreen: React.FC<Props> = () => {
   const login = useAuthStore(state => state.login)
   const setCurrentUser = useAuthStore(state => state.setCurrentUser)
   const loginCheck = useFirebaseStore(state => state.loginCheck)
+  const setIsLoading = useAppStateStore(state => state.setIsLoading)
   const inset = useSafeAreaInsets()
 
   const signInWithGoogle = async () => {
     try {
+      setIsLoading()
       await GoogleSignin.hasPlayServices()
       const userInfo = await GoogleSignin.signIn()
       const googleCredential = auth.GoogleAuthProvider.credential(
@@ -59,7 +61,9 @@ const LoginScreen: React.FC<Props> = () => {
         setCurrentUser(isLogin)
         login()
       }
+      setIsLoading()
     } catch (error: unknown) {
+      setIsLoading()
       if (error instanceof Error) {
         if (error.message === statusCodes.SIGN_IN_CANCELLED) {
           console.log('User cancelled the login flow')
@@ -108,7 +112,7 @@ const LoginScreen: React.FC<Props> = () => {
               ...fonts.nanumgy24,
               fontSize: normalize(22),
               textAlign: 'center',
-            }}>{`어서와!ㅎㅎ\n 1주년 축하해!!`}</Text>
+            }}>{`1주년 축하해!!`}</Text>
         </Balloon>
       </View>
       <TouchableOpacity

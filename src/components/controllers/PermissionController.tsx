@@ -18,7 +18,7 @@ const PermissionController = memo(() => {
   const openPopup = () => {
     navigation.navigate('CustomModalScreen', {
       title: '권한 체크',
-      contents: '필요한 권한이 없습니다',
+      contents: '필요권한이 없대ㅜ\n나 부르거나 앱 설정가서 권한 켜야해!!',
       okAction: openAppSettings,
     })
   }

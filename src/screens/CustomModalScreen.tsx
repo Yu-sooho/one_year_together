@@ -59,12 +59,14 @@ const CustomModalScreen: React.FC<Props> = ({navigation, route}) => {
       <View style={styles.content}>
         {!!title && (
           <View style={styles.header}>
-            <Text style={fonts.bmjua16}>{title}</Text>
+            <Text style={[fonts.bmjua16, {textAlign: 'center'}]}>{title}</Text>
           </View>
         )}
         {!!contents && (
           <View style={styles.detail}>
-            <Text style={fonts.bmjua14}>{contents}</Text>
+            <Text style={[fonts.bmjua14, {textAlign: 'center'}]}>
+              {contents}
+            </Text>
           </View>
         )}
         <View style={styles.bottomButtons}>
