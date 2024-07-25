@@ -17,7 +17,7 @@ import FastImage from 'react-native-fast-image'
 import {CustomBackgroundOpacity, CustomHeader} from '../components'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import colors from '../styles/colors'
-import {normalize} from '../utils'
+import {daysUntil, normalize, timestampToDate} from '../utils'
 import fonts from '../styles/fonts'
 
 type EventScreenNavigationProp = StackNavigationProp<
@@ -117,7 +117,10 @@ const EventScreen: React.FC<Props> = ({navigation, route}) => {
     return () => clearInterval(animInterval.current)
   }, [])
 
-  const date = event?.targetAt
+  const date =
+    event?.targetAt > 10000000
+      ? daysUntil(timestampToDate(event?.targetAt))
+      : event?.targetAt
   const isHaveImage = event.imageUrl || event.localImageUrl
 
   const onPressAdd = () => {

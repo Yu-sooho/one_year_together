@@ -117,10 +117,10 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
 
     const uploadResult = await updateEvent(event, snapshot)
     if (!uploadResult) {
-      showError('서버에러 입니다.')
+      showError('나한테 얘기해 서버 에러야 이거')
       return
     }
-    showSuccess('이벤트가 등록되었습니다')
+    showSuccess('기억해둘게!!ㅋㅋ')
     navigation.goBack()
   }
 
@@ -154,7 +154,7 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
     setIsLoading()
     const checkDuplicated = await checkDuplicate(title)
     if (checkDuplicated && !isEdit) {
-      showError('중복되는 제목입니다.')
+      showError('같은 제목은 못만들어!')
       return
     } else if (isEdit && checkDuplicated) {
       if (editEventItem?.imageUrl !== tempImages) {
@@ -174,10 +174,10 @@ const EditEventScreen: React.FC<Props> = ({navigation, route}) => {
     }
     const uploadResult = await addEvent(event)
     if (!uploadResult) {
-      showError('서버에러 입니다.')
+      showError('나한테 얘기해 서버 에러야 이거')
       return
     }
-    showSuccess('이벤트가 등록되었습니다')
+    showSuccess('기억해둘게!!ㅋㅋ')
     navigation.goBack()
   }
 

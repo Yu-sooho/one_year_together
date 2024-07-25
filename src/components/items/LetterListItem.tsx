@@ -48,7 +48,9 @@ const LetterListItem: React.FC<LetterListitemProps> = ({
           style={styles.image}
         />
       )}
-      <Text style={styles.titleText}>{item?.title}</Text>
+      <Text numberOfLines={1} style={styles.titleText}>
+        {item?.title}
+      </Text>
     </TouchableOpacity>
   )
 }
@@ -67,12 +69,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.cf4f4f4,
+    borderWidth: normalize(1),
+    borderColor: colors.cffffff,
     borderRadius: normalize(10),
   },
   titleText: {
     ...fonts.bmjua16,
     color: colors.cffffff,
     marginTop: normalize(10),
+    maxWidth: 100,
   },
 })
 

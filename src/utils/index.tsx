@@ -26,7 +26,7 @@ export function getFileExtension(filePath: string): string {
 export function daysUntil(date: Date) {
   const now = moment()
   const target = moment(date)
-  const differenceInDays = target.diff(now, 'days')
+  const differenceInDays = target.diff(now, 'days') + 1
   return Math.abs(differenceInDays)
 }
 

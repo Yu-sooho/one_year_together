@@ -228,10 +228,10 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
 
     const uploadResult = await updateLetter(event, snapshot)
     if (!uploadResult) {
-      showError('서버에러 입니다.')
+      showError('나한테 얘기해 서버 에러야 이거')
       return
     }
-    showSuccess('이벤트가 등록되었습니다')
+    showSuccess('편지 수정했어!')
     navigation.goBack()
   }
 
@@ -243,7 +243,7 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
 
     const checkDuplicated = await checkDuplicate(title)
     if (checkDuplicated && !isEdit) {
-      showError('중복되는 제목입니다.')
+      showError('이미 있는 제목이래')
       return
     } else if (isEdit && checkDuplicated) {
       if (editLetterItem?.imageUrl !== tempImages) {
@@ -266,7 +266,7 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
     }
     const uploadResult = await addLetter(letter)
     if (!uploadResult) {
-      showError('서버에러 입니다.')
+      showError('나한테 얘기해 서버 에러야 이거')
       return
     }
     showSuccess('고마워 편지 써줘서 ㅎㅎ')
@@ -303,8 +303,8 @@ const EditLetterScreen: React.FC<Props> = ({navigation, route}) => {
           style={[defaultStyles.contentContainerStyle]}>
           <TextInputWithTitle
             title={'제목'}
-            placeholder={'최대 20자'}
-            maxLength={20}
+            placeholder={'최대 12자'}
+            maxLength={12}
             isWhite
             onChangeText={onChangeTitle}
             value={title}
@@ -409,6 +409,7 @@ const styles = StyleSheet.create({
   },
   imageContentContainerStyle: {
     paddingHorizontal: normalize(20),
+    paddingBottom: normalize(10),
   },
 })
 
