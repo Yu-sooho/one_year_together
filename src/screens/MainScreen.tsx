@@ -67,10 +67,26 @@ const MainScreen: React.FC<Props> = ({navigation, route}) => {
     return () => unsubscribeEventList()
   }, [])
 
+  const findMatchingDate = (
+    eventList: EventModel[],
+    currentDate: Date,
+  ): EventModel | null => {
+    for (let item of eventList) {
+      if (isSameDate(new Date(item.targetAt), currentDate)) {
+        return item
+      }
+    }
+    return null
+  }
+
   const onPressItem = (item: EventModel) => {
     const today = new Date()
     const targetDate = new Date(item.targetAt)
-    if (isSameDate(today, targetDate)) {
+
+    if (
+      isSameDate(today, targetDate) &&
+      !findMatchingDate(eventList, targetDate)
+    ) {
       navigation.navigate('EditEventScreen', {
         event: item,
       })
