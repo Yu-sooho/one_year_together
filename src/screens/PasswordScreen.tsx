@@ -1,12 +1,20 @@
 import {CompositeNavigationProp, RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import React, {useState} from 'react'
-import {View, Text, StyleSheet, SafeAreaView} from 'react-native'
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native'
 import defaultStyles from '../styles'
 import {useAppStateStore, useAuthStore, useLetterStore} from '../stores'
 import {CustomBottomButton, CustomHeader, CustomTextInput} from '../components'
 import fonts from '../styles/fonts'
 import {normalize} from '../utils'
+import Icon from 'react-native-vector-icons/Feather'
+import colors from '../styles/colors'
 
 type PasswordScreenNavigationProp = CompositeNavigationProp<
   StackNavigationProp<MainStackNavigatorParamList, 'LetterListScreen'>,
@@ -84,7 +92,7 @@ const PasswordScreen: React.FC<Props> = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={[defaultStyles.containerStyle]}>
-      <CustomHeader title={''} />
+      <CustomHeader title={''} rightContent={<TeaseButton />} />
       <View style={styles.container}>
         <Text
           style={{
@@ -103,6 +111,14 @@ const PasswordScreen: React.FC<Props> = ({navigation, route}) => {
       </View>
       <CustomBottomButton onPressButton={onPressComlete} buttonText="완료" />
     </SafeAreaView>
+  )
+}
+
+const TeaseButton = () => {
+  return (
+    <TouchableOpacity>
+      <Icon name="wind" size={normalize(24)} color={colors.c242424} />
+    </TouchableOpacity>
   )
 }
 

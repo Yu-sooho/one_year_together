@@ -49,6 +49,7 @@ const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
   const addSetting = useAppStateStore(state => state.addSetting)
   const setIsLoading = useAppStateStore(state => state.setIsLoading)
   const settingData = useAppStateStore(state => state.settingData)
+  const isAgreeNotifee = useAppStateStore(state => state.isAgreeNotifee)
 
   const checkPermission = usePermissionStore(state => state.checkPermission)
   const openPermissionModal = usePermissionStore(
@@ -96,7 +97,6 @@ const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
     const result: ImageOrVideo | false = await openPicker()
     if (!result) {
       setIsLoading()
-      // showToast('설정할 수 없는 이미지야 ㅠ')
       return
     }
     const imageUrl = await setHomeImageUrl({homeImagePath: result.path})
@@ -141,16 +141,27 @@ const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
     })
   }
 
+  const navigatedNotifeeListScreen = () => {
+    navigation.navigate('NotifeeListScreen', {})
+  }
+
+  const checkNotifeePermission = () => {
+    if (isAgreeNotifee) {
+    }
+  }
+
   return (
     <SafeAreaView style={defaultStyles.containerStyle}>
       <StatusBar barStyle="dark-content" />
-      <CustomHeader title="" />
-      <CustomRadioButton
-        onPress={onPressPush}
-        text={'푸시 알림 허용'}
-        value={isAgreePush}
+      <CustomHeader
+        title="설정"
+        rightContent={
+          <ShowBellButton
+            onPress={navigatedNotifeeListScreen}
+            isAgreeNotifee={isAgreeNotifee}
+          />
+        }
       />
-
       <TouchableOpacity onPress={changedHomeImage} style={styles.button}>
         <Text style={styles.buttonText}>홈 이미지 설정</Text>
         {settingData?.homeImageUrl && (
@@ -168,6 +179,24 @@ const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
         <Text style={styles.logoutText}>로그아웃</Text>
       </TouchableOpacity>
     </SafeAreaView>
+  )
+}
+
+const ShowBellButton = ({
+  onPress,
+  isAgreeNotifee,
+}: {
+  onPress: () => void
+  isAgreeNotifee: boolean
+}) => {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      {isAgreeNotifee ? (
+        <Icon name="bell" size={normalize(22)} color={colors.c242424} />
+      ) : (
+        <Icon name="bell-off" size={normalize(22)} color={colors.c242424} />
+      )}
+    </TouchableOpacity>
   )
 }
 

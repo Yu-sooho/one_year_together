@@ -6,6 +6,8 @@ type PasswordScreenProps = {
   currentLetter: LetterModel
 }
 
+type NotifeeListScreenProps = {}
+
 type CustomModalScreenProps = {
   isShowOk?: boolean
   isShowCancel?: boolean

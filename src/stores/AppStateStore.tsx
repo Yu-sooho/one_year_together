@@ -34,86 +34,116 @@ interface AppState {
   subscribeSetting: () => void
   unsubscribeSetting: () => void
   addSetting: (setting: SettingModel) => Promise<boolean>
+
+  isAgreeNotifee: boolean
+  setIsAgreeNotifee: (value: boolean) => void
 }
 
-const useAppStateStore = create<AppState>((set, get) => {
-  const firebaseStore = useFirebaseStore.getState()
-  return {
-    inset: null,
-    setHomeImageUrl: async ({homeImagePath}) => {
-      if (homeImagePath) {
-        const result = await firebaseStore.uploadImage(
-          `settings/homeImage`,
-          homeImagePath,
-        )
-        return result
-      }
+interface persistOption {
+  isAgreeNotifee: boolean
+}
 
-      const result = await firebaseStore.deleteDataToRdb(
-        '/settings/homeImageUrl',
-      )
-      return result
-    },
-    setWidgetImageUrl: async ({widgetImagePath}) => {
-      if (widgetImagePath) {
-        const result = await firebaseStore.uploadImage(
-          `settings/widgetImage`,
-          widgetImagePath,
-        )
-        return true
+type MyPersist = (
+  config: StateCreator<AppState>,
+  options: PersistOptions<AppState, persistOption>,
+) => StateCreator<AppState>
+
+const useAppStateStore = create<AppState>(
+  (persist as MyPersist)(
+    (set, get) => {
+      const firebaseStore = useFirebaseStore.getState()
+      return {
+        isAgreeNotifee: false,
+        setIsAgreeNotifee: value => {
+          set({
+            isAgreeNotifee: value,
+          })
+        },
+        inset: null,
+        setHomeImageUrl: async ({homeImagePath}) => {
+          if (homeImagePath) {
+            const result = await firebaseStore.uploadImage(
+              `settings/homeImage`,
+              homeImagePath,
+            )
+            return result
+          }
+
+          const result = await firebaseStore.deleteDataToRdb(
+            '/settings/homeImageUrl',
+          )
+          return result
+        },
+        setWidgetImageUrl: async ({widgetImagePath}) => {
+          if (widgetImagePath) {
+            const result = await firebaseStore.uploadImage(
+              `settings/widgetImage`,
+              widgetImagePath,
+            )
+            return true
+          }
+          return false
+        },
+        addSetting: async setting => {
+          const result = await firebaseStore.addDataToOriginRdb(
+            '/settings',
+            setting,
+          )
+          return result
+        },
+        settingData: null,
+        subscribeSetting: () => {
+          return firebaseStore.subscribeRdbObj('/settings', data => {
+            set({settingData: data})
+          })
+        },
+        unsubscribeSetting: () => {
+          firebaseStore.unSubscribeRdb('/settings', get().subscribeSetting)
+        },
+        setInset: inset => {
+          set({
+            inset,
+          })
+        },
+        isLoading: false,
+        isMounted: false,
+        setIsMounted: value => {
+          set({
+            isMounted: value,
+          })
+        },
+        setIsLoading: force => {
+          const loadingState = get().isLoading
+          if (force) {
+            set({
+              isLoading: false,
+            })
+          }
+          set({
+            isLoading: !loadingState,
+          })
+        },
+        showToast: async (message, type) => {
+          const inset = await get().inset
+          Toast.show({
+            type: type || 'defaultToast',
+            text1: message,
+            position: 'bottom',
+            visibilityTime: 3000,
+            bottomOffset: (inset?.bottom || 0) + normalize(20),
+          })
+        },
       }
-      return false
     },
-    addSetting: async setting => {
-      const result = await firebaseStore.addDataToOriginRdb(
-        '/settings',
-        setting,
-      )
-      return result
+    {
+      name: 'appState-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+      partialize: state => ({isAgreeNotifee: state.isAgreeNotifee}),
+      onRehydrateStorage: () => state => {
+        console.log('State rehydrated appState', state)
+      },
     },
-    settingData: null,
-    subscribeSetting: () => {
-      return firebaseStore.subscribeRdbObj('/settings', data => {
-        set({settingData: data})
-      })
-    },
-    unsubscribeSetting: () => {
-      firebaseStore.unSubscribeRdb('/settings', get().subscribeSetting)
-    },
-    setInset: inset => {
-      set({
-        inset,
-      })
-    },
-    isLoading: false,
-    isMounted: false,
-    setIsMounted: value => {
-      set({
-        isMounted: value,
-      })
-    },
-    setIsLoading: force => {
-      const loadingState = get().isLoading
-      if (force) {
-        set({
-          isLoading: false,
-        })
-      }
-      set({
-        isLoading: !loadingState,
-      })
-    },
-    showToast: async (message, type) => {
-      const inset = await get().inset
-      Toast.show({
-        type: type || 'defaultToast',
-        text1: message,
-        position: 'bottom',
-        visibilityTime: 3000,
-        bottomOffset: (inset?.bottom || 0) + normalize(20),
-      })
-    },
-  }
-})
+  ),
+)
 
 export default useAppStateStore

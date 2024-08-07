@@ -7,6 +7,7 @@ type MainStackNavigatorParamList = {
   DdaySettingScreen: undefined
   CustomModalScreen: CustomModalScreenProps
   PasswordScreen: PasswordScreenProps
+  NotifeeListScreen: NotifeeListScreenProps
 }
 
 type LetterStackNavigatorParamList = {
