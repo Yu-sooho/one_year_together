@@ -5,7 +5,7 @@ import {FlatList, StyleSheet, Text, View} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {CustomHeader, CustomRadioButton} from '../components'
 import colors from '../styles/colors'
-import {useAppStateStore} from '../stores'
+import {useAppStateStore, useAuthStore} from '../stores'
 
 type NotifeeListScreenNavigationProp = CompositeNavigationProp<
   StackNavigationProp<MainStackNavigatorParamList, 'LetterListScreen'>,
@@ -25,6 +25,19 @@ type Props = {
 const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
   const isAgreeNotifee = useAppStateStore(state => state.isAgreeNotifee)
   const setIsAgreeNotifee = useAppStateStore(state => state.setIsAgreeNotifee)
+  const settingData = useAppStateStore(state => state.settingData)
+  const currentUser = useAuthStore(state => state.currentUser)
+  const addSetting = useAppStateStore(state => state.addSetting)
+  const setIsLoading = useAppStateStore(state => state.setIsLoading)
+
+  const updateSetting = async () => {
+    await addSetting({
+      isPushNotifee: !isAgreeNotifee,
+      homeImageUrl: settingData?.homeImageUrl,
+    })
+    setIsAgreeNotifee(!isAgreeNotifee)
+    setIsLoading()
+  }
 
   const renderItem = useCallback(() => {
     return (
@@ -35,7 +48,8 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
   }, [])
 
   const onPressPush = () => {
-    setIsAgreeNotifee(!isAgreeNotifee)
+    setIsLoading()
+    updateSetting()
   }
 
   return (

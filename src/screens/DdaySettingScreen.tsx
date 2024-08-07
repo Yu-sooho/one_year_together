@@ -50,6 +50,7 @@ const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
   const setIsLoading = useAppStateStore(state => state.setIsLoading)
   const settingData = useAppStateStore(state => state.settingData)
   const isAgreeNotifee = useAppStateStore(state => state.isAgreeNotifee)
+  const currentUser = useAuthStore(state => state.currentUser)
 
   const checkPermission = usePermissionStore(state => state.checkPermission)
   const openPermissionModal = usePermissionStore(

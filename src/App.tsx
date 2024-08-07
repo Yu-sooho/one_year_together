@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import {StatusBar, StyleSheet, View} from 'react-native'
 import {NavigationContainer, NavigationState} from '@react-navigation/native'
 import {LetterStackNavigator} from './navigations'
@@ -26,6 +26,7 @@ const App: React.FC = () => {
 
   const logout = useAuthStore(state => state.logout)
   const login = useAuthStore(state => state.login)
+  const currentUser = useAuthStore(state => state.currentUser)
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -53,14 +54,6 @@ const App: React.FC = () => {
     }
     return route.name
   }
-
-  const subscribeSetting = useAppStateStore(state => state.subscribeSetting)
-  const unsubscribeSetting = useAppStateStore(state => state.unsubscribeSetting)
-
-  useEffect(() => {
-    subscribeSetting()
-    return () => unsubscribeSetting()
-  }, [])
 
   return (
     <NavigationContainer onStateChange={handleStateChange}>

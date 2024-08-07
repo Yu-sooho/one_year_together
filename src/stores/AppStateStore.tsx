@@ -6,6 +6,7 @@ import {normalize} from '../utils'
 import useFirebaseStore from './FirebaseStore'
 import {createJSONStorage, persist, PersistOptions} from 'zustand/middleware'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import useAuthStore from './AuthStore'
 
 interface AppState {
   inset: EdgeInsets | null
@@ -61,23 +62,35 @@ const useAppStateStore = create<AppState>(
         },
         inset: null,
         setHomeImageUrl: async ({homeImagePath}) => {
+          const authStore = useAuthStore.getState()
+          const uid = authStore.currentUser?.uid
+          if (!uid) {
+            get().showToast('로그아웃 했다가 다시 시도해줄래?')
+            return false
+          }
           if (homeImagePath) {
             const result = await firebaseStore.uploadImage(
-              `settings/homeImage`,
+              `settings/${uid}`,
               homeImagePath,
             )
             return result
           }
 
           const result = await firebaseStore.deleteDataToRdb(
-            '/settings/homeImageUrl',
+            `/settings/${uid}/homeImageUrl`,
           )
           return result
         },
         setWidgetImageUrl: async ({widgetImagePath}) => {
+          const authStore = useAuthStore.getState()
+          const uid = authStore.currentUser?.uid
+          if (!uid) {
+            get().showToast('로그아웃 했다가 다시 시도해줄래?')
+            return false
+          }
           if (widgetImagePath) {
             const result = await firebaseStore.uploadImage(
-              `settings/widgetImage`,
+              `settings/${uid}widgetImage`,
               widgetImagePath,
             )
             return true
@@ -85,20 +98,42 @@ const useAppStateStore = create<AppState>(
           return false
         },
         addSetting: async setting => {
+          const authStore = useAuthStore.getState()
+          const uid = authStore.currentUser?.uid
+          if (!uid) {
+            get().showToast('로그아웃 했다가 다시 시도해줄래?')
+            return false
+          }
           const result = await firebaseStore.addDataToOriginRdb(
-            '/settings',
+            `/settings/${uid}`,
             setting,
           )
           return result
         },
         settingData: null,
         subscribeSetting: () => {
-          return firebaseStore.subscribeRdbObj('/settings', data => {
+          const authStore = useAuthStore.getState()
+          const uid = authStore.currentUser?.uid
+          console.log(authStore.currentUser?.uid, 'FUFU')
+          if (!uid) {
+            get().showToast('로그아웃 했다가 다시 시도해줄래?')
+            return false
+          }
+          return firebaseStore.subscribeRdbObj(`/settings/${uid}`, data => {
             set({settingData: data})
           })
         },
         unsubscribeSetting: () => {
-          firebaseStore.unSubscribeRdb('/settings', get().subscribeSetting)
+          const authStore = useAuthStore.getState()
+          const uid = authStore.currentUser?.uid
+          if (!uid) {
+            get().showToast('로그아웃 했다가 다시 시도해줄래?')
+            return false
+          }
+          firebaseStore.unSubscribeRdb(
+            `/settings/${uid}`,
+            get().subscribeSetting,
+          )
         },
         setInset: inset => {
           set({

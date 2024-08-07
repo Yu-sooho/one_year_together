@@ -24,14 +24,19 @@ const LetterStackNavigator = () => {
 
   const setCurrentUser = useAuthStore(state => state.setCurrentUser)
 
+  const subscribeSetting = useAppStateStore(state => state.subscribeSetting)
+  const unsubscribeSetting = useAppStateStore(state => state.unsubscribeSetting)
+
   const [isLoading, setIsLoading] = useState(true)
   const isLoginCheck = async () => {
     const isLogin = await loginCheck()
     if (isLogin) {
       setCurrentUser(isLogin)
+      subscribeSetting()
       login()
     } else {
       logout()
+      unsubscribeSetting()
     }
     LottieSplashScreen.hide()
     setIsMounted(true)
@@ -47,7 +52,6 @@ const LetterStackNavigator = () => {
 
     rehydrate()
   }, [])
-
   if (isLoading) return null
 
   const fadeAndSlideScreenOptions: StackNavigationOptions = {
