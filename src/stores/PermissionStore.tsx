@@ -28,6 +28,8 @@ const SELCETED_PERMISSIONS: Array<Permission> =
 
 interface PermissionState {
   selectedPermission: Array<Permission>
+  fcmToken: string | null
+  setFcmToken: (token: string) => void
   checkPermission: () => Promise<Array<any>>
   openAppSettings: () => void
   openPermissionModal: (
@@ -37,6 +39,12 @@ interface PermissionState {
 
 const usePermissionStore = create<PermissionState>((set, get) => ({
   selectedPermission: SELCETED_PERMISSIONS,
+  fcmToken: null,
+  setFcmToken: token => {
+    set({
+      fcmToken: token,
+    })
+  },
   checkPermission: async () => {
     const statuses = await requestMultiple(SELCETED_PERMISSIONS)
     const key = findKeyByValueForRecord(statuses, 'granted', true)

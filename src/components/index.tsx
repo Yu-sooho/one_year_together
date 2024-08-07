@@ -4,6 +4,7 @@ export {
   FirebaseController,
   ToastController,
   WidgetTaskHandler,
+  NotifeeController,
 } from './controllers'
 export {
   CustomBackgroundOpacity,

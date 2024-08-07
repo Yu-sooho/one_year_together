@@ -4,7 +4,8 @@ import {usePermissionStore} from '../../stores'
 import {findKeyByValueForRecord} from '../../utils'
 import {useNavigation} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import {View} from 'react-native'
+import {PermissionsAndroid, Platform, View} from 'react-native'
+import messaging from '@react-native-firebase/messaging'
 
 const PermissionController = memo(() => {
   const navigation =
@@ -12,6 +13,8 @@ const PermissionController = memo(() => {
   const selectedPermission = usePermissionStore(
     state => state.selectedPermission,
   )
+  const fcmToken = usePermissionStore(state => state.fcmToken)
+  const setFcmToken = usePermissionStore(state => state.setFcmToken)
 
   const openAppSettings = usePermissionStore(state => state.openAppSettings)
 
@@ -23,11 +26,50 @@ const PermissionController = memo(() => {
     })
   }
 
+  const getFcm = () => {
+    messaging()
+      .getToken()
+      .then(value => {
+        console.log('FcmToken: ', value)
+        setFcmToken(value)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+  const notifeeReqeustPermissionIos = async () => {
+    const authStatus = await messaging().requestPermission()
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus)
+      getFcm()
+    } else {
+      openPopup()
+    }
+  }
+  const notifeeReqeustPermissionAndroid = async () => {
+    const result = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    )
+    if (result === 'granted') return
+    openPopup()
+  }
+
   const requestPermission = useCallback(() => {
     requestMultiple(selectedPermission).then(statuses => {
       const key = findKeyByValueForRecord(statuses, 'granted', true)
       if (key?.length > 0) {
         openPopup()
+      } else {
+        if (Platform.OS === 'ios') {
+          notifeeReqeustPermissionIos()
+          return
+        }
+        notifeeReqeustPermissionAndroid()
       }
     })
   }, [])
