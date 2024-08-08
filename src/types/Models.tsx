@@ -17,6 +17,7 @@ interface SettingModel extends defaultData {
   widgetImageUrl?: string | null
   homeImageUrl?: string | null
   isPushNotifee: boolean
+  fcmToken?: string | null
 }
 
 interface UserModel extends defaultData {}

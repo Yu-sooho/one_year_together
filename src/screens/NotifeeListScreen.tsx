@@ -1,11 +1,19 @@
 import {CompositeNavigationProp, RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import React, {useCallback} from 'react'
-import {FlatList, StyleSheet, Text, View} from 'react-native'
+import {
+  FlatList,
+  PermissionsAndroid,
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {CustomHeader, CustomRadioButton} from '../components'
 import colors from '../styles/colors'
-import {useAppStateStore, useAuthStore} from '../stores'
+import {useAppStateStore, useAuthStore, usePermissionStore} from '../stores'
+import messaging from '@react-native-firebase/messaging'
 
 type NotifeeListScreenNavigationProp = CompositeNavigationProp<
   StackNavigationProp<MainStackNavigatorParamList, 'LetterListScreen'>,
@@ -25,18 +33,40 @@ type Props = {
 const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
   const isAgreeNotifee = useAppStateStore(state => state.isAgreeNotifee)
   const setIsAgreeNotifee = useAppStateStore(state => state.setIsAgreeNotifee)
-  const settingData = useAppStateStore(state => state.settingData)
-  const currentUser = useAuthStore(state => state.currentUser)
-  const addSetting = useAppStateStore(state => state.addSetting)
-  const setIsLoading = useAppStateStore(state => state.setIsLoading)
+  const openAppSettings = usePermissionStore(state => state.openAppSettings)
 
-  const updateSetting = async () => {
-    await addSetting({
-      isPushNotifee: !isAgreeNotifee,
-      homeImageUrl: settingData?.homeImageUrl,
+  const openPopup = () => {
+    navigation.navigate('CustomModalScreen', {
+      title: '권한 체크',
+      contents: '필요권한이 없대ㅜ\n나 부르거나 앱 설정가서 권한 켜야해!!',
+      okAction: openAppSettings,
     })
-    setIsAgreeNotifee(!isAgreeNotifee)
-    setIsLoading()
+  }
+
+  const notifeeReqeustPermissionIos = async () => {
+    const authStatus = await messaging().requestPermission()
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL
+
+    if (enabled) {
+      setIsAgreeNotifee(!isAgreeNotifee)
+    } else {
+      setIsAgreeNotifee(false)
+      openPopup()
+    }
+  }
+
+  const notifeeReqeustPermissionAndroid = async () => {
+    const result = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
+    )
+    if (result === 'granted') {
+      setIsAgreeNotifee(!isAgreeNotifee)
+      return
+    }
+    setIsAgreeNotifee(false)
+    openPopup()
   }
 
   const renderItem = useCallback(() => {
@@ -48,8 +78,11 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
   }, [])
 
   const onPressPush = () => {
-    setIsLoading()
-    updateSetting()
+    if (Platform.OS === 'ios') {
+      notifeeReqeustPermissionIos()
+      return
+    }
+    notifeeReqeustPermissionAndroid()
   }
 
   return (

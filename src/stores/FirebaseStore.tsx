@@ -53,7 +53,7 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
         })
         setData(list)
       })
-    console.log('firebase subscribeRdb')
+    console.log('firebase subscribeRdb', ref)
     return temp
   },
 
@@ -95,6 +95,7 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
   },
 
   addDataToOriginRdb: async (ref, data) => {
+    console.log(`firebaseStore addDataToOriginRdb start`, ref, data)
     const timestamp = database.ServerValue.TIMESTAMP
     const email = await auth().currentUser?.email
     if (!data) return false
@@ -103,9 +104,10 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
       data.createdUser = email
       const newEventRef = database().ref(ref)
       await newEventRef.set(data)
+      console.log(`firebaseStore addDataToOriginRdb finish success`)
       return true
     } catch (error) {
-      console.log(error)
+      console.log(`firebaseStore addDataToOriginRdb error`, error)
       return false
     }
   },

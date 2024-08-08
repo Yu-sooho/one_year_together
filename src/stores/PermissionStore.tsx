@@ -30,6 +30,8 @@ interface PermissionState {
   selectedPermission: Array<Permission>
   fcmToken: string | null
   setFcmToken: (token: string) => void
+  isCheckedPermission: boolean
+  setIsCheckedPermission: () => void
   checkPermission: () => Promise<Array<any>>
   openAppSettings: () => void
   openPermissionModal: (
@@ -39,6 +41,12 @@ interface PermissionState {
 
 const usePermissionStore = create<PermissionState>((set, get) => ({
   selectedPermission: SELCETED_PERMISSIONS,
+  isCheckedPermission: false,
+  setIsCheckedPermission: () => {
+    set({
+      isCheckedPermission: true,
+    })
+  },
   fcmToken: null,
   setFcmToken: token => {
     set({

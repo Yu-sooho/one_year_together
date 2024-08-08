@@ -100,13 +100,14 @@ const useAppStateStore = create<AppState>(
         addSetting: async setting => {
           const authStore = useAuthStore.getState()
           const uid = authStore.currentUser?.uid
+          const settingData = get().settingData
           if (!uid) {
             get().showToast('로그아웃 했다가 다시 시도해줄래?')
             return false
           }
           const result = await firebaseStore.addDataToOriginRdb(
             `/settings/${uid}`,
-            setting,
+            {...settingData, ...setting},
           )
           return result
         },
@@ -114,7 +115,6 @@ const useAppStateStore = create<AppState>(
         subscribeSetting: () => {
           const authStore = useAuthStore.getState()
           const uid = authStore.currentUser?.uid
-          console.log(authStore.currentUser?.uid, 'FUFU')
           if (!uid) {
             get().showToast('로그아웃 했다가 다시 시도해줄래?')
             return false

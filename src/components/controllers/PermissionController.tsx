@@ -1,6 +1,6 @@
 import React, {memo, useCallback, useEffect} from 'react'
 import {requestMultiple} from 'react-native-permissions'
-import {usePermissionStore} from '../../stores'
+import {useAppStateStore, usePermissionStore} from '../../stores'
 import {findKeyByValueForRecord} from '../../utils'
 import {useNavigation} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -13,10 +13,15 @@ const PermissionController = memo(() => {
   const selectedPermission = usePermissionStore(
     state => state.selectedPermission,
   )
-  const fcmToken = usePermissionStore(state => state.fcmToken)
-  const setFcmToken = usePermissionStore(state => state.setFcmToken)
 
   const openAppSettings = usePermissionStore(state => state.openAppSettings)
+  const setIsAgreeNotifee = useAppStateStore(state => state.setIsAgreeNotifee)
+  const isCheckedPermission = usePermissionStore(
+    state => state.isCheckedPermission,
+  )
+  const setIsCheckedPermission = usePermissionStore(
+    state => state.setIsCheckedPermission,
+  )
 
   const openPopup = () => {
     navigation.navigate('CustomModalScreen', {
@@ -26,18 +31,6 @@ const PermissionController = memo(() => {
     })
   }
 
-  const getFcm = () => {
-    messaging()
-      .getToken()
-      .then(value => {
-        console.log('FcmToken: ', value)
-        setFcmToken(value)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }
-
   const notifeeReqeustPermissionIos = async () => {
     const authStatus = await messaging().requestPermission()
     const enabled =
@@ -45,21 +38,28 @@ const PermissionController = memo(() => {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL
 
     if (enabled) {
-      console.log('Authorization status:', authStatus)
-      getFcm()
+      setIsAgreeNotifee(true)
     } else {
       openPopup()
     }
+    setIsCheckedPermission()
   }
+
   const notifeeReqeustPermissionAndroid = async () => {
     const result = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
     )
-    if (result === 'granted') return
-    openPopup()
+
+    if (result === 'granted') {
+      setIsAgreeNotifee(true)
+    } else {
+      openPopup()
+    }
+    setIsCheckedPermission()
   }
 
   const requestPermission = useCallback(() => {
+    if (isCheckedPermission) return
     requestMultiple(selectedPermission).then(statuses => {
       const key = findKeyByValueForRecord(statuses, 'granted', true)
       if (key?.length > 0) {
