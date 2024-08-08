@@ -1,6 +1,6 @@
 import React, {memo, useCallback, useEffect} from 'react'
 import {requestMultiple} from 'react-native-permissions'
-import {useAppStateStore, usePermissionStore} from '../../stores'
+import {useAppStateStore, useAuthStore, usePermissionStore} from '../../stores'
 import {findKeyByValueForRecord} from '../../utils'
 import {useNavigation} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
@@ -11,7 +11,7 @@ const NotifeeController = memo(() => {
   const navigation =
     useNavigation<StackNavigationProp<MainStackNavigatorParamList>>()
   const isAgreeNotifee = useAppStateStore(state => state.isAgreeNotifee)
-  const addSetting = useAppStateStore(state => state.addSetting)
+  const addUsersSetting = useAuthStore(state => state.addUsersSetting)
   const settingData = useAppStateStore(state => state.settingData)
   const fcmToken = usePermissionStore(state => state.fcmToken)
   const setFcmToken = usePermissionStore(state => state.setFcmToken)
@@ -41,12 +41,12 @@ const NotifeeController = memo(() => {
   const uploadFcmToken = async () => {
     if (!isCheckedPermission) return
     const res = await getFcm()
-    const option: SettingModel = {isPushNotifee: false, fcmToken: null}
+    const option: UserModel = {isPushNotifee: false, fcmToken: null}
     if (!!res) {
       option.isPushNotifee = isAgreeNotifee
       option.fcmToken = isAgreeNotifee ? res : null
     }
-    await addSetting(option)
+    await addUsersSetting(option)
   }
 
   useEffect(() => {

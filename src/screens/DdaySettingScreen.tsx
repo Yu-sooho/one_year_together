@@ -87,7 +87,6 @@ const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
 
   const updateSetting = async (path?: string) => {
     await addSetting({
-      isPushNotifee: isAgreePush,
       homeImageUrl: path || settingData?.homeImageUrl,
     })
     setIsLoading()

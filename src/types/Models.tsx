@@ -16,11 +16,17 @@ interface EventModel extends defaultData {
 interface SettingModel extends defaultData {
   widgetImageUrl?: string | null
   homeImageUrl?: string | null
-  isPushNotifee: boolean
-  fcmToken?: string | null
 }
 
-interface UserModel extends defaultData {}
+interface UserModel extends defaultData {
+  isPushNotifee: boolean
+  fcmToken?: string | null
+  partner?: string
+}
+
+interface TeaseModel extends defaultData {
+  title: string
+}
 
 interface LetterModel extends defaultData {
   title: string

@@ -97,11 +97,15 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
   addDataToOriginRdb: async (ref, data) => {
     console.log(`firebaseStore addDataToOriginRdb start`, ref, data)
     const timestamp = database.ServerValue.TIMESTAMP
-    const email = await auth().currentUser?.email
+    const uid = await auth().currentUser?.uid
     if (!data) return false
     try {
-      data.createdAt = timestamp
-      data.createdUser = email
+      if (!data?.createdAt) {
+        data.createdAt = timestamp
+      } else {
+        data.updatedAt = timestamp
+      }
+      data.createdUser = uid
       const newEventRef = database().ref(ref)
       await newEventRef.set(data)
       console.log(`firebaseStore addDataToOriginRdb finish success`)
@@ -114,11 +118,11 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
 
   addDataToRdb: async (ref, data) => {
     const timestamp = database.ServerValue.TIMESTAMP
-    const email = await auth().currentUser?.email
+    const uid = await auth().currentUser?.uid
     if (!data) return false
     try {
       data.createdAt = timestamp
-      data.createdUser = email
+      data.createdUser = uid
       const newEventRef = database().ref(ref).push()
       await newEventRef.set(data)
       return true

@@ -26,7 +26,6 @@ const App: React.FC = () => {
 
   const logout = useAuthStore(state => state.logout)
   const login = useAuthStore(state => state.login)
-  const currentUser = useAuthStore(state => state.currentUser)
 
   useEffect(() => {
     GoogleSignin.configure({

@@ -6,14 +6,15 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "ios:simulator": "react-native run-ios --simulator=iPhone 15 Pro",
-    "firebase": "cd firebase && firebase emulators:start && cd ..",
+    "firebase": "cd firebase && cd functions && npm run build && cd .. && firebase emulators:start && cd ..",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "format": "prettier --write .",
     "build:ios": "react-native bundle --minify --entry-file index.js --platform ios --dev false --bundle-output ./ios/main.jsbundle --assets-dest ./ios",
-    "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle"
+    "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle",
+    "firebase:deploy": "cd firebase && firebase deploy --only functions && cd .."
   },
   "dependencies": {
     "@notifee/react-native": "^7.8.2",
