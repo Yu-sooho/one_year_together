@@ -34,6 +34,7 @@ interface AppState {
   settingData?: SettingModel | null
   subscribeSetting: () => void
   unsubscribeSetting: () => void
+
   addSetting: (setting: SettingModel) => Promise<boolean>
 
   isAgreeNotifee: boolean

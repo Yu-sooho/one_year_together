@@ -72,7 +72,7 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
           setData(null)
         }
       })
-    console.log('firebase subscribeRdb')
+    console.log('firebase subscribeRdbObj', ref)
     return temp
   },
 

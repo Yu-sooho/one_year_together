@@ -24,17 +24,19 @@ export const createNotifeeOnLetterCreate = functions.database
     console.log(userData, 'FUUF')
 
     try {
-      const notifeeRef = admin.database().ref('/notifees').push()
+      const notifeeRef = admin.database().ref(`/notifees/${partnerId}`).push()
+      const notifeeKey = notifeeRef.key
       await notifeeRef.set({
         userId: letterData.createdUser,
         partnerId: partnerId,
-        title: `편지썼어!`,
-        message: `제목: ${letterData.title}`,
+        title: `편지왔어!!`,
+        message: `${letterData.title}`,
         createdAt: Date.now(),
         readedAt: null,
         isRead: false,
         type: 'letter',
-        key: letterKey,
+        targetKey: letterKey,
+        key: notifeeKey,
       })
 
       console.log('편지 데이터 생성 성공:', notifeeRef.key)

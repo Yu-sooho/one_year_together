@@ -22,7 +22,8 @@ export const createNotifeeOnTeaseCreate = functions.database
     const partnerId = userData.partner
 
     try {
-      const notifeeRef = admin.database().ref('/notifees').push()
+      const notifeeRef = admin.database().ref(`/notifees/${partnerId}`).push()
+      const notifeeKey = notifeeRef.key
       await notifeeRef.set({
         userId: teaseData.createdUser,
         partnerId: partnerId,
@@ -32,7 +33,8 @@ export const createNotifeeOnTeaseCreate = functions.database
         readedAt: null,
         isRead: false,
         type: 'tease',
-        key: teaseKey,
+        targetKey: teaseKey,
+        key: notifeeKey,
       })
 
       console.log('조르기 데이터 생성 성공:', notifeeRef.key)

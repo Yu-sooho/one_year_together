@@ -6,7 +6,12 @@ import {
 import MainStackNavigator from './MainStackNavigator'
 import {LoginScreen, LetterScreen} from '../screens'
 import {defaultScreenOptions} from '../styles/options'
-import {useAppStateStore, useAuthStore, useFirebaseStore} from '../stores'
+import {
+  useAppStateStore,
+  useAuthStore,
+  useFirebaseStore,
+  useNotifeeStore,
+} from '../stores'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {EventController} from '../components'
 import LottieSplashScreen from 'react-native-lottie-splash-screen'
@@ -29,6 +34,9 @@ const LetterStackNavigator = () => {
   const subscribeSetting = useAppStateStore(state => state.subscribeSetting)
   const unsubscribeSetting = useAppStateStore(state => state.unsubscribeSetting)
 
+  const subscribeNotifee = useNotifeeStore(state => state.subscribeNotifee)
+  const unsubscribeNotifee = useNotifeeStore(state => state.unsubscribeNotifee)
+
   const [isLoading, setIsLoading] = useState(true)
   const isLoginCheck = async () => {
     const isLogin = await loginCheck()
@@ -36,11 +44,13 @@ const LetterStackNavigator = () => {
       setCurrentUser(isLogin)
       subscribeUser()
       subscribeSetting()
+      subscribeNotifee()
       login()
     } else {
       logout()
       unsubscribeUser()
       unsubscribeSetting()
+      unsubscribeNotifee()
     }
     LottieSplashScreen.hide()
     setIsMounted(true)

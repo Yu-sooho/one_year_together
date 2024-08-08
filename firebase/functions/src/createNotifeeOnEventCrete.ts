@@ -22,7 +22,8 @@ export const createNotifeeOnEventCreate = functions.database
     const partnerId = userData.partner
 
     try {
-      const notifeeRef = admin.database().ref('/notifees').push()
+      const notifeeRef = admin.database().ref(`/notifees/${partnerId}`).push()
+      const notifeeKey = notifeeRef.key
       await notifeeRef.set({
         userId: eventData.createdUser,
         partnerId: partnerId,
@@ -32,7 +33,8 @@ export const createNotifeeOnEventCreate = functions.database
         readedAt: null,
         isRead: false,
         type: 'event',
-        key: eventKey,
+        targetKey: eventKey,
+        key: notifeeKey,
       })
 
       console.log('이벤트 데이터 생성 성공:', notifeeRef.key)

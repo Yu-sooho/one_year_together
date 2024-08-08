@@ -19,6 +19,11 @@ export const sendPushNotifee = functions.database
         return
       }
 
+      if (!userData.isPushNotifee) {
+        console.error(`푸시를 거부한 상태입니다.`)
+        return
+      }
+
       const payload = {
         notification: {
           title: pushData.title,

@@ -8,6 +8,7 @@ export default {
   cf4f4f4: '#f4f4f4',
   cf7f7f7: '#f7f7f7',
   cd4d4d4: '#d4d4d4',
+  cbfbfbf: '#bfbfbf',
   //gpt
   c008000: '#008000', // Green
   cff69b4: '#FF69B4', // Hot Pink

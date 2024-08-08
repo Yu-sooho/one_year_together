@@ -78,7 +78,6 @@ const useAuthStore = create<AuthState>(
         subscribeUser: () => {
           const appStateStore = useAppStateStore.getState()
           const uid = get().currentUser?.uid
-          console.log(uid, 'FUFU')
           if (!uid) {
             appStateStore.showToast('로그아웃 했다가 다시 시도해줄래?')
             return false

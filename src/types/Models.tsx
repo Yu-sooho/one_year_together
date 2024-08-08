@@ -28,6 +28,17 @@ interface TeaseModel extends defaultData {
   title: string
 }
 
+interface NotifeeModel extends defaultData {
+  userId: string
+  partnerId: string
+  title: string
+  message: string
+  readedAt: Date | null
+  isRead: boolean
+  type: 'tease' | 'event' | 'letter'
+  key: string
+}
+
 interface LetterModel extends defaultData {
   title: string
   content: string

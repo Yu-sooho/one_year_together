@@ -1,19 +1,24 @@
 import {CompositeNavigationProp, RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import React, {useCallback} from 'react'
+import React, {useCallback, useState} from 'react'
 import {
   FlatList,
   PermissionsAndroid,
   Platform,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {CustomHeader, CustomRadioButton} from '../components'
 import colors from '../styles/colors'
-import {useAppStateStore, useAuthStore, usePermissionStore} from '../stores'
+import {useAppStateStore, useNotifeeStore, usePermissionStore} from '../stores'
 import messaging from '@react-native-firebase/messaging'
+import Icon from 'react-native-vector-icons/Feather'
+import {normalize} from '../utils'
+import fonts from '../styles/fonts'
+import {NotifeeListItem} from '../components/items'
 
 type NotifeeListScreenNavigationProp = CompositeNavigationProp<
   StackNavigationProp<MainStackNavigatorParamList, 'LetterListScreen'>,
@@ -34,6 +39,9 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
   const isAgreeNotifee = useAppStateStore(state => state.isAgreeNotifee)
   const setIsAgreeNotifee = useAppStateStore(state => state.setIsAgreeNotifee)
   const openAppSettings = usePermissionStore(state => state.openAppSettings)
+  const notifeeData = useNotifeeStore(state => state.notifeeData)
+  const updateNotifee = useNotifeeStore(state => state.updateNotifee)
+  const checkDuplicate = useNotifeeStore(state => state.checkDuplicated)
 
   const openPopup = () => {
     navigation.navigate('CustomModalScreen', {
@@ -69,13 +77,46 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
     openPopup()
   }
 
-  const renderItem = useCallback(() => {
-    return (
-      <View>
-        <Text>123</Text>
-      </View>
-    )
+  const [checkItem, setCheckItem] = useState<NotifeeModel[]>([])
+
+  const onPressItem = useCallback(async (item: NotifeeModel) => {
+    const checkDuplicated = await checkDuplicate(item.key)
+    if (!checkDuplicated) return
+    if (!item?.isRead) {
+      const option: NotifeeModel = {
+        ...item,
+        isRead: true,
+      }
+      await updateNotifee(option, checkDuplicated)
+    }
   }, [])
+
+  const onPressDeleteItem = useCallback((item: NotifeeModel) => {
+    const findIndex = checkItem.findIndex(element => element === item)
+    const temp = checkItem
+    if (findIndex < 0) {
+      temp.push(item)
+      setCheckItem([...temp])
+    } else {
+      temp.splice(findIndex, 1)
+      setCheckItem([...temp])
+    }
+  }, [])
+
+  const renderItem = useCallback(
+    ({item, index}: {item: NotifeeModel; index: number}) => {
+      return (
+        <NotifeeListItem
+          item={item}
+          index={index}
+          isChecked={!!checkItem.find(element => element === item)}
+          onPressItem={onPressItem}
+          onPressDeleteItem={onPressDeleteItem}
+        />
+      )
+    },
+    [checkItem],
+  )
 
   const onPressPush = () => {
     if (Platform.OS === 'ios') {
@@ -93,7 +134,7 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
         text={'푸시 알림 허용'}
         value={isAgreeNotifee}
       />
-      <FlatList data={[]} renderItem={renderItem} />
+      <FlatList data={notifeeData} renderItem={renderItem} />
     </SafeAreaView>
   )
 }
@@ -102,6 +143,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.cffffff,
+  },
+  listItemContainer: {
+    height: normalize(80),
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: normalize(20),
+    flexDirection: 'row',
   },
 })
 

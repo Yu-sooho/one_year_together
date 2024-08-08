@@ -10,7 +10,12 @@ import {
   Image,
 } from 'react-native'
 import defaultStyles from '../styles'
-import {useAppStateStore, useAuthStore, useFirebaseStore} from '../stores'
+import {
+  useAppStateStore,
+  useAuthStore,
+  useFirebaseStore,
+  useNotifeeStore,
+} from '../stores'
 import auth from '@react-native-firebase/auth'
 import {
   GoogleSignin,
@@ -45,6 +50,16 @@ const LoginScreen: React.FC<Props> = () => {
   const setCurrentUser = useAuthStore(state => state.setCurrentUser)
   const loginCheck = useFirebaseStore(state => state.loginCheck)
   const setIsLoading = useAppStateStore(state => state.setIsLoading)
+
+  const subscribeUser = useAuthStore(state => state.subscribeUser)
+  const unsubscribeUser = useAuthStore(state => state.unsubscribeUser)
+
+  const subscribeSetting = useAppStateStore(state => state.subscribeSetting)
+  const unsubscribeSetting = useAppStateStore(state => state.unsubscribeSetting)
+
+  const subscribeNotifee = useNotifeeStore(state => state.subscribeNotifee)
+  const unsubscribeNotifee = useNotifeeStore(state => state.unsubscribeNotifee)
+
   const inset = useSafeAreaInsets()
 
   const signInWithGoogle = async () => {
@@ -59,11 +74,17 @@ const LoginScreen: React.FC<Props> = () => {
       const isLogin = await loginCheck()
       if (!!isLogin) {
         setCurrentUser(isLogin)
+        subscribeUser()
+        subscribeSetting()
+        subscribeNotifee()
         login()
       }
       setIsLoading()
     } catch (error: unknown) {
       setIsLoading()
+      unsubscribeUser()
+      unsubscribeSetting()
+      unsubscribeNotifee()
       if (error instanceof Error) {
         if (error.message === statusCodes.SIGN_IN_CANCELLED) {
           console.log('User cancelled the login flow')
