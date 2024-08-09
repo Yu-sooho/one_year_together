@@ -117,6 +117,7 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
   },
 
   addDataToRdb: async (ref, data) => {
+    console.log(`firebaseStore addDataToRdb start`, ref, data)
     const timestamp = database.ServerValue.TIMESTAMP
     const uid = await auth().currentUser?.uid
     if (!data) return false
@@ -125,20 +126,22 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
       data.createdUser = uid
       const newEventRef = database().ref(ref).push()
       await newEventRef.set(data)
+      console.log(`firebaseStore addDataToRdb finish success`)
       return true
     } catch (error) {
-      console.log(error)
+      console.log(`firebaseStore addDataToRdb error`, error)
       return false
     }
   },
 
   deleteDataToRdb: async ref => {
     try {
+      console.log(`firebaseStore deleteDataToRdb start`, ref)
       await database().ref(ref).remove()
-      console.log(`Data at path ${ref} has been deleted.`)
+      console.log(`firebaseStore deleteDataToRdb finish`, ref)
       return true
     } catch (error) {
-      console.error(`Failed to delete data at path ${ref}: `, error)
+      console.log(`firebaseStore deleteDataToRdb error`, ref)
       return false
     }
   },

@@ -1,7 +1,8 @@
 import {CompositeNavigationProp, RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {
+  Dimensions,
   FlatList,
   PermissionsAndroid,
   Platform,
@@ -10,8 +11,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import {CustomHeader, CustomRadioButton} from '../components'
+import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
+import {
+  CustomBottomButton,
+  CustomHeader,
+  CustomRadioButton,
+} from '../components'
 import colors from '../styles/colors'
 import {useAppStateStore, useNotifeeStore, usePermissionStore} from '../stores'
 import messaging from '@react-native-firebase/messaging'
@@ -19,6 +24,12 @@ import Icon from 'react-native-vector-icons/Feather'
 import {normalize} from '../utils'
 import fonts from '../styles/fonts'
 import {NotifeeListItem} from '../components/items'
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated'
+import {transform} from '@babel/core'
 
 type NotifeeListScreenNavigationProp = CompositeNavigationProp<
   StackNavigationProp<MainStackNavigatorParamList, 'LetterListScreen'>,
@@ -36,12 +47,15 @@ type Props = {
 }
 
 const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
+  const inset = useSafeAreaInsets()
   const isAgreeNotifee = useAppStateStore(state => state.isAgreeNotifee)
   const setIsAgreeNotifee = useAppStateStore(state => state.setIsAgreeNotifee)
+  const setIsLoading = useAppStateStore(state => state.setIsLoading)
   const openAppSettings = usePermissionStore(state => state.openAppSettings)
   const notifeeData = useNotifeeStore(state => state.notifeeData)
   const updateNotifee = useNotifeeStore(state => state.updateNotifee)
   const checkDuplicate = useNotifeeStore(state => state.checkDuplicated)
+  const deleteNotifee = useNotifeeStore(state => state.deleteNotifee)
 
   const openPopup = () => {
     navigation.navigate('CustomModalScreen', {
@@ -126,16 +140,107 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
     notifeeReqeustPermissionAndroid()
   }
 
+  const deleteAll = async () => {
+    if (!notifeeData) return
+    setIsLoading()
+    const res = await deleteNotifee(notifeeData)
+    setIsLoading()
+  }
+
+  const deleteCheck = async () => {
+    if (!checkItem) return
+    setIsLoading()
+    const res = await deleteNotifee(checkItem)
+    setIsLoading()
+  }
+
+  const onPressDelete = () => {
+    navigation.navigate('CustomModalScreen', {
+      okAction: () => deleteAll(),
+      title: '전부 삭제될거야',
+      contents: '다 읽었지?',
+    })
+  }
+
+  const onPressDeleteCheck = () => {
+    navigation.navigate('CustomModalScreen', {
+      okAction: () => deleteCheck(),
+      title: '체크한 것만 삭제될거야',
+      contents: '다 읽었지?',
+    })
+  }
+
+  const deleteButtonAnimatedValue = useSharedValue(0)
+
+  const bottomButtonSize = normalize(50) + inset.bottom + normalize(20)
+
+  useEffect(() => {
+    if (checkItem?.length > 0) {
+      deleteButtonAnimatedValue.value = withTiming(0, {duration: 250})
+    } else {
+      deleteButtonAnimatedValue.value = withTiming(bottomButtonSize, {
+        duration: 250,
+      })
+    }
+  }, [checkItem])
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          translateY: deleteButtonAnimatedValue.value,
+        },
+      ],
+    }
+  })
+
+  const DeleteAllButton = () => {
+    return (
+      <TouchableOpacity onPress={onPressDelete}>
+        <Icon name="trash" size={normalize(22)} color={colors.c242424} />
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <CustomHeader title="알림" />
+      <CustomHeader title="알림" rightContent={<DeleteAllButton />} />
       <CustomRadioButton
         onPress={onPressPush}
         text={'푸시 알림 허용'}
         value={isAgreeNotifee}
       />
-      <FlatList data={notifeeData} renderItem={renderItem} />
+      <FlatList
+        data={notifeeData}
+        renderItem={renderItem}
+        ListEmptyComponent={ListEmptyComponent}
+      />
+      <Animated.View
+        style={[
+          animatedStyle,
+          {
+            position: 'absolute',
+            bottom: 0,
+            width: Dimensions.get('window').width,
+            height: normalize(50) + inset.bottom + normalize(20),
+            paddingBottom: normalize(20),
+          },
+        ]}>
+        <CustomBottomButton
+          onPressButton={onPressDeleteCheck}
+          isDisabled={checkItem?.length <= 0}
+          buttonText="삭제"
+        />
+      </Animated.View>
     </SafeAreaView>
+  )
+}
+
+const ListEmptyComponent = () => {
+  return (
+    <View style={styles.listEmptyContainer}>
+      <Text style={styles.listEmptyText}>리스트가 없어용</Text>
+    </View>
   )
 }
 
@@ -150,6 +255,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: normalize(20),
     flexDirection: 'row',
+  },
+  listEmptyContainer: {
+    paddingTop: normalize(120),
+    alignItems: 'center',
+  },
+  listEmptyText: {
+    ...fonts.bmjua14,
+    color: colors.cbfbfbf,
   },
 })
 

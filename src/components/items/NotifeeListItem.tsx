@@ -90,13 +90,13 @@ const NotifeeListItem = ({
             <Icon
               name="check-square"
               size={normalize(24)}
-              color={isRead ? colors.cbfbfbf : colors.c242424}
+              color={!isChecked ? colors.cbfbfbf : colors.c242424}
             />
           ) : (
             <Icon
               name="square"
               size={normalize(24)}
-              color={isRead ? colors.cbfbfbf : colors.c242424}
+              color={!isChecked ? colors.cbfbfbf : colors.c242424}
             />
           )}
         </TouchableOpacity>

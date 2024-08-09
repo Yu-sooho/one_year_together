@@ -14,6 +14,7 @@ interface NotifeeState {
   notifeeData: NotifeeModel[] | null
   subscribeNotifee: () => void
   unsubscribeNotifee: () => void
+  deleteNotifee: (notifeeList: NotifeeModel[]) => void
   checkDuplicated: (
     key: string,
   ) => Promise<false | FirebaseDatabaseTypes.DataSnapshot>
@@ -67,6 +68,21 @@ const useNotifeeStore = create<NotifeeState>((set, get) => {
         key,
       )
       return checkDuplicated
+    },
+    deleteNotifee: async notifeeList => {
+      const authStore = useAuthStore.getState()
+      const uid = authStore.currentUser?.uid
+      try {
+        for (const notifee of notifeeList) {
+          console.log(`notifeeList deleteNotifee`, notifee)
+          const notifeeKey = notifee.key
+          await firebaseStore.deleteDataToRdb(`/notifees/${uid}/${notifeeKey}`)
+        }
+        return true
+      } catch (error) {
+        console.log('deleteNotifee error', error)
+        return false
+      }
     },
   }
 })
