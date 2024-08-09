@@ -22,6 +22,7 @@ interface NotifeeState {
     notifee: NotifeeModel,
     snapshot: FirebaseDatabaseTypes.DataSnapshot,
   ) => Promise<boolean>
+  addTease: (tease: TeaseModel) => Promise<boolean>
 }
 
 const useNotifeeStore = create<NotifeeState>((set, get) => {
@@ -36,9 +37,13 @@ const useNotifeeStore = create<NotifeeState>((set, get) => {
         appStateStore.showToast('로그아웃 했다가 다시 시도해줄래?')
         return false
       }
-      return firebaseStore.subscribeRdb(`/notifees/${uid}`, data => {
-        set({notifeeData: data})
-      })
+      return firebaseStore.subscribeRdb(
+        `/notifees/${uid}`,
+        data => {
+          set({notifeeData: data})
+        },
+        true,
+      )
     },
     unsubscribeNotifee: () => {
       const authStore = useAuthStore.getState()
@@ -83,6 +88,10 @@ const useNotifeeStore = create<NotifeeState>((set, get) => {
         console.log('deleteNotifee error', error)
         return false
       }
+    },
+    addTease: async tease => {
+      const result = await firebaseStore.addDataToRdb('/teases', tease)
+      return result
     },
   }
 })

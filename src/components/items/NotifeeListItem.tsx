@@ -1,21 +1,10 @@
-import {CompositeNavigationProp, RouteProp} from '@react-navigation/native'
-import {StackNavigationProp} from '@react-navigation/stack'
-import React, {useCallback, useState} from 'react'
-import {
-  FlatList,
-  PermissionsAndroid,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
-import {SafeAreaView} from 'react-native-safe-area-context'
-import messaging from '@react-native-firebase/messaging'
+import React from 'react'
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
-import {normalize} from '../../utils'
+import {normalize, timestampToDate} from '../../utils'
 import colors from '../../styles/colors'
 import fonts from '../../styles/fonts'
+import moment from 'moment'
 
 const NotifeeListItem = ({
   item,
@@ -31,6 +20,21 @@ const NotifeeListItem = ({
   onPressDeleteItem: (item: NotifeeModel) => void
 }) => {
   const isRead = item?.isRead
+  const date = item.createdAt && timestampToDate(item.createdAt)
+
+  const formatDate = () => {
+    const currentTime = moment()
+    const targetTime = moment(date)
+
+    const duration = moment.duration(currentTime.diff(targetTime))
+    const hoursDiff = duration.asHours()
+
+    if (hoursDiff < 24) {
+      return targetTime.format('HH:mm')
+    }
+    return targetTime.format('YY.MM.DD')
+  }
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -75,16 +79,32 @@ const NotifeeListItem = ({
           {item?.message}
         </Text>
       </View>
-      <View style={{flex: 1, alignItems: 'flex-end'}}>
+      <View style={{flex: 1, justifyContent: 'flex-end', flexDirection: 'row'}}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'flex-end',
+            height: normalize(60),
+          }}>
+          <Text
+            style={{
+              ...fonts.bmjua14,
+              fontSize: normalize(12),
+              color: isRead ? colors.cbfbfbf : colors.c242424,
+            }}>
+            {formatDate()}
+          </Text>
+        </View>
         <TouchableOpacity
           onPress={() => {
             onPressDeleteItem(item)
           }}
           style={{
             height: normalize(60),
-            width: normalize(100),
             justifyContent: 'center',
             alignItems: 'flex-end',
+            paddingLeft: normalize(20),
           }}>
           {isChecked ? (
             <Icon

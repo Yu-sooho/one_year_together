@@ -145,6 +145,7 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
     setIsLoading()
     const res = await deleteNotifee(notifeeData)
     setIsLoading()
+    setCheckItem([])
   }
 
   const deleteCheck = async () => {
@@ -152,6 +153,7 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
     setIsLoading()
     const res = await deleteNotifee(checkItem)
     setIsLoading()
+    setCheckItem([])
   }
 
   const onPressDelete = () => {
@@ -172,13 +174,15 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
 
   const deleteButtonAnimatedValue = useSharedValue(0)
 
-  const bottomButtonSize = normalize(50) + inset.bottom + normalize(20)
+  const bottomButtonSize = normalize(50) + normalize(20) + inset.bottom
 
   useEffect(() => {
     if (checkItem?.length > 0) {
-      deleteButtonAnimatedValue.value = withTiming(0, {duration: 250})
+      deleteButtonAnimatedValue.value = withTiming(-bottomButtonSize, {
+        duration: 250,
+      })
     } else {
-      deleteButtonAnimatedValue.value = withTiming(bottomButtonSize, {
+      deleteButtonAnimatedValue.value = withTiming(0, {
         duration: 250,
       })
     }
@@ -220,7 +224,7 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
           animatedStyle,
           {
             position: 'absolute',
-            bottom: 0,
+            bottom: -bottomButtonSize,
             width: Dimensions.get('window').width,
             height: normalize(50) + inset.bottom + normalize(20),
             paddingBottom: normalize(20),

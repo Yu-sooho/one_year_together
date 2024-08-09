@@ -28,7 +28,7 @@ export const createNotifeeOnEventCreate = functions.database
         userId: eventData.createdUser,
         partnerId: partnerId,
         title: `특별한날!!`,
-        message: `기억하자!! ${eventData.senderName}`,
+        message: `기억하자!! ${eventData.title}`,
         createdAt: Date.now(),
         readedAt: null,
         isRead: false,

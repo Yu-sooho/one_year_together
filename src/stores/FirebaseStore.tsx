@@ -16,7 +16,11 @@ if (IS_DEV) {
 }
 
 interface FirebaseState {
-  subscribeRdb: (ref: string, setData: (list: any[]) => void) => void
+  subscribeRdb: (
+    ref: string,
+    setData: (list: any[]) => void,
+    isReverse?: boolean,
+  ) => void
   subscribeRdbObj: (ref: string, setData: (data: any | null) => void) => void
   unSubscribeRdb: (ref: string, dataSnapshot: any) => void
   addDataToRdb: (ref: string, data: any) => Promise<boolean>
@@ -38,7 +42,7 @@ interface FirebaseState {
 }
 
 const useFirebaseStore = create<FirebaseState>((set, get) => ({
-  subscribeRdb: (ref, setData) => {
+  subscribeRdb: (ref, setData, isReverse) => {
     const temp = database()
       .ref(ref)
       .on('value', snapshot => {
@@ -51,6 +55,9 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
           list.push(object)
           return undefined
         })
+        if (isReverse) {
+          list.reverse()
+        }
         setData(list)
       })
     console.log('firebase subscribeRdb', ref)

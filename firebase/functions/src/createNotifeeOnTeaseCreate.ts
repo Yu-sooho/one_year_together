@@ -27,8 +27,8 @@ export const createNotifeeOnTeaseCreate = functions.database
       await notifeeRef.set({
         userId: teaseData.createdUser,
         partnerId: partnerId,
-        title: `편지 빨리봐!!!`,
-        message: `${teaseData.title} 이거 빨리 풀어봐봐!!`,
+        title: `비밀번호 뭐야?!ㅜㅜ`,
+        message: `${teaseData.title} 이거 못보겠어!ㅜㅜㅜ`,
         createdAt: Date.now(),
         readedAt: null,
         isRead: false,

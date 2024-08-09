@@ -9,7 +9,12 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import defaultStyles from '../styles'
-import {useAppStateStore, useAuthStore, useLetterStore} from '../stores'
+import {
+  useAppStateStore,
+  useAuthStore,
+  useLetterStore,
+  useNotifeeStore,
+} from '../stores'
 import {CustomBottomButton, CustomHeader, CustomTextInput} from '../components'
 import fonts from '../styles/fonts'
 import {normalize} from '../utils'
@@ -43,6 +48,8 @@ const PasswordScreen: React.FC<Props> = ({navigation, route}) => {
   const showToast = useAppStateStore(state => state.showToast)
   const checkDuplicate = useLetterStore(state => state.checkDuplicated)
   const updateLetter = useLetterStore(state => state.updateLetter)
+  const addTease = useNotifeeStore(state => state.addTease)
+  const setIsLoading = useAppStateStore(state => state.setIsLoading)
 
   const [text, setText] = useState('')
   const [isError, setIsError] = useState(false)
@@ -90,9 +97,20 @@ const PasswordScreen: React.FC<Props> = ({navigation, route}) => {
     showToast('', 'error')
   }
 
+  const onPressTease = async () => {
+    setIsLoading()
+    await addTease({
+      title: title,
+    })
+    setIsLoading()
+  }
+
   return (
     <SafeAreaView style={[defaultStyles.containerStyle]}>
-      <CustomHeader title={''} rightContent={<TeaseButton />} />
+      <CustomHeader
+        title={''}
+        rightContent={<TeaseButton onPress={onPressTease} />}
+      />
       <View style={styles.container}>
         <Text
           style={{
@@ -114,9 +132,9 @@ const PasswordScreen: React.FC<Props> = ({navigation, route}) => {
   )
 }
 
-const TeaseButton = () => {
+const TeaseButton = ({onPress}: {onPress: () => void}) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <Icon name="wind" size={normalize(24)} color={colors.c242424} />
     </TouchableOpacity>
   )

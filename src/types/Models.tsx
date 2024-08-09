@@ -1,6 +1,6 @@
 interface defaultData {
-  createdAt?: Date
-  deletedAt?: Date
+  createdAt?: number
+  deletedAt?: number
   createdUser?: string
 }
 
