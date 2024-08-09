@@ -21,8 +21,6 @@ export const createNotifeeOnLetterCreate = functions.database
 
     const partnerId = userData.partner
 
-    console.log(userData, 'FUUF')
-
     try {
       const notifeeRef = admin.database().ref(`/notifees/${partnerId}`).push()
       const notifeeKey = notifeeRef.key

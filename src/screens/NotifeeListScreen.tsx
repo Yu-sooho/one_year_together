@@ -5,18 +5,13 @@ import {
   Dimensions,
   FlatList,
   PermissionsAndroid,
-  Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
-import {
-  CustomBottomButton,
-  CustomHeader,
-  CustomRadioButton,
-} from '../components'
+import {CustomBottomButton, CustomHeader} from '../components'
 import colors from '../styles/colors'
 import {useAppStateStore, useNotifeeStore, usePermissionStore} from '../stores'
 import messaging from '@react-native-firebase/messaging'
@@ -29,7 +24,6 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated'
-import {transform} from '@babel/core'
 
 type NotifeeListScreenNavigationProp = CompositeNavigationProp<
   StackNavigationProp<MainStackNavigatorParamList, 'LetterListScreen'>,
@@ -48,48 +42,11 @@ type Props = {
 
 const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
   const inset = useSafeAreaInsets()
-  const isAgreeNotifee = useAppStateStore(state => state.isAgreeNotifee)
-  const setIsAgreeNotifee = useAppStateStore(state => state.setIsAgreeNotifee)
   const setIsLoading = useAppStateStore(state => state.setIsLoading)
-  const openAppSettings = usePermissionStore(state => state.openAppSettings)
   const notifeeData = useNotifeeStore(state => state.notifeeData)
   const updateNotifee = useNotifeeStore(state => state.updateNotifee)
   const checkDuplicate = useNotifeeStore(state => state.checkDuplicated)
   const deleteNotifee = useNotifeeStore(state => state.deleteNotifee)
-
-  const openPopup = () => {
-    navigation.navigate('CustomModalScreen', {
-      title: '권한 체크',
-      contents: '필요권한이 없대ㅜ\n나 부르거나 앱 설정가서 권한 켜야해!!',
-      okAction: openAppSettings,
-    })
-  }
-
-  const notifeeReqeustPermissionIos = async () => {
-    const authStatus = await messaging().requestPermission()
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL
-
-    if (enabled) {
-      setIsAgreeNotifee(!isAgreeNotifee)
-    } else {
-      setIsAgreeNotifee(false)
-      openPopup()
-    }
-  }
-
-  const notifeeReqeustPermissionAndroid = async () => {
-    const result = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
-    )
-    if (result === 'granted') {
-      setIsAgreeNotifee(!isAgreeNotifee)
-      return
-    }
-    setIsAgreeNotifee(false)
-    openPopup()
-  }
 
   const [checkItem, setCheckItem] = useState<NotifeeModel[]>([])
 
@@ -131,14 +88,6 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
     },
     [checkItem],
   )
-
-  const onPressPush = () => {
-    if (Platform.OS === 'ios') {
-      notifeeReqeustPermissionIos()
-      return
-    }
-    notifeeReqeustPermissionAndroid()
-  }
 
   const deleteAll = async () => {
     if (!notifeeData) return
@@ -209,11 +158,6 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
   return (
     <SafeAreaView style={styles.container}>
       <CustomHeader title="알림" rightContent={<DeleteAllButton />} />
-      <CustomRadioButton
-        onPress={onPressPush}
-        text={'푸시 알림 허용'}
-        value={isAgreeNotifee}
-      />
       <FlatList
         data={notifeeData}
         renderItem={renderItem}

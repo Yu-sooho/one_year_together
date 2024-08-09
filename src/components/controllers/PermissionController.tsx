@@ -37,10 +37,9 @@ const PermissionController = memo(() => {
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL
 
-    if (enabled) {
-      setIsAgreeNotifee(true)
-    } else {
+    if (!enabled) {
       openPopup()
+      setIsAgreeNotifee(false)
     }
     setIsCheckedPermission()
   }
@@ -50,10 +49,9 @@ const PermissionController = memo(() => {
       PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
     )
 
-    if (result === 'granted') {
-      setIsAgreeNotifee(true)
-    } else {
+    if (result !== 'granted') {
       openPopup()
+      setIsAgreeNotifee(false)
     }
     setIsCheckedPermission()
   }

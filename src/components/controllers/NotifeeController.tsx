@@ -12,8 +12,6 @@ const NotifeeController = memo(() => {
     useNavigation<StackNavigationProp<MainStackNavigatorParamList>>()
   const isAgreeNotifee = useAppStateStore(state => state.isAgreeNotifee)
   const addUsersSetting = useAuthStore(state => state.addUsersSetting)
-  const settingData = useAppStateStore(state => state.settingData)
-  const fcmToken = usePermissionStore(state => state.fcmToken)
   const setFcmToken = usePermissionStore(state => state.setFcmToken)
   const isCheckedPermission = usePermissionStore(
     state => state.isCheckedPermission,
