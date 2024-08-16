@@ -19,7 +19,7 @@ export const createNotifeeOnLetterCreate = functions.database
       return
     }
 
-    const partnerId = userData.partner
+    const partnerId = userData.partnerId
 
     try {
       const notifeeRef = admin.database().ref(`/notifees/${partnerId}`).push()

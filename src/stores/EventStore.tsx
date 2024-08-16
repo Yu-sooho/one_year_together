@@ -25,6 +25,7 @@ interface EventState {
   ) => Promise<string | false>
   deletedDefaultEvent: EventModel[]
   setDeletedDefaultEvent: (item: EventModel | null) => void
+  getEvent: (key: string) => Promise<EventModel>
 }
 
 interface persistOption {
@@ -111,6 +112,10 @@ const useEventStore = create<EventState>()(
           } else {
             set({deletedDefaultEvent: [...deletedDefaultEvent, item]})
           }
+        },
+        getEvent: async (key: string) => {
+          const result = await firebaseStore.getRdbObj(`events/${key}`)
+          return result
         },
       }
     },

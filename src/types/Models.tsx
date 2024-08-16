@@ -37,6 +37,7 @@ interface NotifeeModel extends defaultData {
   isRead: boolean
   type: 'tease' | 'event' | 'letter'
   key: string
+  targetKey: string
 }
 
 interface LetterModel extends defaultData {

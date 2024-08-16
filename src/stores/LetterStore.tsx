@@ -25,6 +25,8 @@ interface LetterState {
     fileName: string,
     uri: string,
   ) => Promise<string | false>
+
+  getLetter: (key: string) => Promise<LetterModel>
 }
 
 const useLetterStore = create<LetterState>((set, get) => {
@@ -86,6 +88,11 @@ const useLetterStore = create<LetterState>((set, get) => {
         `letters/${title}/${fileName}`,
         uri,
       )
+      return result
+    },
+
+    getLetter: async (key: string) => {
+      const result = await firebaseStore.getRdbObj(`letters/${key}`)
       return result
     },
 

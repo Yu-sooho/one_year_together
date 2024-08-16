@@ -38,6 +38,8 @@ interface FirebaseState {
     fieldValue: any,
   ) => Promise<false | FirebaseDatabaseTypes.DataSnapshot>
 
+  getRdbObj: (ref: string) => Promise<any>
+
   loginCheck: () => Promise<false | FirebaseAuthTypes.User>
 }
 
@@ -200,6 +202,25 @@ const useFirebaseStore = create<FirebaseState>((set, get) => ({
       console.log('logged in error.', error)
       return false
     }
+  },
+  getRdbObj: async ref => {
+    return await database()
+      .ref(ref)
+      .once('value')
+      .then(snapshot => {
+        const data = snapshot.val()
+        console.log('Snapshot Data:', data)
+        if (data !== null) {
+          console.log('Data retrieved:', data)
+          return data // 전체 오브젝트 반환
+        } else {
+          console.log('No data available for the given key.')
+          return null
+        }
+      })
+      .catch(error => {
+        console.error('Error getRdbObj:', ref, error)
+      })
   },
 }))
 

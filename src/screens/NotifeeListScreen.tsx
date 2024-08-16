@@ -13,7 +13,14 @@ import {
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import {CustomBottomButton, CustomHeader} from '../components'
 import colors from '../styles/colors'
-import {useAppStateStore, useNotifeeStore, usePermissionStore} from '../stores'
+import {
+  useAppStateStore,
+  useAuthStore,
+  useEventStore,
+  useLetterStore,
+  useNotifeeStore,
+  usePermissionStore,
+} from '../stores'
 import messaging from '@react-native-firebase/messaging'
 import Icon from 'react-native-vector-icons/Feather'
 import {normalize} from '../utils'
@@ -26,8 +33,11 @@ import Animated, {
 } from 'react-native-reanimated'
 
 type NotifeeListScreenNavigationProp = CompositeNavigationProp<
-  StackNavigationProp<MainStackNavigatorParamList, 'LetterListScreen'>,
-  StackNavigationProp<NotifeeListScreenProps>
+  StackNavigationProp<MainStackNavigatorParamList, 'NotifeeListScreen'>,
+  CompositeNavigationProp<
+    StackNavigationProp<NotifeeListScreenProps>,
+    StackNavigationProp<LetterStackNavigatorParamList>
+  >
 >
 
 type NotifeeListScreenRouteProp = RouteProp<
@@ -44,13 +54,52 @@ const NotifeeListScreen: React.FC<Props> = ({navigation, route}) => {
   const inset = useSafeAreaInsets()
   const setIsLoading = useAppStateStore(state => state.setIsLoading)
   const notifeeData = useNotifeeStore(state => state.notifeeData)
+  const getLetter = useLetterStore(state => state.getLetter)
+  const getEvent = useEventStore(state => state.getEvent)
   const updateNotifee = useNotifeeStore(state => state.updateNotifee)
   const checkDuplicate = useNotifeeStore(state => state.checkDuplicated)
   const deleteNotifee = useNotifeeStore(state => state.deleteNotifee)
+  const currentUser = useAuthStore(state => state.currentUser)
+  const showToast = useAppStateStore(state => state.showToast)
 
   const [checkItem, setCheckItem] = useState<NotifeeModel[]>([])
 
   const onPressItem = useCallback(async (item: NotifeeModel) => {
+    if (item?.type === 'letter') {
+      const result = await getLetter(item?.targetKey)
+      if (!result) {
+        showToast('이미 삭제된건가봐!')
+        return
+      }
+      const isLocked =
+        result?.password &&
+        !result?.isUnLockedUserId?.find(
+          element => element === currentUser?.email,
+        )
+      if (!isLocked) {
+        navigation.navigate('LetterScreen', {
+          currentLetter: result,
+        })
+        return
+      }
+      navigation.navigate('PasswordScreen', {
+        currentLetter: result,
+      })
+    }
+    if (item?.type === 'event') {
+      const result = await getEvent(item?.targetKey)
+      if (!result) {
+        showToast('이미 삭제된건가봐!')
+        return
+      }
+
+      navigation.navigate('EventScreen', {
+        event: result,
+      })
+    }
+    if (item?.type === 'tease') {
+      navigation.navigate('LetterListScreen')
+    }
     const checkDuplicated = await checkDuplicate(item.key)
     if (!checkDuplicated) return
     if (!item?.isRead) {
