@@ -180,7 +180,15 @@ const DdaySettingScreen: React.FC<Props> = ({navigation, route}) => {
   }
 
   const navigatedNotifeeListScreen = () => {
-    if (isAgreeNotifee) navigation.navigate('NotifeeListScreen', {})
+    if (isAgreeNotifee) {
+      navigation.navigate('NotifeeListScreen', {})
+      return
+    }
+    if (Platform.OS === 'ios') {
+      notifeeReqeustPermissionIos()
+      return
+    }
+    notifeeReqeustPermissionAndroid()
   }
 
   return (

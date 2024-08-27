@@ -1,4 +1,4 @@
-export const IS_DEV = true
+export const IS_DEV = false
 export const FIREBASE_CONFIG = {
   apiKey: 'AIzaSyAxbKvf7O4XUVaVawwSs6eu6DyMH7tYPZg',
   authDomain: 'one-year-together.firebaseapp.com',
