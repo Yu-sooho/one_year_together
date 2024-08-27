@@ -1,13 +1,7 @@
 import {CompositeNavigationProp, RouteProp} from '@react-navigation/native'
 import {StackNavigationProp} from '@react-navigation/stack'
 import React, {useState} from 'react'
-import {
-  View,
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native'
+import {View, Text, StyleSheet, TouchableOpacity, StatusBar} from 'react-native'
 import defaultStyles from '../styles'
 import {
   useAppStateStore,
@@ -20,6 +14,7 @@ import fonts from '../styles/fonts'
 import {normalize} from '../utils'
 import Icon from 'react-native-vector-icons/Feather'
 import colors from '../styles/colors'
+import {SafeAreaView} from 'react-native-safe-area-context'
 
 type PasswordScreenNavigationProp = CompositeNavigationProp<
   StackNavigationProp<MainStackNavigatorParamList, 'LetterListScreen'>,
@@ -102,11 +97,13 @@ const PasswordScreen: React.FC<Props> = ({navigation, route}) => {
     await addTease({
       title: title,
     })
+    showToast('조르기 보냈어 ㅋㅋ')
     setIsLoading()
   }
 
   return (
     <SafeAreaView style={[defaultStyles.containerStyle]}>
+      <StatusBar barStyle="dark-content" />
       <CustomHeader
         title={''}
         rightContent={<TeaseButton onPress={onPressTease} />}
