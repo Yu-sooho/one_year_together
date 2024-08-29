@@ -32,25 +32,11 @@ export const sendPushNotifee = functions.database
         data: {
           type: pushData.type,
           id: pushData.key,
+          targetKey: pushData.targetKey,
         },
       }
 
       const response = await admin.messaging().send(message)
-
-      // const payload = {
-      //   notification: {
-      //     title: pushData.title,
-      //     body: pushData.message,
-      //   },
-      //   data: {
-      //     type: pushData.type,
-      //     id: pushData.key,
-      //   },
-      // }
-
-      // const response = await admin
-      //   .messaging()
-      //   .sendToDevice(userData.fcmToken, payload)
       console.log('푸시 알림 전송 성공:', response)
     } catch (error) {
       console.error('푸시 알림 전송 실패:', error)

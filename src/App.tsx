@@ -15,6 +15,14 @@ import LoadingController from './components/controllers/LoadingController'
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth'
 import {GoogleSignin} from '@react-native-google-signin/google-signin'
 import {WidgetTaskHandlerIos} from './components/controllers'
+import messaging from '@react-native-firebase/messaging'
+
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('백그라운드에서 메시지 수신:', remoteMessage)
+  if (remoteMessage && remoteMessage.data) {
+    const {type, id} = remoteMessage.data
+  }
+})
 
 const App: React.FC = () => {
   const handleStateChange = (state: NavigationState | undefined) => {
