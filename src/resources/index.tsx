@@ -13,6 +13,7 @@ export const images = {
   first_meet: require('./images/first_meet.jpg'),
   marry_event: require('./images/marry_event.jpg'),
   loading_image: require('./images/loading_image.jpg'),
+  debug_image: require('./images/debug_image.png'),
   default_header: require('./images/default_header.jpg'),
   default_letter: require('./images/default_letter.jpg'),
   start_event: require('./images/start_event.jpg'),

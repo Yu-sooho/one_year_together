@@ -5,7 +5,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "ios:simulator": "react-native run-ios --simulator=iPhone 15 Pro",
+    "ios:simulator": "react-native run-ios --simulator=iPhone 16 Pro",
     "firebase": "cd firebase && cd functions && npm run build && cd .. && firebase emulators:start && cd ..",
     "start": "react-native start",
     "test": "jest",

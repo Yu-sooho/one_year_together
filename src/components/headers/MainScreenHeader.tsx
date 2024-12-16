@@ -21,7 +21,7 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated'
-import {normalize} from '../../utils'
+import {IS_DEV, normalize} from '../../utils'
 import {
   FIRST_DATE,
   FIRST_MEET,
@@ -181,7 +181,9 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
         ]}>
         <FastImage
           source={
-            settingData?.homeImageUrl
+            IS_DEV
+              ? images.debug_image
+              : settingData?.homeImageUrl
               ? {uri: settingData.homeImageUrl}
               : images.default_header
           }
