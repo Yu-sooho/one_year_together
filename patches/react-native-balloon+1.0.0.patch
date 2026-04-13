@@ -1,0 +1,22 @@
+diff --git a/node_modules/react-native-balloon/src/Balloon.js b/node_modules/react-native-balloon/src/Balloon.js
+index f2fbf56..6c6074f 100644
+--- a/node_modules/react-native-balloon/src/Balloon.js
++++ b/node_modules/react-native-balloon/src/Balloon.js
+@@ -3,7 +3,7 @@ import React, { Component } from "react";
+ import {
+   View,
+   StyleSheet,
+-  ViewPropTypes,
++  
+   TouchableOpacity
+ } from "react-native";
+ 
+@@ -45,7 +45,7 @@ export default class Balloon extends Component {
+     triangleOffset: PropTypes.string,
+     triangleDirection: PropTypes.string,
+     triangleSize: PropTypes.number,
+-    containerStyle: ViewPropTypes.style,
++    containerStyle: PropTypes.object,
+     onPress: PropTypes.func,
+     onLongPress: PropTypes.func
+   };
