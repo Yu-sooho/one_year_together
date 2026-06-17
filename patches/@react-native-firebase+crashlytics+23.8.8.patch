@@ -1,0 +1,12 @@
+diff --git a/node_modules/@react-native-firebase/crashlytics/ios/RNFBCrashlytics/RNFBCrashlyticsModule.m b/node_modules/@react-native-firebase/crashlytics/ios/RNFBCrashlytics/RNFBCrashlyticsModule.m
+index ada982b..9597fb9 100644
+--- a/node_modules/@react-native-firebase/crashlytics/ios/RNFBCrashlytics/RNFBCrashlyticsModule.m
++++ b/node_modules/@react-native-firebase/crashlytics/ios/RNFBCrashlytics/RNFBCrashlyticsModule.m
+@@ -19,6 +19,7 @@
+ #include <sys/sysctl.h>
+ 
+ #import <React/RCTConvert.h>
++#import <React/RCTBridgeModule.h>
+ #import <React/RCTLog.h>
+ #import <React/RCTUtils.h>
+ 

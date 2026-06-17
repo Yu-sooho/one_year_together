@@ -1,0 +1,51 @@
+diff --git a/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessaging+AppDelegate.m b/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessaging+AppDelegate.m
+index 9c3651d..aad90ef 100644
+--- a/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessaging+AppDelegate.m
++++ b/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessaging+AppDelegate.m
+@@ -19,9 +19,10 @@
+ #import <GoogleUtilities/GULAppDelegateSwizzler.h>
+ #import <objc/runtime.h>
+ 
++#import <React/RCTBridgeModule.h>
++#import <React/RCTConvert.h>
+ #import <RNFBApp/RNFBRCTEventEmitter.h>
+ #import <RNFBApp/RNFBSharedUtils.h>
+-#import <React/RCTConvert.h>
+ 
+ #import "RNFBMessaging+AppDelegate.h"
+ #import "RNFBMessagingSerializer.h"
+diff --git a/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessaging+NSNotificationCenter.m b/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessaging+NSNotificationCenter.m
+index 1867f14..1825163 100644
+--- a/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessaging+NSNotificationCenter.m
++++ b/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessaging+NSNotificationCenter.m
+@@ -15,10 +15,12 @@
+  *
+  */
+ #import <Firebase/Firebase.h>
+-#import <RNFBApp/RNFBJSON.h>
+-#import <RNFBApp/RNFBRCTEventEmitter.h>
++#import <React/RCTBridgeModule.h>
+ #import <React/RCTConvert.h>
++#import <React/RCTDefines.h>
+ #import <React/RCTRootView.h>
++#import <RNFBApp/RNFBJSON.h>
++#import <RNFBApp/RNFBRCTEventEmitter.h>
+ 
+ #import "RNFBMessaging+AppDelegate.h"
+ #import "RNFBMessaging+FIRMessagingDelegate.h"
+diff --git a/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessagingModule.m b/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessagingModule.m
+index 657ac96..77e24af 100644
+--- a/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessagingModule.m
++++ b/node_modules/@react-native-firebase/messaging/ios/RNFBMessaging/RNFBMessagingModule.m
+@@ -16,9 +16,10 @@
+  */
+ 
+ #import <Firebase/Firebase.h>
+-#import <RNFBApp/RNFBSharedUtils.h>
++#import <React/RCTBridgeModule.h>
+ #import <React/RCTConvert.h>
+ #import <React/RCTUtils.h>
++#import <RNFBApp/RNFBSharedUtils.h>
+ 
+ #import "RNFBMessaging+AppDelegate.h"
+ #import "RNFBMessaging+NSNotificationCenter.h"

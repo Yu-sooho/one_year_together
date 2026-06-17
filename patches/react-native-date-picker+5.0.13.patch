@@ -1,0 +1,50 @@
+diff --git a/node_modules/react-native-date-picker/ios/RNDatePickerManager.h b/node_modules/react-native-date-picker/ios/RNDatePickerManager.h
+index 6a4f206..f1d9f50 100644
+--- a/node_modules/react-native-date-picker/ios/RNDatePickerManager.h
++++ b/node_modules/react-native-date-picker/ios/RNDatePickerManager.h
+@@ -8,7 +8,13 @@
+ #import <React/RCTConvert.h>
+ #import <React/RCTViewManager.h>
+ 
++#ifdef RCT_NEW_ARCH_ENABLED
++#import <RNDatePickerSpecs/RNDatePickerSpecs.h>
++
++@interface RNDatePickerManager : RCTViewManager <NativeRNDatePickerSpec>
++#else
+ @interface RNDatePickerManager : RCTViewManager
++#endif
+ 
+ @property (strong, nonatomic) UIViewController *topViewController;
+ 
+diff --git a/node_modules/react-native-date-picker/ios/RNDatePickerManager.mm b/node_modules/react-native-date-picker/ios/RNDatePickerManager.mm
+index da42873..0859c56 100644
+--- a/node_modules/react-native-date-picker/ios/RNDatePickerManager.mm
++++ b/node_modules/react-native-date-picker/ios/RNDatePickerManager.mm
+@@ -213,6 +213,13 @@ RCT_EXPORT_METHOD(openPicker:(NSDictionary *) props
+ 
+ }
+ 
++#ifdef RCT_NEW_ARCH_ENABLED
++- (void)openPicker:(NSDictionary *)props
++{
++    [self openPicker:props onConfirm:^(__unused NSArray *response) {} onCancel:^(__unused NSArray *response) {}];
++}
++#endif
++
+ RCT_EXPORT_METHOD(closePicker)
+ {
+     dispatch_async(dispatch_get_main_queue(), ^{
+@@ -234,6 +241,12 @@ RCT_EXPORT_METHOD(closePicker)
+     return 216;
+ }
+ 
+-@end
++#ifdef RCT_NEW_ARCH_ENABLED
++- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const facebook::react::ObjCTurboModule::InitParams &)params
++{
++    return std::make_shared<facebook::react::NativeRNDatePickerSpecJSI>(params);
++}
++#endif
+ 
++@end
+ 
