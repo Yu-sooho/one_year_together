@@ -9,12 +9,11 @@ import {
 import {daysUntil, isSameDate, normalize} from '../../utils'
 import fonts from '../../styles/fonts'
 import Animated, {
-  useAnimatedGestureHandler,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated'
-import {PanGestureHandler} from 'react-native-gesture-handler'
+import {Gesture, GestureDetector} from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Feather'
 import colors from '../../styles/colors'
 import {EventListitemProps} from '../../types/ComponentTypes'
@@ -56,15 +55,17 @@ const EventListItem: React.FC<EventListitemProps> = memo(
     const translateX = useSharedValue(0)
     const lastOffset = useSharedValue(0)
 
-    const panGestureEvent = useAnimatedGestureHandler({
-      onActive: event => {
+    const panGestureEvent = Gesture.Pan()
+      .activeOffsetX([-10, 10])
+      .failOffsetY([-10, 10])
+      .onUpdate(event => {
         if (lastOffset.value < 0) {
           translateX.value = lastOffset.value + event.translationX
         } else {
           translateX.value = event.translationX
         }
-      },
-      onEnd: () => {
+      })
+      .onEnd(() => {
         if (translateX.value < -SWIPE_THRESHOLD) {
           translateX.value = withTiming(SWIPE_DEGREE)
           lastOffset.value = withTiming(SWIPE_DEGREE)
@@ -72,8 +73,7 @@ const EventListItem: React.FC<EventListitemProps> = memo(
           translateX.value = withTiming(0)
           lastOffset.value = withTiming(0)
         }
-      },
-    })
+      })
 
     const animatedStyle = useAnimatedStyle(() => {
       return {
@@ -100,10 +100,7 @@ const EventListItem: React.FC<EventListitemProps> = memo(
             <Icon name="trash-2" size={normalize(20)} color={colors.c242424} />
           </TouchableOpacity>
         </View>
-        <PanGestureHandler
-          activeOffsetX={[-10, 10]}
-          failOffsetY={[-10, 10]}
-          onGestureEvent={panGestureEvent}>
+        <GestureDetector gesture={panGestureEvent}>
           <Animated.View
             style={[
               styles.container,
@@ -138,7 +135,7 @@ const EventListItem: React.FC<EventListitemProps> = memo(
               )}
             </TouchableOpacity>
           </Animated.View>
-        </PanGestureHandler>
+        </GestureDetector>
       </View>
     )
   },

@@ -29,7 +29,7 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context'
 import defaultStyles from '../styles'
 import {getFileExtension, normalize} from '../utils'
-import FastImage, {Source} from 'react-native-fast-image'
+import FastImage, {Source} from '@d11/react-native-fast-image'
 import colors from '../styles/colors'
 import Icon from 'react-native-vector-icons/Feather'
 import {FirebaseDatabaseTypes} from '@react-native-firebase/database'

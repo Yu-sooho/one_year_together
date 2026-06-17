@@ -33,7 +33,7 @@ import {
 } from '../../resources'
 import fonts from '../../styles/fonts'
 import moment from 'moment'
-import FastImage from 'react-native-fast-image'
+import FastImage from '@d11/react-native-fast-image'
 import {useAppStateStore} from '../../stores'
 
 const TOP_PADDING = normalize(12)
@@ -145,21 +145,27 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
   }) => {
     return (
       <TouchableOpacity onPress={onPress} style={styles.dateContentStyle}>
-        <View style={{justifyContent: 'center'}}>
+        <View style={styles.dateInfoView}>
           <Animated.View style={titlePaddingAnimatedStyle}>
-            <Animated.Text style={[styles.titleText]}>{title}</Animated.Text>
+            <Animated.Text style={styles.titleText} numberOfLines={1}>
+              {title}
+            </Animated.Text>
           </Animated.View>
           <Animated.View style={dateSizeAnimatedStyle}>
-            <Animated.Text style={styles.dateText}>
+            <Animated.Text style={styles.dateText} numberOfLines={1}>
               {moment(targetDate).format('YYYY.MM.DD')}
             </Animated.Text>
           </Animated.View>
           <Animated.View style={flexibleView} />
         </View>
-        <View style={{justifyContent: 'center'}}>
+        <View style={styles.dateCountView}>
           <Animated.View style={flexibleView} />
           <View>
-            <Animated.Text style={[styles.titleText, dateAnimatedStyle]}>
+            <Animated.Text
+              adjustsFontSizeToFit
+              minimumFontScale={0.75}
+              numberOfLines={1}
+              style={[styles.countText, dateAnimatedStyle]}>
               {targetAt}
             </Animated.Text>
           </View>
@@ -229,21 +235,22 @@ const MainScreenHeader: React.FC<MainScreenHeaderProps> = ({
             }}>
             <Animated.View style={[styles.firstDateView, viewAnimatedStyle]}>
               <View
-                style={{
-                  justifyContent: 'center',
-                  height: '100%',
-                }}>
-                <Animated.Text style={[styles.titleText]}>
+                style={styles.marryInfoView}>
+                <Animated.Text style={styles.titleText} numberOfLines={1}>
                   {MARRY_EVENT.title}
                 </Animated.Text>
                 <Animated.View style={dateSizeAnimatedStyle}>
-                  <Animated.Text style={styles.dateText}>
+                  <Animated.Text style={styles.dateText} numberOfLines={1}>
                     {moment(MARRY_DATE).format('YYYY.MM.DD')}
                   </Animated.Text>
                 </Animated.View>
               </View>
-              <View>
-                <Animated.Text style={[styles.titleText, dateAnimatedStyle]}>
+              <View style={styles.marryCountView}>
+                <Animated.Text
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.75}
+                  numberOfLines={1}
+                  style={[styles.countText, dateAnimatedStyle]}>
                   {MARRY_EVENT.targetAt}
                 </Animated.Text>
               </View>
@@ -273,13 +280,39 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingHorizontal: normalize(12),
+    paddingLeft: normalize(12),
+    paddingRight: normalize(18),
+  },
+  dateInfoView: {
+    flexShrink: 1,
+    justifyContent: 'center',
+    minWidth: 0,
+  },
+  dateCountView: {
+    flexShrink: 0,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    minWidth: normalize(56),
+    marginLeft: normalize(8),
   },
   firstDateView: {
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    paddingHorizontal: normalize(12),
+    paddingLeft: normalize(12),
+    paddingRight: normalize(18),
+  },
+  marryInfoView: {
+    flexShrink: 1,
+    justifyContent: 'center',
+    height: '100%',
+    minWidth: 0,
+  },
+  marryCountView: {
+    flexShrink: 0,
+    alignItems: 'flex-end',
+    minWidth: normalize(56),
+    marginLeft: normalize(8),
   },
   secondDateView: {
     flexDirection: 'row',
@@ -288,6 +321,11 @@ const styles = StyleSheet.create({
   titleText: {
     ...fonts.bmjua16,
     color: colors.cffffff,
+  },
+  countText: {
+    ...fonts.bmjua16,
+    color: colors.cffffff,
+    textAlign: 'right',
   },
   dateText: {
     ...fonts.bmjua14,

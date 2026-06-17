@@ -13,7 +13,8 @@ import {
   StatusBar,
 } from 'react-native'
 import defaultStyles from '../styles'
-import FastImage from 'react-native-fast-image'
+
+import FastImage from '@d11/react-native-fast-image'
 import {CustomBackgroundOpacity, CustomHeader} from '../components'
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context'
 import colors from '../styles/colors'

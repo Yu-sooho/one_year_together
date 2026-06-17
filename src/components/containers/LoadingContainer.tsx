@@ -8,7 +8,6 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated'
-import FastImage from 'react-native-fast-image'
 import {normalize} from '../../utils'
 import {images} from '../../resources'
 

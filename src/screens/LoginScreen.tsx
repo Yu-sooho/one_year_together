@@ -21,7 +21,8 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin'
-import FastImage from 'react-native-fast-image'
+
+import FastImage from '@d11/react-native-fast-image'
 import {images} from '../resources'
 import {normalize} from '../utils'
 import {useSafeAreaInsets} from 'react-native-safe-area-context'
@@ -67,8 +68,12 @@ const LoginScreen: React.FC<Props> = () => {
       setIsLoading()
       await GoogleSignin.hasPlayServices()
       const userInfo = await GoogleSignin.signIn()
+      if (userInfo.type !== 'success') {
+        setIsLoading()
+        return
+      }
       const googleCredential = auth.GoogleAuthProvider.credential(
-        userInfo.idToken,
+        userInfo.data.idToken,
       )
       await auth().signInWithCredential(googleCredential)
       const isLogin = await loginCheck()

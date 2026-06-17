@@ -15,7 +15,8 @@ import {useAuthStore, useLetterStore} from '../stores'
 import {normalize} from '../utils'
 import Icon from 'react-native-vector-icons/Feather'
 import colors from '../styles/colors'
-import FastImage from 'react-native-fast-image'
+
+import FastImage from '@d11/react-native-fast-image'
 import {images} from '../resources'
 
 type LetterListScreenNavigationProp = CompositeNavigationProp<
