@@ -79,6 +79,12 @@ target 'one_year_together' do
     installer.pods_project.targets.each do |target|
       target.build_configurations.each do |build_configuration|
         build_configuration.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+        # Pods and resource bundles can declare deployment targets below the app minimum.
+        minimum_ios = Gem::Version.new('15.5')
+        deployment_target = build_configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET']
+        if deployment_target.nil? || Gem::Version.new(deployment_target) < minimum_ios
+          build_configuration.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = minimum_ios.to_s
+        end
       end
     end
   end
